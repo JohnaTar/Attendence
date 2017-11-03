@@ -182,5 +182,18 @@ if (isset($_POST['add_outsrouce'])) {
   }
 
 
+if (isset($_POST['oc_id'])) {
 
+     $show_data_to_add_vacation=$process->get_oc($_POST['oc_id']);
+
+     echo ' <div class="form-group">
+                       <label class="col-md-4 control-label" for="fn">ชิ่อ-นามสกุล</label>
+                       <div class="col-md-6">
+                  
+                      <p class="form-control-static">'.$show_data_to_add_vacation['name'].'</p>
+
+             </div>
+       </div>';
+
+}
  ?>

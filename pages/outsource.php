@@ -126,7 +126,7 @@
                     <div id="1" class="colors" style="display:none">
                       <form class="form-horizontal" id="data_save" onsubmit="return save_data();">
                         <input type="hidden" name="late" value="7">
-                        <div id="oc_name_late"></div>dsadsad
+                        <div id="oc_name_late"></div>
                         <div class="form-group">
                               <label class="col-md-4 control-label" for="fn">วันที่</label>
                               <div class="col-md-4">
@@ -161,7 +161,7 @@
                     <!-- ########################### ขาด #######################################-->
                     <div id="2" class="colors" style="display:none">
                       <form class="form-horizontal" id="data_save2" onsubmit="return save_data2();">
-                         <div id="data_form2"></div>
+                         <div id="oc_name_absence"></div>
                         <input type="hidden" name="absence" value="1">
 
                         <input type="hidden" name="rank" id="rank2">
@@ -204,7 +204,7 @@
                     <!-- ########################### ลาป่วย #######################################-->
                     <div id="3" class="colors" style="display:none">
                        <form class="form-horizontal" id="data_save3" onsubmit="return save_data3();">
-                          <div id="data_form3"></div>
+                          <div id="oc_name_sick"></div>
                           <input type="hidden" name="sick" value="2">
                         <div class="form-group">
                               <label class="col-md-4 control-label" for="fn">วันที่</label>
@@ -249,7 +249,7 @@
                     <!-- ########################### ลากิจ #######################################-->
                     <div id="4" class="colors" style="display:none">
                       <form class="form-horizontal" id="data_save4" onsubmit="return save_data4();">
-                          <div id="data_form4"></div>
+                          <div id="oc_name_lakit"></div>
                         <input type="hidden" name="errand" value="3">
                         <div class="form-group">
                               <label class="col-md-4 control-label" for="fn">วันที่</label>
@@ -292,7 +292,7 @@
                     </div>
                     <div id="5" class="colors" style="display:none">
                           <form class="form-horizontal" id="data_save5" onsubmit="return save_data5();">
-                              <div id="data_form5"></div>
+                              <div id="oc_name_wrong"></div>
                             <input type="hidden" name="Exerrand" value="6">
                         <div class="form-group">
                               <label class="col-md-4 control-label" for="fn">วันที่</label>
@@ -306,13 +306,13 @@
                                </div>
                         </div>
                         <input type="hidden" name="rank5" id="rank5">
-                          <div class="form-group">
-                                          <label class="col-md-4 control-label" for="fn">วัน</label>
-                                          <div class="col-md-4">
-                                      <input type="radio" required name="day5" value="0.5" >ครึ่งวัน
-                                      <input type="radio" required name="day5" value="1" >เต็มวัน
-                                  </div>
-                                </div>
+                        <div class="form-group">
+                                        <label class="col-md-4 control-label" for="fn">จำนวน</label>
+                                        <div class="col-md-4">
+                                    <input type="text" required name="day3" class="form-control input-md"  >
+
+                              </div>
+                        </div>
 
                         <div class="form-group">
                               <label class="col-md-4 control-label" for="fn">หมายเหตุ</label>
@@ -330,46 +330,6 @@
                                 </div>
                       </form>
                     </div>
-                    <div id="6" class="colors" style="display:none">
-                        <form class="form-horizontal" id="data_save6" onsubmit="return save_data6();">
-                          <div id="data_form6"></div>
-                          <input type="hidden" name="ext" value="4">
-                        <div class="form-group">
-                              <label class="col-md-4 control-label" for="fn">วันที่</label>
-                              <div class="col-md-4">
-                                        <input name="date6" id="date_ext1"   type="date"  class="form-control input-md" required="">
-
-                               </div>
-                                <div class="col-md-4">
-                               <input id="date_ext2"  type="date"  class="form-control input-md" >
-                                          <span id="alert5"></span>
-                               </div>
-                        </div>
-                          <div class="form-group">
-                                          <label class="col-md-4 control-label" for="fn">วัน</label>
-                                          <div class="col-md-4">
-                                      <input type="radio" required name="day6" value="0.5" >ครึ่งวัน
-                                      <input type="radio" required name="day6" value="1" >เต็มวัน
-                                  </div>
-                                </div>
-                          <input type="hidden" name="rank6" id="rank6">
-
-                        <div class="form-group">
-                              <label class="col-md-4 control-label" for="fn">หมายเหตุ</label>
-                              <div class="col-md-6">
-                                       <textarea class="form-control  input-md" rows="3" name="comment6"></textarea>
-
-                               </div>
-                        </div>
-
-                         <div class="form-group">
-                                    <label class="col-md-4 control-label" for="submit"></label>
-                                    <div class="col-md-4">
-                                <button type="submit" name="submit" class="btn btn-primary" >Save</button>
-                                    </div>
-                                </div>
-                      </form>
-                     </div>
 
 
 

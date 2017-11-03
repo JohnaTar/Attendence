@@ -160,6 +160,7 @@ WHERE outsrouce.co_id ='".$post."' ORDER BY outsrouce.resign ASC,outsrouce.dep_c
 
            }
 
+//สาย
            public function coutn_late($user_id,$first_day_of_month,$last_day_of_month){
 
                  $db = $this->connect();
@@ -177,6 +178,8 @@ WHERE outsrouce.co_id ='".$post."' ORDER BY outsrouce.resign ASC,outsrouce.dep_c
 
              }
 
+  // ขาด
+
              public function coutn_absence($user_id,$first_day_of_month,$last_day_of_month){
 
                    $db = $this->connect();
@@ -193,6 +196,28 @@ WHERE outsrouce.co_id ='".$post."' ORDER BY outsrouce.resign ASC,outsrouce.dep_c
                      return $result;
 
                }
+
+
+               public function get_oc($user_id){
+
+                      $db = $this->connect();
+                      $get_user = $db->prepare("SELECT outsrouce.oc_id,outsrouce.oc_name FROM outsrouce WHERE outsrouce.oc_id = ?");
+                      $get_user->bind_param('i',$user_id);
+                      $get_user->execute();
+                      $get_user->bind_result($oc_id,$oc_name);
+                      $get_user->fetch();
+
+                      $result = array(
+                          'id'=>$oc_id,
+                          'name'=>$oc_name
+
+                      );
+
+                      return $result;
+                  }
+
+
+
 
 }
 ?>

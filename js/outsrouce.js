@@ -152,6 +152,23 @@ function add_outsrouce_form(){
 // เพื่มวันลา OC
 function show_from_add_vacation_oc($oc_id){
 
-  alert($oc_id);
+  $.ajax({
+
+        type:'POST',
+        url :'attendent_out.php',
+        data: {oc_id:$oc_id},
+          success:function(data){
+          $("#oc_name_late").html(data);
+          $("#oc_name_absence").html(data);
+          $("#oc_name_sick").html(data);
+          $("#oc_name_lakit").html(data);
+          $("#oc_name_wrong").html(data);
+          }
+
+
+
+  });
+
+  return false;
 
 }
