@@ -1,5 +1,6 @@
 <?php
 include 'connect_pdo.php';
+include 'connect.php';
 $process = new Outsource();
   if (isset($_POST['show_dep'])) {
         $get_dep_in_companny = $process->get_dep_in_companny($_POST['show_dep']);
@@ -189,11 +190,51 @@ if (isset($_POST['oc_id'])) {
      echo ' <div class="form-group">
                        <label class="col-md-4 control-label" for="fn">ชิ่อ-นามสกุล</label>
                        <div class="col-md-6">
-                  
-                      <p class="form-control-static">'.$show_data_to_add_vacation['name'].'</p>
 
+
+
+                      <p class="form-control-static">'.$show_data_to_add_vacation['name'].'</p>
+                      <input type="hidden" name="oc_id_late" value="'.$show_data_to_add_vacation['id'].'" >
              </div>
        </div>';
+
+}
+
+
+if (isset($_POST['oc_id_late'])) {
+
+
+
+        $sql ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`)
+               VALUES ('1','".$_POST['late']."', '".$_POST['date_of_late']."', '119', '".$_POST['comment_late']."')";
+        $row=mysqli_query($conn,$sql);
+        $insert_id = mysqli_insert_id($conn);
+        $sqli ="INSERT INTO `status_oc` (`oc_id`, `sum_id`) VALUES ('".$_POST['oc_id_late']."', '".$insert_id."')";
+        $res  =mysqli_query($conn,$sqli);
+            if ($_POST['date_of_late2'] >= 1) {
+                	for ($i=1; $i <= $_POST['date_of_late2']; $i++) {
+                    $data =date("Y-m-d",strtotime("+".$i." days", strtotime($_POST['date_of_late'])));
+
+                    $tar ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`)
+                           VALUES ('1', '".$_POST['late']."', '".$data."', '119', '".$_POST['comment_late']."')";
+                    $maty=mysqli_query($conn,$tar);
+                    $insert_id = mysqli_insert_id($conn);
+                    $sqlil ="INSERT INTO `status_oc` (`oc_id`, `sum_id`) VALUES ('".$_POST['oc_id_late']."', '".$insert_id."')";
+                    $rows=mysqli_query($conn,$sqlil);
+
+
+                  }
+                  echo '1';
+                  exit();
+
+              }else if ($res) {
+                echo '1';
+                exit();
+              }else {
+                echo '2';
+                exit();
+              }
+
 
 }
  ?>

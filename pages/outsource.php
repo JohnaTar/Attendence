@@ -124,8 +124,9 @@
                     </form>
 
                     <div id="1" class="colors" style="display:none">
-                      <form class="form-horizontal" id="data_save" onsubmit="return save_data();">
+                        <form class="form-horizontal" id="data_save_oc_late" onsubmit="return save_data_oc_late();">
                         <input type="hidden" name="late" value="7">
+                        <input type="hidden" name="date_of_late2" id="rank2">
                         <div id="oc_name_late"></div>
                         <div class="form-group">
                               <label class="col-md-4 control-label" for="fn">วันที่</label>
@@ -145,7 +146,7 @@
                         <div class="form-group">
                               <label class="col-md-4 control-label" for="fn">หมายเหตุ</label>
                               <div class="col-md-6">
-                                       <textarea class="form-control  input-md" rows="3" name="comment" ></textarea>
+                                       <textarea class="form-control  input-md" rows="3" name="comment_late" ></textarea>
 
                                </div>
                         </div>
