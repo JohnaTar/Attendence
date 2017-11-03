@@ -126,11 +126,11 @@
                     <div id="1" class="colors" style="display:none">
                       <form class="form-horizontal" id="data_save" onsubmit="return save_data();">
                         <input type="hidden" name="late" value="7">
-                        <div id="oc_name_late"></div>
+                        <div id="oc_name_late"></div>dsadsad
                         <div class="form-group">
                               <label class="col-md-4 control-label" for="fn">วันที่</label>
                               <div class="col-md-4">
-                                        <input name="date2" id="date_absence1"  type="date"  class="form-control input-md" required="">
+                                        <input name="date_of_late" id="date_absence1"  type="date"  class="form-control input-md" required="">
 
                                </div>
 
