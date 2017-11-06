@@ -44,6 +44,7 @@
     <script src="../js/vacation.js"></script>
     <script src="../js/attendent.js"></script>
     <script src="../js/outsrouce.js"></script>
+    <script src="../js/show_more_detail_outsrouce.js"></script>
 
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.1/moment.min.js"></script>

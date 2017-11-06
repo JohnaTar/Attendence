@@ -122,7 +122,7 @@
                             </div>
                         </div>
                     </form>
-
+                    <!-- ########################### สาย #######################################-->
                     <div id="1" class="colors" style="display:none">
                         <form class="form-horizontal" id="data_save_oc_late" onsubmit="return save_data_oc_late();">
                         <input type="hidden" name="late" value="7">
@@ -291,14 +291,15 @@
                                 </div>
                       </form>
                     </div>
+                    <!-- ########################### ลาผิดระเบียบ #######################################-->
                     <div id="5" class="colors" style="display:none">
-                          <form class="form-horizontal" id="data_save5" onsubmit="return save_data5();">
+                          <form class="form-horizontal" id="data_save_oc_wrong" onsubmit="return save_data_oc_wrong();">
                               <div id="oc_name_wrong"></div>
-                            <input type="hidden" name="Exerrand" value="6">
+                            <input type="hidden" name="wrong" value="8">
                         <div class="form-group">
                               <label class="col-md-4 control-label" for="fn">วันที่</label>
                               <div class="col-md-4">
-                                        <input name="date5" id="date_Exerrand1"  type="date"  class="form-control input-md" required="">
+                                        <input name="date_of_wrong" id="date_Exerrand1"  type="date"  class="form-control input-md" required="">
 
                                </div>
                                 <div class="col-md-4">
@@ -306,11 +307,11 @@
                                           <span id="alert4"></span>
                                </div>
                         </div>
-                        <input type="hidden" name="rank5" id="rank5">
+                        <input type="hidden" name="date_of_wrong2" id="rank5">
                         <div class="form-group">
                                         <label class="col-md-4 control-label" for="fn">จำนวน</label>
                                         <div class="col-md-4">
-                                    <input type="text" required name="day3" class="form-control input-md"  >
+                                    <input type="text" required name="number_of_wrong" class="form-control input-md"  >
 
                               </div>
                         </div>
@@ -318,7 +319,7 @@
                         <div class="form-group">
                               <label class="col-md-4 control-label" for="fn">หมายเหตุ</label>
                               <div class="col-md-6">
-                                       <textarea class="form-control  input-md" rows="3" name="comment5"></textarea>
+                                       <textarea class="form-control  input-md" rows="3" name="comment_wrong"></textarea>
 
                                </div>
                         </div>
@@ -356,7 +357,7 @@
 
 
            <!-- Modal Add User -->
-        <div class="modal fade" id="add_user" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal fade" id="add_user" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
           <div class="modal-dialog " role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -424,7 +425,7 @@
 
 
 
-</form>
+            </form>
 
 
               </div>
@@ -434,12 +435,29 @@
               </div>
             </div>
           </div>
-        </div>
+    </div>
 
 
             <!-- เพิ่มบริษัท -->
 
-
+               <!-- Modal more detail -->
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Modal Header</h4>
+                    </div>
+                    <div class="modal-body">
+                      <p>This is a large modal.</p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
 
 

@@ -157,7 +157,9 @@ if (isset($_POST['add_outsrouce'])) {
                     <td>'.$data3['count_wrong'].'</td>
                     <td>'.$data4['count_late'].'</td>
                     <td>'.$data5['coutn_absence'].'</td>
-                    <td><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#add_vacation" onclick="return show_from_add_vacation_oc('.$get_users['oc_id'].');"><i class="fa fa-plus" aria-hidden="true"></i></button> </td>
+                    <td><div style="width: 65px"><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#add_vacation" onclick="return show_from_add_vacation_oc('.$get_users['oc_id'].');"><i class="fa fa-plus" aria-hidden="true"></i></button> :
+                    <button  class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal" onclick="return show_more_detail_outsrouce('.$get_users['oc_id'].')"><i class="fa fa-pencil-square" aria-hidden="true"></i></button>
+</td>
 
 
 
@@ -337,6 +339,42 @@ if (isset($_POST['errand'])) {
 
 }
 
+if (isset($_POST['wrong'])) {
+
+
+
+        $sql ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`)
+               VALUES ('".$_POST['number_of_wrong']."','".$_POST['wrong']."', '".$_POST['date_of_wrong']."', '119', '".$_POST['comment_wrong']."')";
+        $row=mysqli_query($conn,$sql);
+        $insert_id = mysqli_insert_id($conn);
+        $sqli ="INSERT INTO `status_oc` (`oc_id`, `sum_id`) VALUES ('".$_POST['oc_id_late']."', '".$insert_id."')";
+        $res  =mysqli_query($conn,$sqli);
+            if ($_POST['date_of_wrong2'] >= 1) {
+                	for ($i=1; $i <= $_POST['date_of_wrong2']; $i++) {
+                    $data =date("Y-m-d",strtotime("+".$i." days", strtotime($_POST['date_of_wrong'])));
+
+                    $tar ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`)
+                           VALUES ('1', '".$_POST['wrong']."', '".$data."', '119', '".$_POST['comment_wrong']."')";
+                    $maty=mysqli_query($conn,$tar);
+                    $insert_id = mysqli_insert_id($conn);
+                    $sqlil ="INSERT INTO `status_oc` (`oc_id`, `sum_id`) VALUES ('".$_POST['oc_id_late']."', '".$insert_id."')";
+                    $rows=mysqli_query($conn,$sqlil);
+
+
+                  }
+                  echo '1';
+                  exit();
+
+              }else if ($res) {
+                echo '1';
+                exit();
+              }else {
+                echo '2';
+                exit();
+              }
+
+
+}
 
 
 
