@@ -161,27 +161,27 @@
                     </div>
                     <!-- ########################### ขาด #######################################-->
                     <div id="2" class="colors" style="display:none">
-                      <form class="form-horizontal" id="data_save2" onsubmit="return save_data2();">
+                      <form class="form-horizontal" id="data_save_oc_absence" onsubmit="return save_data_oc_absence();">
                          <div id="oc_name_absence"></div>
                         <input type="hidden" name="absence" value="1">
 
-                        <input type="hidden" name="rank" id="rank2">
+
 
                         <div class="form-group">
                               <label class="col-md-4 control-label" for="fn">วันที่</label>
                               <div class="col-md-4">
-                                        <input name="date3" id="date_sick1"  type="date"  class="form-control input-md" required="">
+                                        <input name="date_of_absence"  type="date"  class="form-control input-md" required="">
 
 
                                </div>
 
 
                         </div>
-                           <input type="hidden" name="rank3" id="rank3">
+
                           <div class="form-group">
                                           <label class="col-md-4 control-label" for="fn">จำนวน</label>
                                           <div class="col-md-4">
-                                      <input type="text" required name="day3" class="form-control input-md"  >
+                                      <input type="text" required name="number_of_absence" class="form-control input-md"  >
 
                                 </div>
                           </div>
@@ -189,7 +189,7 @@
                         <div class="form-group">
                               <label class="col-md-4 control-label" for="fn">หมายเหตุ</label>
                               <div class="col-md-6">
-                                       <textarea class="form-control  input-md" rows="3" name="comment2"></textarea>
+                                       <textarea class="form-control  input-md" rows="3" name="comment_absence"></textarea>
 
                                </div>
                         </div>

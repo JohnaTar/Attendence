@@ -174,7 +174,7 @@ function show_from_add_vacation_oc($oc_id){
 }
 
 
-// เพิ่มลาสาย
+// เพิ่มสาย
 
 function save_data_oc_late(){
 
@@ -221,15 +221,70 @@ function save_data_oc_late(){
                                });
 
 
+            }else{
+
+              swal({
+                     title: "Warning",
+                     icon: "warning",
+                     text: "ไม่สามารถบันทึกข้อมูลเรียบร้อย",
+                     type: "warning"});
+         }
+    }
 
 
 
+        });
+
+  return false;
+
+}
 
 
 
+// เพิ่มขาด
+function save_data_oc_absence(){
+
+  $.ajax({
+
+        type:'POST',
+        url :'attendent_out.php',
+        data:$("#data_save_oc_absence").serialize(),
+          success:function(data){
+            $(".close").trigger("click");
+            if (data ==1) {
+              swal({
+                     title: "Success",
+                     icon: "success",
+                     text: "บันทึกข้อมูลเรียบร้อย",
+                     type: "success"});
+
+                     var co_id =$('#co_id').val();
+                     var show_data_on_month =$('#month_on_outsrouce').val();
+
+                     info = [];
+                     info[0] = co_id;
+                     info[1] = show_data_on_month;
 
 
+                                 $.ajax({
+                                 url: "attendent_out.php",
+                                 data: {co_id:info},
+                                 type: "POST",
 
+                                      success: function(data)  {
+
+                               $("#companny").html(data);
+
+                             $('#dataTables-example').DataTable({
+                                 responsive: true,
+                                  "bSort": false,
+                                  "pageLength": 100,
+                                   "bLengthChange": false,
+                             });
+                              $('#month_on_outsrouce').val(show_data_on_month);
+
+                                         }
+                               });
 
 
             }else{

@@ -201,7 +201,7 @@ if (isset($_POST['oc_id'])) {
 }
 
 
-if (isset($_POST['oc_id_late'])) {
+if (isset($_POST['late'])) {
 
 
 
@@ -234,6 +234,27 @@ if (isset($_POST['oc_id_late'])) {
                 echo '2';
                 exit();
               }
+
+
+}
+
+
+
+
+if (isset($_POST['absence'])) {
+  $sql ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`)
+         VALUES ('".$_POST['number_of_absence']."','".$_POST['absence']."', '".$_POST['date_of_absence']."', '119', '".$_POST['comment_absence']."')";
+  $row=mysqli_query($conn,$sql);
+  $insert_id = mysqli_insert_id($conn);
+  $sqli ="INSERT INTO `status_oc` (`oc_id`, `sum_id`) VALUES ('".$_POST['oc_id_late']."', '".$insert_id."')";
+  $res  =mysqli_query($conn,$sqli);
+  if ($res) {
+          echo '1';
+          exit();
+  }else{
+          echo '2';
+          exit();
+  }
 
 
 }
