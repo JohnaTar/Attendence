@@ -221,7 +221,7 @@
                                </div>
 
                         </div>
-                           <input type="hidden" name="date_of_sick" id="rank3">
+                           <input type="hidden" name="date_of_sick2" id="rank3">
                           <div class="form-group">
                                           <label class="col-md-4 control-label" for="fn">จำนวน</label>
                                           <div class="col-md-4">
@@ -249,13 +249,13 @@
                     </div>
                     <!-- ########################### ลากิจ #######################################-->
                     <div id="4" class="colors" style="display:none">
-                      <form class="form-horizontal" id="data_save4" onsubmit="return save_data4();">
+                      <form class="form-horizontal" id="data_save_oc_errand" onsubmit="return save_data_oc_errand();">
                           <div id="oc_name_lakit"></div>
                         <input type="hidden" name="errand" value="3">
                         <div class="form-group">
                               <label class="col-md-4 control-label" for="fn">วันที่</label>
                               <div class="col-md-4">
-                                        <input name="date4" id="date_errand1"  type="date"  class="form-control input-md" required="">
+                                        <input name="date_of_errand" id="date_errand1"  type="date"  class="form-control input-md" required="">
 
                                </div>
                               <div class="col-md-4">
@@ -265,11 +265,11 @@
                                </div>
                         </div>
 
-                         <input type="hidden" name="rank4" id="rank4">
+                         <input type="hidden" name="date_of_errand2" id="rank4">
                          <div class="form-group">
                                          <label class="col-md-4 control-label" for="fn">จำนวน</label>
                                          <div class="col-md-4">
-                                     <input type="text" required name="day3" class="form-control input-md"  >
+                                     <input type="text" required name="number_of_errand" class="form-control input-md"  >
 
                                </div>
                          </div>
@@ -277,7 +277,7 @@
                         <div class="form-group">
                               <label class="col-md-4 control-label" for="fn">หมายเหตุ</label>
                               <div class="col-md-6">
-                                       <textarea class="form-control  input-md" rows="3" name="comment4"></textarea>
+                                       <textarea class="form-control  input-md" rows="3" name="comment_errend"></textarea>
 
                                </div>
 

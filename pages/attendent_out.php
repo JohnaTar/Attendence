@@ -182,7 +182,7 @@ if (isset($_POST['add_outsrouce'])) {
     <!-- /.table-responsive -->';
   }
 
-
+// โชว์ชื่อและ id ใน
 if (isset($_POST['oc_id'])) {
 
      $show_data_to_add_vacation=$process->get_oc($_POST['oc_id']);
@@ -200,7 +200,7 @@ if (isset($_POST['oc_id'])) {
 
 }
 
-
+// สาย
 if (isset($_POST['late'])) {
 
 
@@ -239,8 +239,7 @@ if (isset($_POST['late'])) {
 }
 
 
-
-
+// ขาด
 if (isset($_POST['absence'])) {
   $sql ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`)
          VALUES ('".$_POST['number_of_absence']."','".$_POST['absence']."', '".$_POST['date_of_absence']."', '119', '".$_POST['comment_absence']."')";
@@ -258,4 +257,87 @@ if (isset($_POST['absence'])) {
 
 
 }
+
+
+// ป่วย
+if (isset($_POST['sick'])) {
+
+
+
+        $sql ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`)
+               VALUES ('".$_POST['number_of_sick']."','".$_POST['sick']."', '".$_POST['date_of_sick']."', '119', '".$_POST['comment_sick']."')";
+        $row=mysqli_query($conn,$sql);
+        $insert_id = mysqli_insert_id($conn);
+        $sqli ="INSERT INTO `status_oc` (`oc_id`, `sum_id`) VALUES ('".$_POST['oc_id_late']."', '".$insert_id."')";
+        $res  =mysqli_query($conn,$sqli);
+            if ($_POST['date_of_sick2'] >= 1) {
+                	for ($i=1; $i <= $_POST['date_of_sick2']; $i++) {
+                    $data =date("Y-m-d",strtotime("+".$i." days", strtotime($_POST['date_of_sick'])));
+
+                    $tar ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`)
+                           VALUES ('1', '".$_POST['sick']."', '".$data."', '119', '".$_POST['comment_sick']."')";
+                    $maty=mysqli_query($conn,$tar);
+                    $insert_id = mysqli_insert_id($conn);
+                    $sqlil ="INSERT INTO `status_oc` (`oc_id`, `sum_id`) VALUES ('".$_POST['oc_id_late']."', '".$insert_id."')";
+                    $rows=mysqli_query($conn,$sqlil);
+
+
+                  }
+                  echo '1';
+                  exit();
+
+              }else if ($res) {
+                echo '1';
+                exit();
+              }else {
+                echo '2';
+                exit();
+              }
+
+
+}
+
+// กิจ
+
+
+if (isset($_POST['errand'])) {
+
+
+
+        $sql ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`)
+               VALUES ('".$_POST['number_of_errand']."','".$_POST['errand']."', '".$_POST['date_of_errand']."', '119', '".$_POST['comment_errend']."')";
+        $row=mysqli_query($conn,$sql);
+        $insert_id = mysqli_insert_id($conn);
+        $sqli ="INSERT INTO `status_oc` (`oc_id`, `sum_id`) VALUES ('".$_POST['oc_id_late']."', '".$insert_id."')";
+        $res  =mysqli_query($conn,$sqli);
+            if ($_POST['date_of_errand2'] >= 1) {
+                	for ($i=1; $i <= $_POST['date_of_errand2']; $i++) {
+                    $data =date("Y-m-d",strtotime("+".$i." days", strtotime($_POST['date_of_errand'])));
+
+                    $tar ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`)
+                           VALUES ('1', '".$_POST['errand']."', '".$data."', '119', '".$_POST['comment_errend']."')";
+                    $maty=mysqli_query($conn,$tar);
+                    $insert_id = mysqli_insert_id($conn);
+                    $sqlil ="INSERT INTO `status_oc` (`oc_id`, `sum_id`) VALUES ('".$_POST['oc_id_late']."', '".$insert_id."')";
+                    $rows=mysqli_query($conn,$sqlil);
+
+
+                  }
+                  echo '1';
+                  exit();
+
+              }else if ($res) {
+                echo '1';
+                exit();
+              }else {
+                echo '2';
+                exit();
+              }
+
+
+}
+
+
+
+
  ?>
