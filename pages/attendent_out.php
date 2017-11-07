@@ -158,7 +158,7 @@ if (isset($_POST['add_outsrouce'])) {
                     <td>'.$data4['count_late'].'</td>
                     <td>'.$data5['coutn_absence'].'</td>
                     <td><div style="width: 65px"><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#add_vacation" onclick="return show_from_add_vacation_oc('.$get_users['oc_id'].');"><i class="fa fa-plus" aria-hidden="true"></i></button> :
-                    <button  class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal" onclick="return show_more_detail_outsrouce('.$get_users['oc_id'].')"><i class="fa fa-pencil-square" aria-hidden="true"></i></button>
+                    <button  class="btn btn-info btn-xs"  data-toggle="modal" data-target="#myModal" onclick="return show_more_detail_outsrouce('.$get_users['oc_id'].')"><i class="fa fa-pencil-square" aria-hidden="true"></i></button>
 </td>
 
 
