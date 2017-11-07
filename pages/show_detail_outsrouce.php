@@ -31,7 +31,7 @@ echo '      <table class="table table-striped">
                                             <td><button  class="btn btn-danger btn-xs"   onclick="return delete_vacation_oc('.$while_datas['sum_id'].')"><i class="fa fa-times" aria-hidden="true"></i></button></td>
                                        </tr>
 
-                                       <input type="text" id="tar" value="'.$while_datas['oc_id'].'" >' ;
+                                       <input type="hidden" id="tar" value="'.$while_datas['oc_id'].'" >' ;
                               }
 
 

@@ -52,7 +52,7 @@ class data_outsrouce {
                             INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
                             INNER JOIN type ON sum_oc.ty_id = type.ty_id
                             WHERE outsrouce.oc_id ='".$oc_id."' AND sum_oc.date >='".$first_day_of_month."'
-                            AND sum_oc.date <='".$last_day_of_month."'ORDER BY sum_oc.ty_id  ASC");
+                            AND sum_oc.date <='".$last_day_of_month."'ORDER BY sum_oc.ty_id,sum_oc.date  ASC");
       while ($data = $get_data->fetch_assoc()) {
           $result[] =$data;
       }
