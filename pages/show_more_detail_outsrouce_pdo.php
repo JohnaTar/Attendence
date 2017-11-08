@@ -26,10 +26,11 @@ class data_outsrouce {
 
     public function show_vacation_all($oc_id){
       $db =$this->connect();
-      $show_data =$db->prepare("SELECT outsrouce.oc_id,outsrouce.oc_name,companny.co_name,department.dep_co_name
+      $show_data =$db->prepare("SELECT outsrouce.oc_id,outsrouce.oc_name,
+                                       companny.co_name,department.dep_co_name
                                 FROM outsrouce
+                                INNER JOIN department ON outsrouce.dep_co_id = department.dep_co_id
                                 INNER JOIN companny ON outsrouce.co_id = companny.co_id
-                                INNER JOIN department ON outsrouce.dep_co_id = companny.co_id
                                 WHERE outsrouce.oc_id =? ");
       $show_data->bind_param("i",$oc_id);
       $show_data->execute();

@@ -45,7 +45,7 @@ if (isset($_POST['add_outsrouce'])) {
     echo '<table width="100%" class="table table-striped Striped Rows table-hover" id="dataTables-example" cellspacing="0" >
         <thead>
             <tr>
-                <th  rowspan="2">No.</th>
+
                 <th  rowspan="2">ชื่อ - นามสกุล</th>
                 <th  rowspan="2">แผนก</th>
                 <th  rowspan="2">เบอร์โทร</th>
@@ -80,6 +80,7 @@ if (isset($_POST['add_outsrouce'])) {
                 <th>สิทธิ์</th>
                 <th>ใช้</th>
                 <th>เหลือ</th>
+                <th>เมนู</th>
                 <th>กิจ</th>
                 <th>ป่วย</th>
                 <th>ลาผิดระเบียบ</th>
@@ -96,7 +97,8 @@ if (isset($_POST['add_outsrouce'])) {
 
         </thead>
         <tbody>';
-        function time_elapsed_string($datetime, $full = false) {
+    function time_elapsed_string($datetime, $full = false)
+{
         $now = new DateTime;
         $ago = new DateTime($datetime);
         $diff = $now->diff($ago);
@@ -119,11 +121,65 @@ if (isset($_POST['add_outsrouce'])) {
 
         if (!$full) $string = array_slice($string, 0, 1);
             return $string ? implode(':', $string) . ' ' : '';
-        }
+  }
+
+
+
+
 
          $i = 1;
         if (!empty($get_user)) {
             foreach($get_user as $get_users){
+              if (!empty($get_users['first_y'])) {
+                 $first_year=(date("Y")-1).'-'.$get_users['first_y'];
+                 $last_year=date("Y").'-'.$get_users['last_y'];
+              }else{
+               $first_year =  date("Y").'-01-01';
+               $last_year =   date("Y").'-12-31';
+              }
+
+
+              // คำนวณวันทำงาน พักร้อน
+              $start_date = date_create($get_users['start']);
+              $current_date = date_create();
+              $diff = date_diff($start_date,$current_date);
+                 $do_work = $diff->format("%a");
+
+                  if ($do_work >=365 AND $do_work <730) { // ถ้ามากกว่า หรือ เท่ากับ 1 ปี
+
+                        if ($do_work>=366) {
+                          $last_year =(date("Y")-1).'-12-31';
+                        }
+                        $the_last_of_the_year = strtotime($last_year);
+
+                        $start_work = strtotime($get_users['start']);
+                        $datediff = $the_last_of_the_year - $start_work;
+                        $do_work_last_year = floor($datediff / (60 * 60 * 24));
+                        $vacation =floor(($do_work_last_year/60));//ปัดเศษ
+                    }else if ($do_work>=730){
+                        $vacation =6;
+
+
+                    }else{
+                        $vacation =0;
+                    }
+
+
+                    // หาวันที่ พักร้อนไปแล้ว
+                   $oc_id     = $get_users['oc_id'];
+
+
+
+                   $vacation_use =$process->coutn_vacation($oc_id,$first_year,$last_year);
+
+
+              //สิทธิ์
+
+              $cooldown = $vacation-$vacation_use['coutn_vacation'];
+
+
+
+
               $user_id =$get_users['oc_id'];
               $first_day_of_month =$_POST['co_id'][1]; //วันที่ 1
               $last_day_of_month = date('Y-m-t',strtotime($first_day_of_month)); //วันสุดท้าย
@@ -141,15 +197,18 @@ if (isset($_POST['add_outsrouce'])) {
 
             echo '
                   <tr  '.$resign.' >
-                    <td>'.$i.'</td>
-                    <td>'.$get_users['oc_name'].'</td>
+
+                    <td><div style="width: 140px">'.$get_users['oc_name'].'</td>
                     <td>'.$get_users['dep_co_name'].'</td>
                     <td>'.$get_users['tel'].'</td>
                     <td>'.date('d/m/Y',strtotime($get_users['start'])).'</td>
                     <td>'.time_elapsed_string($get_users['start'], true).'</td>
-                    <td>6</td>
-                    <td>3</td>
-                    <td>2</td>
+                    <td>'. $vacation.'</td>
+                    <td>'.$vacation_use['coutn_vacation'].'</td>
+                    <td>'.$cooldown.'</td>
+                    <td><div style="width: 65px"><button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#add_vacation" onclick="return show_from_add_vacation_oc('.$get_users['oc_id'].');"><i class="fa fa-plus" aria-hidden="true"></i></button> :
+                    <button  class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" onclick="return show_more_detail_outsrouce('.$get_users['oc_id'].')"><i class="fa fa-pencil-square" aria-hidden="true"></i></button>
+</td>
 
 
                     <td>'.$data2['count_kit'].'</td>

@@ -42,21 +42,15 @@ class Outsource {
     public function get_user_in_companny($post = null){
 
        $db = $this->connect();
-       $get_user = $db->query("SELECT
-outsrouce.oc_id,
-outsrouce.oc_name,
-outsrouce.`start`,
-outsrouce.resign,
-outsrouce.tel,
-outsrouce.dep_co_id,
-department.dep_co_name,
-outsrouce.co_id
-FROM
-
-outsrouce
-INNER JOIN department ON outsrouce.dep_co_id = department.dep_co_id
-
-WHERE outsrouce.co_id ='".$post."' ORDER BY outsrouce.resign ASC,outsrouce.dep_co_id ASC ");
+       $get_user = $db->query("SELECT outsrouce.oc_id,outsrouce.oc_name,
+                                      outsrouce.`start`,outsrouce.resign,
+                                      outsrouce.tel,outsrouce.dep_co_id,
+                                      department.dep_co_name,outsrouce.co_id,
+                                      companny.first_y,companny.last_y
+                               FROM outsrouce
+                               INNER JOIN department ON outsrouce.dep_co_id = department.dep_co_id
+                               INNER JOIN companny ON outsrouce.co_id = companny.co_id
+                               WHERE outsrouce.co_id ='".$post."' ORDER BY outsrouce.resign ASC,outsrouce.dep_co_id ASC ");
 
        while($user = $get_user->fetch_assoc()){
            $result[] = $user;
@@ -215,6 +209,23 @@ WHERE outsrouce.co_id ='".$post."' ORDER BY outsrouce.resign ASC,outsrouce.dep_c
 
                       return $result;
                   }
+
+                  public function coutn_vacation($user_id,$first_day_of_month,$last_day_of_month){
+
+                        $db = $this->connect();
+                        $get_user = $db->prepare("SELECT Sum(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
+                                                  WHERE status_oc.oc_id=? AND ty_id ='5' AND date >=? AND date <=?");
+                        $get_user->bind_param("iss",$user_id,$first_day_of_month,$last_day_of_month);
+                        $get_user->execute();
+                        $get_user->bind_result($id);
+                        $get_user->fetch();
+                        $result = array(
+                             'coutn_vacation'=>$id,
+
+                         );
+                          return $result;
+
+                    }
 
 
 
