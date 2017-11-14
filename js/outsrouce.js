@@ -30,25 +30,49 @@ $(function(){
     info[1] = show_data_on_month;
 
 
-                $.ajax({
+          $.ajax({
                 url: "attendent_out.php",
                 data: {co_id:info},
                 type: "POST",
+            xhr: function () {  // Custom XMLHttpRequest
+               var myXhr = $.ajaxSettings.xhr();
+               if (myXhr.upload) { // Check if upload property exists
+                   myXhr.upload.addEventListener('progress', function (e) { progressHandlingFunction(e) }, false);
+                   myXhr.upload.addEventListener('load', loadedHandlingFunction, false);
+               }
+               return myXhr;
+           },
+           success: function (data) {
+               // your code will be inserted here on success.
+               $("#companny").html(data);
+           }
+       });
 
-                     success: function(data)  {
+  var progressHandlingFunction = function (e) {
+       // What happens when it loading the ajax request.
+       // Here put a sweet-alert with 'loading' icon (gif or any kind) using this parameter: 'imageUrl' that will replace the icon..
+       
+   };
 
-              $("#companny").html(data);
+   var loadedHandlingFunction = function () {
+       // What happens when it finished loading the request...
+       // Here put a sweet-alert with 'success' with any message you like on completion.
+   }
 
-            $('#dataTables-example').DataTable({
-                responsive: true,
-                 "bSort": false,
-                 "pageLength": 100,
-                  "bLengthChange": false,
-            });
-             $('#month_on_outsrouce').val(show_data_on_month);
+            // success: function(data)  {
+            //
+            //   $("#companny").html(data);
+            //
+            // $('#dataTables-example').DataTable({
+            //     responsive: true,
+            //      "bSort": false,
+            //      "pageLength": 100,
+            //       "bLengthChange": false,
+            // });
+            //  $('#month_on_outsrouce').val(show_data_on_month);
+            //
+            //             }
 
-                        }
-              });
 
 
 
@@ -96,6 +120,7 @@ function add_outsrouce_form(){
                         title: "Success",
                         icon: "success",
                         text: "บันทึกข้อมูลเรียบร้อย",
+
                         type: "success"});
 
                         $('#add_user').val('');
@@ -163,6 +188,7 @@ function show_from_add_vacation_oc($oc_id){
           $("#oc_name_sick").html(data);
           $("#oc_name_lakit").html(data);
           $("#oc_name_wrong").html(data);
+          $("#oc_name_vacation").html(data);
           }
 
 
@@ -485,7 +511,70 @@ function save_data_oc_wrong(){
              swal({
                     title: "Warning",
                     icon: "warning",
-                    text: "ไม่สามารถบันทึกข้อมูลเรียบร้อย",
+                    text: "ไม่สามารถบันทึกข้อมู",
+                    type: "warning"});
+        }
+   }
+
+
+
+       });
+
+ return false;
+
+}
+
+function save_data_oc_vacation(){
+
+ $.ajax({
+
+       type:'POST',
+       url :'attendent_out.php',
+       data:$("#data_save_oc_vacation").serialize(),
+         success:function(data){
+           $(".close").trigger("click");
+           if (data ==1) {
+             swal({
+                    title: "Success",
+                    icon: "success",
+                    text: "บันทึกข้อมูลเรียบร้อย",
+                    type: "success"});
+
+                    var co_id =$('#co_id').val();
+                    var show_data_on_month =$('#month_on_outsrouce').val();
+
+                    info = [];
+                    info[0] = co_id;
+                    info[1] = show_data_on_month;
+
+
+                                $.ajax({
+                                url: "attendent_out.php",
+                                data: {co_id:info},
+                                type: "POST",
+
+                                     success: function(data)  {
+
+                              $("#companny").html(data);
+
+                            $('#dataTables-example').DataTable({
+                                responsive: true,
+                                 "bSort": false,
+                                 "pageLength": 100,
+                                  "bLengthChange": false,
+                            });
+                             $('#month_on_outsrouce').val(show_data_on_month);
+
+                                        }
+                              });
+
+
+           }else{
+
+             swal({
+                    title: "Warning",
+                    icon: "warning",
+                    text: "ไม่สามารถบันทึกข้อมูล",
                     type: "warning"});
         }
    }

@@ -40,6 +40,11 @@ if (isset($_POST['add_outsrouce'])) {
 
 
   $get_user =  $process->get_user_in_companny($_POST['co_id'][0]);
+  if (!(empty($_POST['co_id'][1]))) {
+    $first_day_of_month =$_POST['co_id'][1];
+  }else{
+    $first_day_of_month ='0';
+  }
 
 
     echo '<table width="100%" class="table table-striped Striped Rows table-hover" id="dataTables-example" cellspacing="0" >
@@ -80,7 +85,7 @@ if (isset($_POST['add_outsrouce'])) {
                 <th>สิทธิ์</th>
                 <th>ใช้</th>
                 <th>เหลือ</th>
-                <th>เมนู</th>
+
                 <th>กิจ</th>
                 <th>ป่วย</th>
                 <th>ลาผิดระเบียบ</th>
@@ -149,13 +154,15 @@ if (isset($_POST['add_outsrouce'])) {
 
                         if ($do_work>=366) {
                           $last_year =(date("Y")-1).'-12-31';
+
                         }
+
                         $the_last_of_the_year = strtotime($last_year);
 
                         $start_work = strtotime($get_users['start']);
                         $datediff = $the_last_of_the_year - $start_work;
                         $do_work_last_year = floor($datediff / (60 * 60 * 24));
-                        $vacation =floor(($do_work_last_year/60));//ปัดเศษ
+                        $vacation =floor($do_work_last_year/60);//ปัดเศษ
                     }else if ($do_work>=730){
                         $vacation =6;
 
@@ -168,9 +175,9 @@ if (isset($_POST['add_outsrouce'])) {
                     // หาวันที่ พักร้อนไปแล้ว
                    $oc_id     = $get_users['oc_id'];
 
+                     $last_year =(date("Y")+1).'-12-31';
 
-
-                   $vacation_use =$process->coutn_vacation($oc_id,$first_year,$last_year);
+                $vacation_use =$process->coutn_vacation($oc_id,$first_year,$last_year);
 
 
               //สิทธิ์
@@ -181,7 +188,8 @@ if (isset($_POST['add_outsrouce'])) {
 
 
               $user_id =$get_users['oc_id'];
-              $first_day_of_month =$_POST['co_id'][1]; //วันที่ 1
+               //วันที่ 1
+
               $last_day_of_month = date('Y-m-t',strtotime($first_day_of_month)); //วันสุดท้าย
               $data = $process->coutn_sick($user_id,$first_day_of_month,$last_day_of_month); //นับป่วย
               $data2 = $process->coutn_kit($user_id,$first_day_of_month,$last_day_of_month); // กิจ
@@ -206,8 +214,7 @@ if (isset($_POST['add_outsrouce'])) {
                     <td>'. $vacation.'</td>
                     <td>'.$vacation_use['coutn_vacation'].'</td>
                     <td>'.$cooldown.'</td>
-                    <td><div style="width: 65px"><button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#add_vacation" onclick="return show_from_add_vacation_oc('.$get_users['oc_id'].');"><i class="fa fa-plus" aria-hidden="true"></i></button> :
-                    <button  class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" onclick="return show_more_detail_outsrouce('.$get_users['oc_id'].')"><i class="fa fa-pencil-square" aria-hidden="true"></i></button>
+
 </td>
 
 
@@ -435,6 +442,42 @@ if (isset($_POST['wrong'])) {
 
 }
 
+if (isset($_POST['vacation'])) {
+
+
+
+        $sql ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`)
+               VALUES ('".$_POST['number_of_vacation']."','".$_POST['vacation']."', '".$_POST['date_of_vacation']."', '119', '".$_POST['comment_vacation']."')";
+        $row=mysqli_query($conn,$sql);
+        $insert_id = mysqli_insert_id($conn);
+        $sqli ="INSERT INTO `status_oc` (`oc_id`, `sum_id`) VALUES ('".$_POST['oc_id_late']."', '".$insert_id."')";
+        $res  =mysqli_query($conn,$sqli);
+            if ($_POST['date_of_vacation2'] >= 1) {
+                	for ($i=1; $i <= $_POST['date_of_vacation2']; $i++) {
+                    $data =date("Y-m-d",strtotime("+".$i." days", strtotime($_POST['date_of_vacation'])));
+
+                    $tar ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`)
+                           VALUES ('1', '".$_POST['vacation']."', '".$data."', '119', '".$_POST['comment_vacation']."')";
+                    $maty=mysqli_query($conn,$tar);
+                    $insert_id = mysqli_insert_id($conn);
+                    $sqlil ="INSERT INTO `status_oc` (`oc_id`, `sum_id`) VALUES ('".$_POST['oc_id_late']."', '".$insert_id."')";
+                    $rows=mysqli_query($conn,$sqlil);
+
+
+                  }
+                  echo '1';
+                  exit();
+
+              }else if ($res) {
+                echo '1';
+                exit();
+              }else {
+                echo '2';
+                exit();
+              }
+
+
+}
 
 
  ?>

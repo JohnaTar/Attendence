@@ -112,6 +112,7 @@
                              <option value="3"> ลาป่วย </option>
                              <option value="4"> ลากิจ </option>
                              <option value="5"> ลาผิดระเบียบ </option>
+                             <option value="6"> พักร้อน </option>
 
 
 
@@ -332,6 +333,52 @@
                                 </div>
                       </form>
                     </div>
+
+                    <div id="6" class="colors" style="display:none">
+                          <form class="form-horizontal" id="data_save_oc_vacation" onsubmit="return save_data_oc_vacation();">
+                              <div id="oc_name_vacation"></div>
+                            <input type="hidden" name="vacation" value="5">
+                        <div class="form-group">
+                              <label class="col-md-4 control-label" for="fn">วันที่</label>
+                              <div class="col-md-4">
+                                        <input name="date_of_vacation" id="date_ext1"  type="date"  class="form-control input-md" required="">
+
+                               </div>
+                                <div class="col-md-4">
+                                 <input id="date_ext2"  type="date"  class="form-control input-md" >
+                                          <span id="alert5"></span>
+                               </div>
+                        </div>
+                        <input type="hidden" name="date_of_vacation2" id="rank6">
+                        <div class="form-group">
+                                        <label class="col-md-4 control-label" for="fn">จำนวน</label>
+                                        <div class="col-md-4">
+                                    <input type="text" required name="number_of_vacation" class="form-control input-md"  >
+
+                              </div>
+                        </div>
+
+                        <div class="form-group">
+                              <label class="col-md-4 control-label" for="fn">หมายเหตุ</label>
+                              <div class="col-md-6">
+                                       <textarea class="form-control  input-md" rows="3" name="comment_vacation"></textarea>
+
+                               </div>
+                        </div>
+
+                         <div class="form-group">
+                                    <label class="col-md-4 control-label" for="submit"></label>
+                                    <div class="col-md-4">
+                                <button type="submit" name="submit" class="btn btn-primary" >Save</button>
+                                    </div>
+                                </div>
+                      </form>
+                    </div>
+
+
+
+
+
 
 
 
