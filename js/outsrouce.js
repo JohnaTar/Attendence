@@ -45,13 +45,21 @@ $(function(){
            success: function (data) {
                // your code will be inserted here on success.
                $("#companny").html(data);
+               $('#dataTables-example').DataTable({
+                   responsive: true,
+                    "bSort": false,
+                    "pageLength": 100,
+                     "bLengthChange": false,
+               });
+               $('#month_on_outsrouce').val(show_data_on_month);
+                $('#loading').modal('toggle');
            }
        });
 
   var progressHandlingFunction = function (e) {
        // What happens when it loading the ajax request.
        // Here put a sweet-alert with 'loading' icon (gif or any kind) using this parameter: 'imageUrl' that will replace the icon..
-       
+       $('#loading').modal('show');
    };
 
    var loadedHandlingFunction = function () {
