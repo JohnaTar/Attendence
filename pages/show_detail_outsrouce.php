@@ -41,6 +41,8 @@ echo '      <table class="table table-striped">
                        </table>';
 
 
+echo $_POST['data'][2].$_POST['data'][3];
+
 }
 
 

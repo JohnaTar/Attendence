@@ -50,7 +50,7 @@ class Outsource {
                                FROM outsrouce
                                INNER JOIN department ON outsrouce.dep_co_id = department.dep_co_id
                                INNER JOIN companny ON outsrouce.co_id = companny.co_id
-                               WHERE outsrouce.co_id ='".$post."' ORDER BY outsrouce.resign ASC,outsrouce.dep_co_id ASC ");
+                              WHERE outsrouce.co_id ='".$post."' ORDER BY outsrouce.resign ASC,outsrouce.dep_co_id ASC ");
 
        while($user = $get_user->fetch_assoc()){
            $result[] = $user;
@@ -100,96 +100,47 @@ class Outsource {
          echo "1";
      }
  }
-// นับป่วย
+// นับลาต่างๆ
  public function coutn_sick($user_id,$first_day_of_month,$last_day_of_month){
 
        $db = $this->connect();
-       $get_user = $db->prepare("SELECT Sum(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
-                                 WHERE status_oc.oc_id=? AND ty_id ='2' AND date >=? AND date <=?");
-       $get_user->bind_param("iss",$user_id,$first_day_of_month,$last_day_of_month);
+       $get_user = $db->prepare("SELECT (
+      SELECT Sum(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
+      WHERE status_oc.oc_id=? AND ty_id ='2' AND date >=? AND date <=?) AS total_sick,
+      (
+      SELECT Sum(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
+      WHERE status_oc.oc_id=? AND ty_id ='3' AND date >=? AND date <=?
+      ) AS total_kit,
+      (
+        SELECT Sum(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
+        WHERE status_oc.oc_id=? AND ty_id ='8' AND date >=? AND date <=?
+      ) AS total_wrong,
+      (
+        SELECT Sum(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
+        WHERE status_oc.oc_id=? AND ty_id ='7' AND date >=? AND date <=?
+      ) AS total_late,
+      (
+        SELECT Sum(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
+        WHERE status_oc.oc_id=? AND ty_id ='1' AND date >=? AND date <=?
+      ) AS total_absence");
+       $get_user->bind_param("issississississ",$user_id,$first_day_of_month,$last_day_of_month,$user_id,$first_day_of_month,$last_day_of_month,
+       $user_id,$first_day_of_month,$last_day_of_month,$user_id,$first_day_of_month,$last_day_of_month,$user_id,$first_day_of_month,$last_day_of_month);
        $get_user->execute();
-       $get_user->bind_result($id);
+       $get_user->bind_result($sick,$kit,$wrong,$late,$absence);
        $get_user->fetch();
        $result = array(
-            'count_sick'=>$id,
+            'count_sick'=>$sick,
+            'count_kit'=>$kit,
+            'count_wrong'=>$wrong,
+            'count_late'=>$late,
+            'coutn_absence'=>$absence,
 
         );
          return $result;
 
    }
 
-   // นับกิจ
-    public function coutn_kit($user_id,$first_day_of_month,$last_day_of_month){
 
-          $db = $this->connect();
-          $get_user = $db->prepare("SELECT Sum(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
-                                    WHERE status_oc.oc_id=? AND ty_id ='3' AND date >=? AND date <=?");
-          $get_user->bind_param("iss",$user_id,$first_day_of_month,$last_day_of_month);
-          $get_user->execute();
-          $get_user->bind_result($id);
-          $get_user->fetch();
-          $result = array(
-               'count_kit'=>$id,
-
-           );
-            return $result;
-
-      }
-         // ลาผิดระเบียบ
-
-         public function coutn_wrong($user_id,$first_day_of_month,$last_day_of_month){
-
-               $db = $this->connect();
-               $get_user = $db->prepare("SELECT Sum(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
-                                         WHERE status_oc.oc_id=? AND ty_id ='8' AND date >=? AND date <=?");
-               $get_user->bind_param("iss",$user_id,$first_day_of_month,$last_day_of_month);
-               $get_user->execute();
-               $get_user->bind_result($id);
-               $get_user->fetch();
-               $result = array(
-                    'count_wrong'=>$id,
-
-                );
-                 return $result;
-
-           }
-
-//สาย
-           public function coutn_late($user_id,$first_day_of_month,$last_day_of_month){
-
-                 $db = $this->connect();
-                 $get_user = $db->prepare("SELECT Sum(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
-                                           WHERE status_oc.oc_id=? AND ty_id ='7' AND date >=? AND date <=?");
-                 $get_user->bind_param("iss",$user_id,$first_day_of_month,$last_day_of_month);
-                 $get_user->execute();
-                 $get_user->bind_result($id);
-                 $get_user->fetch();
-                 $result = array(
-                      'count_late'=>$id,
-
-                  );
-                   return $result;
-
-             }
-
-  // ขาด
-
-             public function coutn_absence($user_id,$first_day_of_month,$last_day_of_month){
-
-                   $db = $this->connect();
-                   $get_user = $db->prepare("SELECT Sum(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
-                                             WHERE status_oc.oc_id=? AND ty_id ='1' AND date >=? AND date <=?");
-                   $get_user->bind_param("iss",$user_id,$first_day_of_month,$last_day_of_month);
-                   $get_user->execute();
-                   $get_user->bind_result($id);
-                   $get_user->fetch();
-                   $result = array(
-                        'coutn_absence'=>$id,
-
-                    );
-                     return $result;
-
-               }
 
 
                public function get_oc($user_id){
