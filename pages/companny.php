@@ -44,7 +44,7 @@
                                 <tr>
                                     <th>ลำดับ</th>
                                     <th>ชื่อบริษัท</th>
-                                    <th>ตัดรอบเดือน</th>
+
                                     <th>ตัดรอบปี</th>
                                     <th>เมนู</th>
 
@@ -62,8 +62,8 @@
                                       echo '<tr class="odd gradeX">
                                           <td>'.$i.'</td>
                                           <td>'.$companny['co_name'].'</td>
-                                          <td>Win 95+</td>
-                                          <td class="center">4</td>
+
+                                          <td class="center">'.$companny['first_y'].' : '.$companny['last_y'].'</td>
                                           <td>'.$companny['co_id'].'</td>
 
                                       </tr>';

@@ -61,6 +61,7 @@
                                     </tr>
                                     <tr>
                                         <th>สิทธิ์</th>
+
                                         <th>ใช้</th>
                                         <th>เหลือ</th>
 
@@ -130,30 +131,115 @@
                                                 $vacation_cout_this_year= 0;
                                             }
 
-                                        // นับวันที่พักร้อนปีที่แล้ว* /
+                                        // นับวันที่พักร้อนปีที่แล้ว* ////////////////////////////////////////
 
-                                        $last_y = (date("Y")-2).'-12-26';
-                                        $last_y2 = (date("Y")-1).'-12-25';
-                                            $sq ="SELECT Sum(sum.day_n),sum.ty_id,sum.date,`status`.user_id
-                                                   FROM `status`
-                                                   INNER JOIN sum ON `status`.sum_id = sum.sum_id
-                                                   WHERE date >= '".$last_y."' AND  date <= '".$last_y2."'
-                                                   AND ty_id ='5' AND user_id ='".$row['user_id']."'";
-                                            $result =mysqli_query($conn,$sq);
-                                            $ro =mysqli_fetch_array($result);
-                                            if ($ro['0']!='') {
-                                                    $count =  8-$ro['0'];
-                                                      if ($count >= 4) {
-                                                            $count =4;
-                                                      }else{
-                                                         $count =8-$ro['0'];
-                                                      }
+                                        $last_y =  (date("Y")-2).'-12-26';
+                                        $last_year_of_check_vacation =(date("Y")-1).'-12-25';
+                                        $last_y_of_check_vacation =date_create($row['start']);
+                                        $current_date_of_check_vacation = date_create($last_year_of_check_vacation);
+                                        $diff = date_diff($last_y_of_check_vacation,$current_date_of_check_vacation);
+                                        $love_you = $diff->format("%a");
 
-                                            }else{
-                                                $count =0;
-                                            }
+                                          if ($love_you >=365 AND $love_you < 730) {
 
-                                    
+
+                                             $last_y22  =  date('Y', strtotime($row['start'])).'-12-25';
+                                             $start_work = strtotime($row['start']);
+                                             $end_of_year_work = strtotime($last_y22);
+                                             $datediff = $end_of_year_work - $start_work;
+                                             $do_work_last_year = floor($datediff / (60 * 60 * 24));// วันเริ่มทำงาน - วันสิ้นสุดปี
+
+                                             if ($do_work_last_year <30 AND $do_work_last_year >=16) { //ถ้าวันน้อยกว่า 30 และมากกว่า 16
+                                                  $i =1;
+
+                                                   }else if ($do_work_last_year >=30) {
+
+                                                        for   ($i=0; 30 <=$do_work_last_year; $i++) {
+                                                               $day =  $do_work_last_year -= 30;
+                                                        }
+
+                                                         if ($day >=16) { /*หลังจากลบ 30 เดือนแล้วเหลือเศษ*/
+                                                           $i++;
+                                                               }
+                                                    }else{
+
+                                                  $i =0; /*I จำนวนเดือน*/
+                                              }
+
+                                              //คำนวณเดือน ถ้าจำนวนวันมากกว่า 16 ปรับเป็น 1 เดือน
+                                                if ($i ==1) {
+                                                   $sit_vacation =0.5;
+                                                }else if ($i ==2) {
+                                                   $sit_vacation =1;
+                                                }else if ($i ==3) {
+                                                   $sit_vacation =2;
+                                                }else if ($i ==4) {
+                                                   $sit_vacation = 2.5;                                                # code...
+                                                }else if ($i ==5){
+                                                   $sit_vacation = 3;
+                                                }else if ($i ==6){
+                                                   $sit_vacation = 4;
+                                                }else if ($i ==7){
+                                                   $sit_vacation = 4.5;
+                                                }else if ($i ==8){
+                                                   $sit_vacation = 5;
+                                                }else if ($i ==9){
+                                                   $sit_vacation = 6;
+                                                }else if ($i ==10){
+                                                   $sit_vacation = 6.5;
+                                                }else if ($i ==11){
+                                                   $sit_vacation = 7;
+                                                }else if ($i ==12){
+                                                  $sit_vacation = 8;
+                                                }else if($i ==0){
+
+                                                       $sit_vacation = 0;
+                                                    }
+
+
+
+
+
+
+
+
+                                          }else if ($love_you >=730) {
+                                            $sit_vacation=8;
+
+
+                                          }else{
+                                            $sit_vacation =0;
+                                          }
+
+
+                                          $last_y_tar = (date("Y")-2).'-12-26';
+                                          $last_y2_tar =(date("Y")-1).'-12-25';
+
+
+                                          $sq ="SELECT Sum(sum.day_n),sum.ty_id,sum.date,`status`.user_id
+                                                      FROM `status`
+                                                      INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                                                      WHERE date >= '".$last_y_tar."' AND  date <= '".$last_y2_tar."'
+                                                      AND ty_id ='5' AND user_id ='".$row['user_id']."'";
+                                               $result =mysqli_query($conn,$sq);
+                                               $ro =mysqli_fetch_array($result);
+
+
+
+
+
+
+
+                                          $johnatar = $sit_vacation-$ro['0'];
+                                          if ($johnatar >= 4 ) {
+                                            $johnatar = 4;
+                                          }else {
+                                            $johnatar = $sit_vacation-$ro['0'];
+                                          }
+
+                                        ///////////////////////////////////////////////////
+
+
 
 
                                         if ($row['resign'] ==2) { //ถ้าลาออกขีดสีแดง
@@ -241,11 +327,100 @@
 
                                           }  else if ($do_work >=1825) { /*ถ้ามากกว่าหรือเท่ากับ 5 ปี*/
 
-                                                $have_vacation =100;
+
+                                                    if ($do_work >=2190) {
+                                                      $have_vacation =10;
+                                                    }else{
 
 
-                                           } else if ($do_work >=730) { /*ถ้ามากกว่าหรือเท่ากับ 2 ปี*/
-                                             $vacation_re = '8';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                            $start_work = strtotime($row['start']);
+                                            $end_of_year_work = strtotime($last_y2);
+
+
+                                            $datediff = $end_of_year_work - $start_work;
+                                            $do_work_last_year = floor($datediff / (60 * 60 * 24));// วันเริ่มทำงาน - วันสิ้นสุดปี
+
+                                            if ($do_work_last_year <30 AND $do_work_last_year >=16) { //ถ้าวันน้อยกว่า 30 และมากกว่า 16
+                                                 $i =1;
+
+                                                  }else if ($do_work_last_year >=30) {
+
+                                                       for   ($i=0; 30 <=$do_work_last_year; $i++) {
+                                                              $day =  $do_work_last_year -= 30;
+                                                       }
+
+                                                        if ($day >=16) { /*หลังจากลบ 30 เดือนแล้วเหลือเศษ*/
+                                                          $i++;
+                                                              }
+                                                   }else{
+
+                                                 $i =0; /*I จำนวนเดือน*/
+                                             }
+
+                                             //คำนวณเดือน ถ้าจำนวนวันมากกว่า 16 ปรับเป็น 1 เดือน
+                                               if ($i ==1) {
+                                                 $have_vacation =0.5;
+                                               }else if ($i ==2) {
+                                                 $have_vacation =1;
+                                               }else if ($i ==3) {
+                                                 $have_vacation =2;
+                                               }else if ($i ==4) {
+                                                 $have_vacation = 2.5;                                                # code...
+                                               }else if ($i ==5){
+                                                 $have_vacation = 3;
+                                               }else if ($i ==6){
+                                                 $have_vacation = 4;
+                                               }else if ($i ==7){
+                                                 $have_vacation = 4.5;
+                                               }else if ($i ==8){
+                                                 $have_vacation = 5;
+                                               }else if ($i ==9){
+                                                 $have_vacation = 6;
+                                               }else if ($i ==10){
+                                                 $have_vacation = 6.5;
+                                               }else if ($i ==11){
+                                                 $have_vacation = 7;
+                                               }else if ($i ==12){
+                                                 $have_vacation = 8;
+                                               }else if($i ==0){
+                                                   if ($do_work >374) {
+                                                      $have_vacation = 8;
+                                                   }else{
+                                                      $have_vacation = 0;
+                                                   }
+
+
+
+                                               }else {
+                                                 $have_vacation =0;
+                                               }
+
+                                               $month = (10/12)*(date("m",strtotime($row['start'])) -1);
+
+                                               $x= $have_vacation+$month;
+
+                                                 $have_vacation = floor($x * 2) / 2;
+
+                                               }
+
+                                          }else if ($do_work >=730) { /*ถ้ามากกว่าหรือเท่ากับ 2 ปี*/
+
 
                                              $have_vacation =8;
 
@@ -265,15 +440,16 @@
                                         <td><?php echo $row['dep_name']; ?></td>
                                         <td><?php echo date('d/m/Y',strtotime($row['start'])); ?> </td> <!-- วันเริ่มงาน -->
                                         <td><?php echo time_elapsed_string($row['start'], true); ?></td> <!-- จำนวนวันทำงาน -->
-                                        <td><?php echo $have_vacation   ; ?></td>
+                                        <td><?php echo $have_vacation + $johnatar  ; ?></td>
+
                                         <td><?php echo $vacation_cout_this_year; ?></td>
-                                        <td><?php echo $count; ?></td>
+                                        <td><?php echo ($have_vacation + $johnatar)-$vacation_cout_this_year; ?></td>
 
 
 
                                         <td>
                                             <?php
-                                                   if ($row['resign']==2 ) {
+                                                   if ($row['resign']==2 OR $have_vacation == 0  ) {
 
                                                     }else{
                                                         echo '<button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#edit_user" onclick="return add_vacation( '.$row['user_id'].');"><i class="fa fa-plus" aria-hidden="true"></i></button>';

@@ -151,7 +151,7 @@ if (isset($_POST['add_outsrouce'])) {
 
 
 
-              // คำนวณวันทำงาน พักร้อน
+              // คำนวณวันทำงาน
               $start_date = date_create($get_users['start']);
               $current_date = date_create();
               $diff = date_diff($start_date,$current_date);
