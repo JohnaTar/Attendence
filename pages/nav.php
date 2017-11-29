@@ -11,7 +11,7 @@
             <!-- /.navbar-header -->
 
             <ul class="nav navbar-top-links navbar-right">
-            
+
                 <!-- /.dropdown -->
 
                 <!-- /.dropdown -->
@@ -64,6 +64,9 @@
                                       <li>
                                           <a href="tables2.php">ขาด ลา มา สาย</a>
                                       </li>
+                                      <li>
+                                          <a href="#">Report Excel</a>
+                                      </li>
 
                                   </ul>
                                   <!-- /.nav-third-level -->
@@ -78,11 +81,9 @@
                                             <a href="companny.php">ข้อมูลบริษัท</a>
                                         </li>
                                         <li>
-                                            <a href="#">Third Level Item</a>
+                                            <a href="report_excel_oc.php">Report Excel</a>
                                         </li>
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
+
                                     </ul>
                                     <!-- /.nav-third-level -->
                                 </li>

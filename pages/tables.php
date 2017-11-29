@@ -449,7 +449,7 @@
 
                                         <td>
                                             <?php
-                                                   if ($row['resign']==2 OR $have_vacation == 0  ) {
+                                                   if ($row['resign']==2 OR ($have_vacation + $johnatar)-$vacation_cout_this_year == 0) {
 
                                                     }else{
                                                         echo '<button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#edit_user" onclick="return add_vacation( '.$row['user_id'].');"><i class="fa fa-plus" aria-hidden="true"></i></button>';

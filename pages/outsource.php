@@ -29,11 +29,11 @@
                 <div class="row">
                     <div class="col-md-2">
                         <button class="btn btn-info" data-toggle="modal" data-target="#add_user"><i class="fa fa-user-plus " aria-hidden="true"></i></button>
-                      
+
 
                     </div>
                     <div class="col-md-10">
-
+<form class="form-horizontal">
                          <div class="form-group">
                         <label class="col-md-1 control-label" for="selectbasic">บริษัท</label>
                         <div class="col-md-4">
@@ -58,7 +58,7 @@
 
                         </div>
                     </div>
-
+</form>
                   </div>
 
                 </div>
