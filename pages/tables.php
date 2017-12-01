@@ -84,7 +84,7 @@
                                     $string = array(
                                         'y' => 'year',
                                         'm' => 'month',
-                                        'd' => 'day',
+
                                     );
 
                                     foreach ($string as $k => &$v) {
@@ -110,7 +110,7 @@
                                     $res =mysqli_query($conn,$sql);
                                     while($row=mysqli_fetch_array($res,MYSQLI_ASSOC)) {
 
-                                     /* นับวันที่พักร้อน*/
+                                     // นับวันที่พักร้อน*/
                                             $current_y = (date("Y")-1).'-12-26';
                                             $current_y2 =date("Y").'-12-25';
 
@@ -130,7 +130,30 @@
                                                 $vacation_cout_this_year= 0;
                                             }
 
+                                        // นับวันที่พักร้อนปีที่แล้ว* /
 
+                                        $last_y = (date("Y")-2).'-12-26';
+                                        $last_y2 = (date("Y")-1).'-12-25';
+                                            $sq ="SELECT Sum(sum.day_n),sum.ty_id,sum.date,`status`.user_id
+                                                   FROM `status`
+                                                   INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                                                   WHERE date >= '".$last_y."' AND  date <= '".$last_y2."'
+                                                   AND ty_id ='5' AND user_id ='".$row['user_id']."'";
+                                            $result =mysqli_query($conn,$sq);
+                                            $ro =mysqli_fetch_array($result);
+                                            if ($ro['0']!='') {
+                                                    $count =  8-$ro['0'];
+                                                      if ($count >= 4) {
+                                                            $count =4;
+                                                      }else{
+                                                         $count =8-$ro['0'];
+                                                      }
+
+                                            }else{
+                                                $count =0;
+                                            }
+
+                                    
 
 
                                         if ($row['resign'] ==2) { //ถ้าลาออกขีดสีแดง
@@ -144,41 +167,21 @@
                                         $current_date = date_create();
                                         $diff = date_diff($start_date,$current_date);
                                            $do_work = $diff->format("%a");
+                                           $last_y = (date("Y", strtotime($row['start']))-1).'-12-26';
+                                           $last_y2  =  date('Y', strtotime($row['start'])).'-12-25'; //วันที่สุดท้ายของปีที่ทำงาน
 
 
 
                                            if ($do_work >= 365 AND $do_work< 730) { //ถ้าครบปี
 
-                                            $last_y = (date("Y")-1).'-12-26';
-                                            $last_y2 = date("Y").'-12-25';
-                                                $sq ="SELECT Sum(sum.day_n),sum.ty_id,sum.date,`status`.user_id
-                                                       FROM `status`
-                                                       INNER JOIN sum ON `status`.sum_id = sum.sum_id
-                                                       WHERE date >= '".$last_y."' AND  date <= '".$last_y2."'
-                                                       AND ty_id ='5' AND user_id ='".$row['user_id']."'";
-                                                $result =mysqli_query($conn,$sq);
-                                                $ro =mysqli_fetch_array($result);
-                                                $data =   $ro['0'];
 
-
-
-
-                                          $d1 = new DateTime((date('Y')-1).'-12-26');
-                                          $d2 = new DateTime($row['start']);
-
-                                          $diff = $d2->diff($d1);
-
-
-                                          if ($diff->y ==0) {
-                                            $last_year = strtotime((date('Y')-1).'-12-26');
-                                          } else {
-                                             $last_year = strtotime((date('Y')-2).'-12-26');
-                                          }
 
                                            // สิ้นปี +1
                                            $start_work = strtotime($row['start']);
+                                           $end_of_year_work = strtotime($last_y2);
 
-                                           $datediff = $last_year - $start_work;
+
+                                           $datediff = $end_of_year_work - $start_work;
                                            $do_work_last_year = floor($datediff / (60 * 60 * 24));// วันเริ่มทำงาน - วันสิ้นสุดปี
 
                                            if ($do_work_last_year <30 AND $do_work_last_year >=16) { //ถ้าวันน้อยกว่า 30 และมากกว่า 16
@@ -242,29 +245,9 @@
 
 
                                            } else if ($do_work >=730) { /*ถ้ามากกว่าหรือเท่ากับ 2 ปี*/
+                                             $vacation_re = '8';
 
-
-                                              $last_y = (date("Y")-2).'-12-26';
-                                              $last_y2 = (date("Y")-1).'-12-25';
-                                                $sq ="SELECT Sum(sum.day_n),sum.ty_id,sum.date,`status`.user_id
-                                                       FROM `status`
-                                                       INNER JOIN sum ON `status`.sum_id = sum.sum_id
-                                                       WHERE date >= '".$last_y."' AND  date <= '".$last_y2."'
-                                                       AND ty_id ='5' AND user_id ='".$row['user_id']."'";
-                                                $result =mysqli_query($conn,$sq);
-                                                $ro =mysqli_fetch_array($result);
-                                                $data =   8-$ro['Sum(sum.day_n)'];
-
-                                                if ((8 - $ro['Sum(sum.day_n)']) >=4 ) {
-                                                  $vacation_cout_last_year = 4;
-                                                }else{8 - $ro['Sum(sum.day_n)'];
-                                                $vacation_cout_last_year = 8 - $ro['Sum(sum.day_n)'];
-                                                }
-
-
-
-                                                $have_vacation = 8 + $vacation_cout_last_year;
-
+                                             $have_vacation =8;
 
 
 
@@ -284,12 +267,13 @@
                                         <td><?php echo time_elapsed_string($row['start'], true); ?></td> <!-- จำนวนวันทำงาน -->
                                         <td><?php echo $have_vacation   ; ?></td>
                                         <td><?php echo $vacation_cout_this_year; ?></td>
-                                        <td> <?php echo $have_vacation-$vacation_cout_this_year; ?></td>
+                                        <td><?php echo $count; ?></td>
+
 
 
                                         <td>
                                             <?php
-                                                   if ($row['resign']==2 OR $have_vacation-$vacation_cout_this_year ==0) {
+                                                   if ($row['resign']==2 ) {
 
                                                     }else{
                                                         echo '<button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#edit_user" onclick="return add_vacation( '.$row['user_id'].');"><i class="fa fa-plus" aria-hidden="true"></i></button>';

@@ -169,7 +169,8 @@ if (isset($_POST['add_outsrouce'])) {
 
                         $datediff = $the_last_of_the_year - $start_work;
                         $do_work_last_year = floor($datediff / (60 * 60 * 24));
-                        $vacation =floor($do_work_last_year/60);//ปัดเศษ
+                        $x =($do_work_last_year/60);//ปัดเศษ
+                        $vacation = floor($x * 2) / 2;
                     }else if ($do_work>=730){
                         $vacation =6;
 

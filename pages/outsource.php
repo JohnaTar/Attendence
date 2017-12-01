@@ -29,7 +29,7 @@
                 <div class="row">
                     <div class="col-md-2">
                         <button class="btn btn-info" data-toggle="modal" data-target="#add_user"><i class="fa fa-user-plus " aria-hidden="true"></i></button>
-                        <button class="btn btn-info" data-toggle="modal" data-target="#loading"><i class="fa fa-user-plus " aria-hidden="true"></i></button>
+                      
 
                     </div>
                     <div class="col-md-10">
@@ -509,11 +509,12 @@
             </div>
 
             <!-- Modal more detail -->
+
          <div class="modal fade" id="loading" role="dialog">
              <div class="modal-dialog modal-sm">
                <div class="modal-content">
                  <div class="modal-header">
-                  
+
                    <h4 class="modal-title"></h4>
                  </div>
                  <div class="modal-body">

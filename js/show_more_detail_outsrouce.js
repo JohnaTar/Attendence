@@ -67,9 +67,13 @@ function delete_vacation_oc(id){
 
                               var oc_id =$('#tar').val();
                               var month =$('#month_on_outsrouce').val();
+                              var first_y =$('#first_year').val();
+                              var last_y =$('#last_year').val();
                               data = [];
                               data[0] = oc_id;
                               data[1] = month;
+                              data[2] = first_y
+                              data[3] = last_y
                                   $.ajax({
                                       url:'show_detail_outsrouce.php',
                                       data:{data:data},

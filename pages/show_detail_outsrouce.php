@@ -20,6 +20,23 @@ echo '      <table class="table table-striped">
                                          </tr>
                                       </thead>
                                      <tbody>';
+          $while_data_vacation=$process->while_data_vacation($oc_id,$_POST['data'][2],$_POST['data'][3]);
+                if (!empty($while_data_vacation)) {
+                       foreach ($while_data_vacation as $datas) {
+                              echo '  <tr>
+                                          <td>'.$datas['ty_n'].'</td>
+                                          <td>'.date('d/m/Y',strtotime($datas['date'])).'</td>
+                                          <td>'.$datas['day_n'].'</td>
+                                          <td>'.$datas['comment'].'</td>
+                                          <td><button  class="btn btn-danger btn-xs"   onclick="return delete_vacation_oc('.$datas['sum_id'].')"><i class="fa fa-times" aria-hidden="true"></i></button></td>
+                                      </tr>
+
+                                <input type="hidden" id="tar" value="'.$datas['oc_id'].'" >' ;
+                                                       }
+
+
+                                                 }
+
             $while_data=$process->while_data($oc_id,$first_day_of_month,$last_day_of_month);
                   if (!empty($while_data)) {
                           foreach ($while_data as $while_datas) {
@@ -41,7 +58,7 @@ echo '      <table class="table table-striped">
                        </table>';
 
 
-echo $_POST['data'][2].$_POST['data'][3];
+
 
 }
 

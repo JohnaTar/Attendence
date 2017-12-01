@@ -52,7 +52,7 @@ class data_outsrouce {
                             INNER JOIN status_oc ON outsrouce.oc_id = status_oc.oc_id
                             INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
                             INNER JOIN type ON sum_oc.ty_id = type.ty_id
-                            WHERE outsrouce.oc_id ='".$oc_id."' AND sum_oc.date >='".$first_day_of_month."'
+                            WHERE outsrouce.oc_id ='".$oc_id."'AND sum_oc.ty_id !=5 AND sum_oc.date >='".$first_day_of_month."'
                             AND sum_oc.date <='".$last_day_of_month."'ORDER BY sum_oc.ty_id,sum_oc.date  ASC");
       while ($data = $get_data->fetch_assoc()) {
           $result[] =$data;
@@ -61,6 +61,25 @@ class data_outsrouce {
         return $result;
       }
     }
+
+    public function while_data_vacation($oc_id,$first_day_of_year,$last_day_of_year){
+      $db=$this->connect();
+      $get_data=$db->query("SELECT sum_oc.day_n,sum_oc.ty_id,sum_oc.date,sum_oc.`comment`,
+                                    outsrouce.oc_id,outsrouce.oc_name,type.ty_n,sum_oc.sum_id
+                             FROM outsrouce
+                            INNER JOIN status_oc ON outsrouce.oc_id = status_oc.oc_id
+                            INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
+                            INNER JOIN type ON sum_oc.ty_id = type.ty_id
+                            WHERE outsrouce.oc_id ='".$oc_id."'AND sum_oc.ty_id =5 AND sum_oc.date >='".$first_day_of_year."'
+                            AND sum_oc.date <='".$last_day_of_year."'ORDER BY sum_oc.date  ASC");
+      while ($data = $get_data->fetch_assoc()) {
+          $result[] =$data;
+      }
+      if(!empty($result)){
+        return $result;
+      }
+    }
+
 
     public function delete_sum_id($id){
 
