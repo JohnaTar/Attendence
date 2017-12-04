@@ -238,7 +238,7 @@
                                             $johnatar = $sit_vacation-$ro['0'];
                                           }
 
-                                          echo $sit_vacation;
+
                                         ///////////////////////////////////////////////////
 
 
@@ -258,17 +258,32 @@
                                            $last_y = (date("Y", strtotime($row['start']))-1).'-12-26';
                                            $last_y2  =  date('Y', strtotime($row['start'])).'-12-25'; //วันที่สุดท้ายของปีที่ทำงาน
 
-
-
                                            if ($do_work >= 365 AND $do_work< 730) { //ถ้าครบปี
+
+
+
+
+
+                                            $date = $row['start'];
+                                            $date = strtotime($date);
+                                            $date = strtotime("+365 day", $date);
+                                             $mama =date('Y', $date).'-12-26';
+
+
+                                            if (date("Y-m-d") >=$mama) {
+                                            $have_vacation =8;
+                                          }else{
+
+
+
+
+
 
 
 
                                            // สิ้นปี +1
                                            $start_work = strtotime($row['start']);
                                            $end_of_year_work = strtotime($last_y2);
-
-
                                            $datediff = $end_of_year_work - $start_work;
                                            $do_work_last_year = floor($datediff / (60 * 60 * 24));// วันเริ่มทำงาน - วันสิ้นสุดปี
 
@@ -326,6 +341,8 @@
                                               }else {
                                                 $have_vacation =0;
                                               }
+
+                                            }
 
                                           }  else if ($do_work >=1825) { /*ถ้ามากกว่าหรือเท่ากับ 5 ปี*/
 
