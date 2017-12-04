@@ -1,17 +1,36 @@
 
 <?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname ="johnatar";
 
-$strExcelFileName="Member-All.xls";
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+mysqli_set_charset($conn,"utf8");
+date_default_timezone_set('Asia/Bangkok');
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+
+$sql ="SELECT co_name  FROM companny WHERE co_id ='".$_POST['companny_id']."'";
+$query =mysqli_query($conn,$sql);
+$row=mysqli_fetch_array($query,MYSQLI_ASSOC);
+
+$strExcelFileName= $row['co_name'].'.xls';
 header("Content-Type: application/x-msexcel; name=\"$strExcelFileName\"");
 header("Content-Disposition: inline; filename=\"$strExcelFileName\"");
 header("Pragma:no-cache");
 
 
 
-?>
-<html xmlns:o="urn:schemas-microsoft-com:office:office"xmlns:x="urn:schemas-microsoft-com:office:excel"xmlns="http://www.w3.org/TR/REC-html40">
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+?>
+
 <html>
 
 <head>
@@ -44,6 +63,9 @@ header("Pragma:no-cache");
                             <?php
                             echo '<table x:str border=1 cellpadding=0 cellspacing=1 width=100% style="border-collapse:collapse"  >
                                 <thead>
+                                  <tr>
+                                    <th colspan="13">'.$row['co_name'].' </th>
+                                  </tr>
                                     <tr>
 
                                         <th  rowspan="2">ชื่อ - นามสกุล</th>

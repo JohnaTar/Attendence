@@ -1,9 +1,24 @@
+<?php
+$strExcelFileName= 'employee.xls';
+header("Content-Type: application/x-msexcel; name=\"$strExcelFileName\"");
+header("Content-Disposition: inline; filename=\"$strExcelFileName\"");
+header("Pragma:no-cache");
 
+
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-        <?php include('head.php'); ?>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <style>
+  table, th, td {
+    border: 1px solid black;
+  border-collapse: collapse;
+  }
+  </style>
 
 </head>
 
@@ -13,38 +28,10 @@
     <div id="wrapper">
 
         <!-- Navigation -->
-        <?php include('nav.php'); ?>
-
-        <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">การลาพักร้อน</h1>
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-            <!-- /.row -->
-                <div class="row">
-                    <div class="col-md-12">
-                        <button class="btn btn-info" data-toggle="modal" data-target="#add_user"><i class="fa fa-user-plus " aria-hidden="true"></i></button>
 
 
 
-                    </div>
-                </div>
-                <br>
-
-
-            <div class="row">
-
-                <div class="col-lg-12">
-
-                    <div class="panel panel-success">
-                        <div class="panel-heading">
-                            ข้อมูลสมาชิก
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body ">
-                            <table width="100%" class="table table-striped  table-hover table-responsive " >
+                            <table >
                                 <thead>
                                     <tr>
                                         <th rowspan="2" style="text-align:center">ลำดับ</th>
@@ -53,16 +40,22 @@
                                         <th rowspan="2" style="text-align:center">วันเริ่มงาน</th>
                                         <th rowspan="2" style="text-align:center">จำนวนวันทำงาน</th>
                                         <th colspan="3" style="text-align:center">พักร้อน</th>
+                                        <th colspan="6" style="text-align:center">วันที่ : <?php echo date('d/m/Y',strtotime($_POST['rank_of_date'])).'-'.date('d/m/Y',strtotime($_POST['rank_of_date2'])); ?></th>
 
-                                        <th rowspan="2">เมนู</th>
+
 
 
                                     </tr>
                                     <tr>
                                         <th>สิทธิ์</th>
-
                                         <th>ใช้</th>
                                         <th>เหลือ</th>
+                                        <th>สาย</th>
+                                        <th>ขาด</th>
+                                        <th>ลาป่วย</th>
+                                        <th>ลากิจ</th>
+                                        <th>ลากิจพิเศษ</th>
+                                        <th>ลาอื่น</th>
 
 
 
@@ -73,6 +66,11 @@
                                 <tbody>
 
                                 <?php
+
+                                if (isset($_POST['rank_of_date'])) {
+                                  $rang =$_POST['rank_of_date'];
+                                  $rang2 =$_POST['rank_of_date2'];
+                                }
 
                                     function time_elapsed_string($datetime, $full = false) {
                                     $now = new DateTime;
@@ -139,7 +137,6 @@
                                         $current_date_of_check_vacation = date_create($last_year_of_check_vacation);
                                         $diff = date_diff($last_y_of_check_vacation,$current_date_of_check_vacation);
                                         $love_you = $diff->format("%a");
-
 
                                           if ($love_you >=365 AND $love_you < 730) {
 
@@ -238,7 +235,6 @@
                                             $johnatar = $sit_vacation-$ro['0'];
                                           }
 
-                                          echo $sit_vacation;
                                         ///////////////////////////////////////////////////
 
 
@@ -351,7 +347,7 @@
 
 
 
-                                            $start_work = strtotime($row['start']);// คิด 5 ปี
+                                            $start_work = strtotime($row['start']);
                                             $end_of_year_work = strtotime($last_y2);
 
 
@@ -434,6 +430,58 @@
 
 
 
+                                            $sqli ="SELECT COUNT(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                                                  FROM   `status`
+                                                INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                                                WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='7'";
+                                            $result =mysqli_query($conn,$sqli);
+                                            $low=mysqli_fetch_array($result,MYSQLI_ASSOC);
+                                                  if ($low['COUNT(sum.day_n)'] ==0) {
+                                                    $late ='';
+                                                  }else{
+                                                    $late = $low['COUNT(sum.day_n)'];
+                                                  }
+                                           /*##############################	ขาด ########################## */
+                                            $sqlii ="SELECT Sum(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                                                  FROM   `status`
+                                                INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                                                WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='1'";
+                                            $resultt =mysqli_query($conn,$sqlii);
+                                            $loww=mysqli_fetch_array($resultt,MYSQLI_ASSOC);
+                                          /*##############################	ลาป่วย ########################## */
+                                            $sq ="SELECT Sum(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                                                  FROM   `status`
+                                                INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                                                WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='2'";
+                                            $re =mysqli_query($conn,$sq);
+                                            $lo=mysqli_fetch_array($re,MYSQLI_ASSOC);
+                                          /*##############################	ลากิจ ########################## */
+                                          $s ="SELECT Sum(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                                                  FROM   `status`
+                                                INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                                                WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='3'";
+                                            $ree =mysqli_query($conn,$s);
+                                            $loo=mysqli_fetch_array($ree,MYSQLI_ASSOC);
+
+                                          /*##############################	ลากิจ พิเศษ ########################## */
+
+                                            $ss ="SELECT Sum(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                                                  FROM   `status`
+                                                INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                                                WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='6'";
+                                            $rees =mysqli_query($conn,$ss);
+                                            $loos=mysqli_fetch_array($rees,MYSQLI_ASSOC);
+
+                                            $sss ="SELECT Sum(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                                                  FROM   `status`
+                                                INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                                                WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='4'";
+                                            $reess =mysqli_query($conn,$sss);
+                                            $looss=mysqli_fetch_array($reess,MYSQLI_ASSOC);
+
+
+
+
 
 
                                   ?>
@@ -447,20 +495,14 @@
 
                                         <td><?php echo $vacation_cout_this_year; ?></td>
                                         <td><?php echo ($have_vacation + $johnatar)-$vacation_cout_this_year; ?></td>
+                                        <td><?php echo $late; ?></td>
+                                        <td><?php echo $loww['Sum(sum.day_n)']; ?></td>
+                                        <td><?php echo $lo['Sum(sum.day_n)']; ?></td>
+                                        <td><?php echo $loo['Sum(sum.day_n)']; ?></td>
+                                        <td><?php echo $loos['Sum(sum.day_n)']; ?></td>
+                                        <td><?php echo $looss['Sum(sum.day_n)']; ?></td>
 
 
-
-                                        <td>
-                                            <?php
-                                                   if ($row['resign']==2 OR ($have_vacation + $johnatar)-$vacation_cout_this_year == 0) {
-
-                                                    }else{
-                                                        echo '<button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#edit_user" onclick="return add_vacation( '.$row['user_id'].');"><i class="fa fa-plus" aria-hidden="true"></i></button>';
-                                                    }
-                                      ?>
-
-                                           <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#show_data" onclick="return get_show_vacation(<?php echo $row['user_id']; ?>);"><i class="fa fa-area-chart" aria-hidden="true"></i></button>
-                                        </td>
 
 
 
@@ -475,148 +517,6 @@
                                      <?php $k++; }   mysqli_close($conn);?>
                                 </tbody>
                             </table>
-                            <!-- /.table-responsive -->
-
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-            <!-- /.row -->
-
-
-            <!-- /.row -->
-        </div>
-        <!-- /#page-wrapper -->
-
-    </div>
-    <!-- /#wrapper -->
-
-    <!-- jQuery -->
-
-
-    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
-     <!-- Modal Add User -->
-
-
-        <!-- Modal Edit User -->
-        <div class="modal fade" id="edit_user" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">เพิ่มวันพักร้อน</h4>
-              </div>
-              <div class="modal-body">
-                         <div id="add_form"></div>
-              </div>
-              <div class="modal-footer">
-
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-           <!-- Modal Add User -->
-        <div class="modal fade" id="add_user" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog " role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">เพิ่มข้อมูล</h4>
-              </div>
-              <div class="modal-body">
-                   <form class="form-horizontal" id="add_user_form" onsubmit="return add_user_form();">
-                    <div class="form-group">
-                        <label class="col-md-4 control-label" for="fn">ชื่อ นามสกุล</label>
-                        <div class="col-md-6">
-                    <input type="text" required="" class="form-control input-md"  value="" name="add_user">
-
-
-
-                        </div>
-                    </div>
-
-                         <div class="form-group">
-                        <label class="col-md-4 control-label" for="selectbasic">แผนก</label>
-                        <div class="col-md-6">
-                    <select  name="dep" class="form-control input-md" required="">
-                        <option value="">  </option>
-                         <option value="1"> ฝ่ายบริหาร </option>
-                         <option value="2"> ฝ่ายสารสนเทศ </option>
-                         <option value="3"> PA & Marketing </option>
-                         <option value="4"> ฝ่ายบัญชีและการเงิน </option>
-                         <option value="5"> ฝ่ายบุคคลและธุรการ </option>
-                         <option value="6"> Staff & Labor Outsourcing BKK </option>
-                         <option value="7"> Staff & Labor Outsourcing CHON </option>
-                         <option value="8"> Staff & Labor Outsourcing PTY </option>
-
-                    </select>
-
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-md-4 control-label" for="fn">วันเริ่มงาน</label>
-                        <div class="col-md-4">
-                    <input name="start" type="date" placeholder="Firstname" class="form-control input-md" required="">
-
-                        </div>
-                    </div>
-
-
-
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="submit"></label>
-                <div class="col-md-4">
-            <button type="submit" name="submit" class="btn btn-primary" >Save</button>
-                </div>
-            </div>
-
-
-
-
-
-</form>
-
-
-              </div>
-              <div class="modal-footer">
-
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-
-         <div class="modal fade" id="show_data" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog " role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">การใช้สิทธิพักร้อน</h4>
-              </div>
-              <div class="modal-body">
-
-                <div id="vacation_from"></div>
-
-
-
-
-
-              </div>
-              <div class="modal-footer">
-
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              </div>
-            </div>
-          </div>
-        </div>
 
 
 </body>

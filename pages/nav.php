@@ -65,7 +65,7 @@
                                           <a href="tables2.php">ขาด ลา มา สาย</a>
                                       </li>
                                       <li>
-                                          <a href="#">Report Excel</a>
+                                          <a href="report_excel.php">Report Excel</a>
                                       </li>
 
                                   </ul>
