@@ -114,6 +114,7 @@ if (isset($_POST['add_outsrouce'])) {
             'y' => 'Y',
             'm' => 'M',
 
+
         );
 
         foreach ($string as $k => &$v) {
@@ -135,17 +136,18 @@ if (isset($_POST['add_outsrouce'])) {
          $i = 1;
         if (!empty($get_user)) {
             foreach($get_user as $get_users){
-              if (!empty($get_users['first_y'])) {
+              if (!empty($get_users['first_y'])) {  //มีตัดรอบ
                  $first_year=(date("Y")-1).'-'.$get_users['first_y'];
                  $last_year2 =date("Y").'-'.$get_users['last_y'];
 
                  $last_year =  date('Y', strtotime($get_users['start'])).'-'.$get_users['last_y'];
-
-              }else{
+                 $maty_nganga = '-'.$get_users['last_y'];
+              }else{ //ไม่มีตัดรอบ
 
                $first_year =  date("Y").'-01-01';
                $last_year  =  date('Y', strtotime($get_users['start'])).'-12-31';
                $last_year2 =  date("Y").'-12-31';
+               $maty_nganga = '-12-31';
               }
 
 
@@ -161,6 +163,20 @@ if (isset($_POST['add_outsrouce'])) {
 
                   if ($do_work >=365 AND $do_work <730) { // ถ้ามากกว่า หรือ เท่ากับ 1 ปี
 
+                    $date = $get_users['start'];
+                    $date = strtotime($date);
+                    $date = strtotime("+365 day", $date);
+                    $mama =date('Y', $date).$maty_nganga;
+
+                    if (date("Y-m-d") >=$mama) {
+                            $vacation =6;
+                      }else{
+
+
+
+
+
+
 
 
                         $the_last_of_the_year = strtotime($last_year);
@@ -169,8 +185,30 @@ if (isset($_POST['add_outsrouce'])) {
 
                         $datediff = $the_last_of_the_year - $start_work;
                         $do_work_last_year = floor($datediff / (60 * 60 * 24));
-                        $x =($do_work_last_year/60);//ปัดเศษ
-                        $vacation = floor($x * 2) / 2;
+
+                          echo 'จำนวนวันที่ทำงาน 15 มีนาคม 2016 ถึง 31 ธันวาคม 2016 ='.$do_work_last_year.'';
+                          for   ($i=0; 30 <=$do_work_last_year; $i++) {
+                                 $day =  $do_work_last_year -= 30;
+                          }
+                          echo '<br>ลบด้วย 291-30 จะได้ ' .$i. 'ครั้ง เหลือ ';
+                          echo $do_work_last_year. ' ปัดเป็น 1 ';
+                          echo 'ทำงานทั้งหมด 10 เดือน';
+                          echo '<br>(6/12)*10 = 5 ';
+
+
+                        // $x =($do_work_last_year/60);//ปัดเศษ
+                        //
+                        //
+                        //
+                        //
+                        //
+                        //
+                        //
+                        // $vacation = ($x * 2) / 2;
+                        $vacation =5;
+
+                      }
+
                     }else if ($do_work>=730){
                         $vacation =6;
 

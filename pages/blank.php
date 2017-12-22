@@ -36,7 +36,7 @@
 
     <div id="wrapper">
       <div class="col-md-12 text-center">
-        <p>หวย</P>
+        <p></P>
 
 
       </div>

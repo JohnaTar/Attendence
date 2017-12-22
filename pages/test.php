@@ -1,12 +1,8 @@
-<?php 
+<?php
 
 
-$now = time(); // or your date as well
-$your_date = strtotime("2017-10-01");
-$datediff = $now - $your_date;
-
-echo floor($datediff / (60 * 60 * 24));
-
-
+$myString = "9,admin@example.com,8";
+$myArray = explode(',', $myString);
+print_r($myArray);
 
 ?>

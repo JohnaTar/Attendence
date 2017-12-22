@@ -17,6 +17,7 @@
         <?php include('nav.php'); ?>
 
         <div id="page-wrapper">
+
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">การลา</h1>
@@ -31,20 +32,16 @@
 
                 <div class="col-lg-12">
 
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            ข้อมูลสมาชิก
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body ">
-                                  <table width="100%" class="table table-striped  table-hover table-responsive " >
+
+
+
+                                  <table width="50%" class="table  table-striped table-responsive"  >
                                 <thead>
                                     <tr>
-                                        <th rowspan="2" style="text-align:center">ชื่อ - นามสกุล</th>
-                                        <th rowspan="2" style="text-align:center">แผนก</th>
-                                        <th rowspan="2" style="text-align:center">วันเริ่มงาน</th>
-                                        <th rowspan="2" style="text-align:center">จำนวนวันทำงาน</th>
-                                        <th colspan="6" style="text-align:center">
+                                        <th rowspan="3">ชื่อ - นามสกุล</th>
+                                        <th rowspan="3">แผนก</th>
+
+                                        <th colspan="11 " style="text-align:center">
                     <div class="form-group">
                           <label class="col-md-4 control-label" for="fn">เดือน</label>
                           <div class="col-md-6">
@@ -69,21 +66,42 @@
 
                                         </th>
 
-                                        <th rowspan="2">เมนู</th>
+                                        <th rowspan="3" width="80">เมนู</th>
 
 
                                     </tr>
+                                    <tr style="text-align:center">
+                                        <th colspan="4"></th>
+                                        <th style="text-align:center">ลาป่วย</th>
+                                        <th style="text-align:center">ลาป่วย</th>
+                                        <th style="text-align:center">ลาป่วย</th>
+                                        <th style="text-align:center">ลากิจ</th>
+                                        <th style="text-align:center">ลากิจ</th>
+                                        <th style="text-align:center">ลากิจพิเศษ</th>
+                                        <th></th>
+
+                                    </tr>
                                     <tr>
-                                        <th>สาย</th>
-                                        <th>ขาด</th>
-                                        <th>ลาป่วย</th>
-                                        <th>ลากิจ</th>
-                                        <th>ลากิจพิเศษ</th>
+                                      <th>สาย</th>
+                                      <th>ลืมสแกน</th>
+                                      <th>ออกก่อน</th>
+                                      <th>ขาดงาน</th>
+
+                                        <th style="text-align:center"><sup>ไม่มีใบรับรองแพทย์</sup></th>
+                                        <th style="text-align:center"><sup>มีใบรับรองแพทย</sup></th>
+                                        <th style="text-align:center"><sup>จากการทำงาน</sup></th>
+                                        <th style="text-align:center"><sup>ได้ค่าจ้าง</sup></th>
+                                        <th style="text-align:center"><sup>ไม่ได้ค่าจ้าง</sup></th>
+                                        <th style="text-align:center"><sup>ได้ค่าจ้าง</sup></th>
+
+
+
                                         <th>ลาอื่น</th>
 
 
 
                                     </tr>
+
                                 </thead>
                               <div id="tar">
                                 <tbody id="test">
@@ -94,9 +112,7 @@
                             </table>
                             <!-- /.table-responsive -->
 
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
+
                     <!-- /.panel -->
                 </div>
                 <!-- /.col-lg-12 -->
@@ -131,15 +147,25 @@
 
                       <div class="form-group">
                         <label class="col-md-4 control-label" for="selectbasic">ประเภท</label>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                     <select  name="type" id="type" class="form-control input-md" required="">
                         <option value="">  </option>
                          <option value="1"> สาย </option>
-                         <option value="2"> ขาด </option>
-                         <option value="3"> ลาป่วย </option>
-                         <option value="4"> ลากิจ </option>
-                         <option value="5"> ลากิจพิเศษ </option>
-                         <option value="6"> ลาอื่น </option>
+                         <option value="2"> ลืมสแกน </option>
+                         <option value="3"> ออกก่อน </option>
+                         <option value="4"> ขาดงาน </option>
+                         <option value="5"> ลาป่วย (ไม่มีใบรับรองแพทย์) </option>
+                         <option value="6"> ลาป่วย (มีใบรับรองแพทย์) </option>
+                         <option value="7"> ลาป่วย (จากการทำงาน) </option>
+                         <option value="8"> ลากิจ (ได้ค่าจ้าง) </option>
+                         <option value="9"> ลากิจ (ไม่ได้ค่าจ้าง) </option>
+                         <option value="10"> ลากิจพิเศษ (ได้ค่าจ้าง) </option>
+                         <option value="11"> ลาอื่น </option>
+
+
+
+
+
 
 
                     </select>
@@ -153,19 +179,19 @@
 <!-- ########################### สาย #######################################-->
 <div id="1" class="colors" style="display:none">
   <form class="form-horizontal" id="data_save" onsubmit="return save_data();">
-    <input type="hidden" name="late" value="7">
+    <input type="hidden" name="late" value="1" >
     <div id="data_form"></div>
     <div class="form-group">
           <label class="col-md-4 control-label" for="fn">วันที่</label>
           <div class="col-md-4">
-                    <input name="date"  type="date"  class="form-control input-md" required="">
+                    <input name="date"  id="datepicker"  class="form-control input-md" required="">
 
            </div>
     </div>
     <div class="form-group">
           <label class="col-md-4 control-label" for="fn">เวลา</label>
           <div class="col-md-4">
-                    <input name="time" type="time" placeholder="Firstname" class="form-control input-md" required="">
+                    <input name="time" type="text" placeholder="นาที" class="form-control input-md" required="">
 
            </div>
     </div>
@@ -189,27 +215,41 @@
 <div id="2" class="colors" style="display:none">
   <form class="form-horizontal" id="data_save2" onsubmit="return save_data2();">
      <div id="data_form2"></div>
-    <input type="hidden" name="absence" value="1">
+    <input type="text" name="absence" id="likeamp" >
     <div class="form-group">
           <label class="col-md-4 control-label" for="fn">วันที่</label>
-          <div class="col-md-4">
-                    <input name="date2" id="date_absence1"  type="date"  class="form-control input-md" required="">
-
+          <div class="col-md-6">
+                    <input name="date" id="mdp-demo"  type="text"   class="form-control input-md" required="">
            </div>
-
-          <div class="col-md-4">
-
-                    <input id="date_absence2"  type="date"  class="form-control input-md" >
-                    <span id="alert"></span>
-           </div>
-
     </div>
-    <input type="hidden" name="rank" id="rank2">
+<div id="number_of_date">
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="selectbasic">จำนวน</label>
+      <div class="col-md-4">
+  <select  name="number" id="day"  class="form-control input-md" >
+
+       <option value="1"> เต็มวัน </option>
+       <option value="0.5"> ครึ่งวัน </option>
+       <option value="3"> นาที </option>
+
+  </select>
+
+      </div>
+  </div>
+</div>
+<div id="field_minute" style="display:none">
+<div class="form-group">
+      <label class="col-md-4 control-label" for="fn">นาที</label>
+      <div class="col-md-6">
+                <input name="minute" id="minute" type="text"   class="form-control input-md" >
+       </div>
+</div>
+</div>
 
     <div class="form-group">
           <label class="col-md-4 control-label" for="fn">หมายเหตุ</label>
           <div class="col-md-6">
-                   <textarea class="form-control  input-md" rows="3" name="comment2"></textarea>
+                   <textarea class="form-control  input-md" rows="3" name="comment"></textarea>
 
            </div>
     </div>
@@ -222,38 +262,35 @@
             </div>
   </form>
 </div>
-<!-- ########################### ลาป่วย #######################################-->
+<!-- ลืมสแกน -->
 <div id="3" class="colors" style="display:none">
-   <form class="form-horizontal" id="data_save3" onsubmit="return save_data3();">
-      <div id="data_form3"></div>
-      <input type="hidden" name="sick" value="2">
+  <form class="form-horizontal" id="data_save3" onsubmit="return save_data3();">
+    <input type="hidden" name="forget" value="2" id="">
+    <div id="data_form3"></div>
     <div class="form-group">
           <label class="col-md-4 control-label" for="fn">วันที่</label>
           <div class="col-md-4">
-                    <input name="date3" id="date_sick1"  type="date"  class="form-control input-md" required="">
-
+                    <input name="date"  id="datepicker2"  class="form-control input-md" required="">
 
            </div>
-               <div class="col-md-4">
-
-                    <input id="date_sick2"  type="date"  class="form-control input-md" >
-                      <span id="alert2"></span>
-           </div>
-
     </div>
-       <input type="hidden" name="rank3" id="rank3">
-      <div class="form-group">
-                      <label class="col-md-4 control-label" for="fn">วัน</label>
-                      <div class="col-md-4">
-                  <input type="radio" required name="day3" value="0.5" >ครึ่งวัน
-                  <input type="radio" required name="day3" value="1" >เต็มวัน
-              </div>
-            </div>
+    <div class="form-group">
+          <label class="col-md-4 control-label" for="fn">เวลา</label>
+          <div class="col-md-4">
+            <select  name="number"  class="form-control input-md" >
 
+                 <option value="1"> เข้า </option>
+                 <option value="2"> ออก </option>
+
+
+            </select>
+
+           </div>
+    </div>
     <div class="form-group">
           <label class="col-md-4 control-label" for="fn">หมายเหตุ</label>
           <div class="col-md-6">
-                   <textarea class="form-control  input-md" rows="3" name="comment3"></textarea>
+                   <textarea class="form-control  input-md" rows="3" name="comment" ></textarea>
 
            </div>
     </div>
@@ -265,80 +302,34 @@
                 </div>
             </div>
   </form>
-
 </div>
-<!-- ########################### ลากิจ #######################################-->
+
+
+
+<!-- ออกก่อน -->
+
 <div id="4" class="colors" style="display:none">
   <form class="form-horizontal" id="data_save4" onsubmit="return save_data4();">
-      <div id="data_form4"></div>
-    <input type="hidden" name="errand" value="3">
+    <input type="hidden" name="exit" value="3" >
+    <div id="data_form4"></div>
     <div class="form-group">
           <label class="col-md-4 control-label" for="fn">วันที่</label>
           <div class="col-md-4">
-                    <input name="date4" id="date_errand1"  type="date"  class="form-control input-md" required="">
+                    <input name="date"  id="datepicker3"  class="form-control input-md" required="">
 
-           </div>
-          <div class="col-md-4">
-
-                    <input id="date_errand2"  type="date"  class="form-control input-md" >
-                      <span id="alert3"></span>
            </div>
     </div>
+    <div class="form-group">
+          <label class="col-md-4 control-label" for="fn">เวลา</label>
+          <div class="col-md-4">
+                    <input name="time" type="text" placeholder="นาที" class="form-control input-md" required="">
 
-     <input type="hidden" name="rank4" id="rank4">
-      <div class="form-group">
-                      <label class="col-md-4 control-label" for="fn">วัน</label>
-                      <div class="col-md-4">
-                  <input type="radio" required name="day4" value="0.5" >ครึ่งวัน
-                  <input type="radio" required name="day4" value="1" >เต็มวัน
-              </div>
-            </div>
-
+           </div>
+    </div>
     <div class="form-group">
           <label class="col-md-4 control-label" for="fn">หมายเหตุ</label>
           <div class="col-md-6">
-                   <textarea class="form-control  input-md" rows="3" name="comment4"></textarea>
-
-           </div>
-
-    </div>
-
-     <div class="form-group">
-                <label class="col-md-4 control-label" for="submit"></label>
-                <div class="col-md-4">
-            <button type="submit" name="submit" class="btn btn-primary" >Save</button>
-                </div>
-            </div>
-  </form>
-</div>
-<div id="5" class="colors" style="display:none">
-      <form class="form-horizontal" id="data_save5" onsubmit="return save_data5();">
-          <div id="data_form5"></div>
-        <input type="hidden" name="Exerrand" value="6">
-    <div class="form-group">
-          <label class="col-md-4 control-label" for="fn">วันที่</label>
-          <div class="col-md-4">
-                    <input name="date5" id="date_Exerrand1"  type="date"  class="form-control input-md" required="">
-
-           </div>
-            <div class="col-md-4">
-             <input id="date_Exerrand2"  type="date"  class="form-control input-md" >
-                      <span id="alert4"></span>
-           </div>
-    </div>
-    <input type="hidden" name="rank5" id="rank5">
-      <div class="form-group">
-                      <label class="col-md-4 control-label" for="fn">วัน</label>
-                      <div class="col-md-4">
-                  <input type="radio" required name="day5" value="0.5" >ครึ่งวัน
-                  <input type="radio" required name="day5" value="1" >เต็มวัน
-              </div>
-            </div>
-
-    <div class="form-group">
-          <label class="col-md-4 control-label" for="fn">หมายเหตุ</label>
-          <div class="col-md-6">
-                   <textarea class="form-control  input-md" rows="3" name="comment5"></textarea>
+                   <textarea class="form-control  input-md" rows="3" name="comment" ></textarea>
 
            </div>
     </div>
@@ -351,46 +342,11 @@
             </div>
   </form>
 </div>
-<div id="6" class="colors" style="display:none">
-    <form class="form-horizontal" id="data_save6" onsubmit="return save_data6();">
-      <div id="data_form6"></div>
-      <input type="hidden" name="ext" value="4">
-    <div class="form-group">
-          <label class="col-md-4 control-label" for="fn">วันที่</label>
-          <div class="col-md-4">
-                    <input name="date6" id="date_ext1"   type="date"  class="form-control input-md" required="">
 
-           </div>
-            <div class="col-md-4">
-           <input id="date_ext2"  type="date"  class="form-control input-md" >
-                      <span id="alert5"></span>
-           </div>
-    </div>
-      <div class="form-group">
-                      <label class="col-md-4 control-label" for="fn">วัน</label>
-                      <div class="col-md-4">
-                  <input type="radio" required name="day6" value="0.5" >ครึ่งวัน
-                  <input type="radio" required name="day6" value="1" >เต็มวัน
-              </div>
-            </div>
-      <input type="hidden" name="rank6" id="rank6">
 
-    <div class="form-group">
-          <label class="col-md-4 control-label" for="fn">หมายเหตุ</label>
-          <div class="col-md-6">
-                   <textarea class="form-control  input-md" rows="3" name="comment6"></textarea>
 
-           </div>
-    </div>
 
-     <div class="form-group">
-                <label class="col-md-4 control-label" for="submit"></label>
-                <div class="col-md-4">
-            <button type="submit" name="submit" class="btn btn-primary" >Save</button>
-                </div>
-            </div>
-  </form>
- </div>
+
 
 
 
@@ -403,8 +359,22 @@
             </div>
           </div>
         </div>
+<!-- ลืมสแกน -->
 
-           <!-- Modal Add User -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- Modal Add User -->
 
          <div class="modal fade" id="show_attendent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
           <div class="modal-dialog " role="document">
@@ -432,5 +402,32 @@
 
 </body>
 
+<script>
+  $('#mdp-demo').multiDatesPicker({
+	     dateFormat: "d-m-yy",
+       showButtonPanel: true,
+       changeMonth: true,
+       changeYear: true,
+       onSelect: function(dateText, inst)
+   { inst.settings.defaultDate = dateText; },
 
+   onSelect: function(dateText, inst) {
+            var tar = $('#mdp-demo').multiDatesPicker('getDates').length;
+
+            if (tar <= 1) {
+                 $("#number_of_date").show();
+
+            }else{
+               $("#number_of_date").hide();
+               $("#day").val('');
+               $("#field_minute").hide();
+               $("#minute").val('');
+
+            }
+        }},
+);
+
+
+
+</script>
 </html>

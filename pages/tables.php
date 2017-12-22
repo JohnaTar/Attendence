@@ -50,17 +50,18 @@
                                         <th rowspan="2" style="text-align:center">ลำดับ</th>
                                         <th rowspan="2" style="text-align:center">ชื่อ - นามสกุล</th>
                                         <th rowspan="2" style="text-align:center">แผนก</th>
-                                        <th rowspan="2" style="text-align:center">วันเริ่มงาน</th>
-                                        <th rowspan="2" style="text-align:center">จำนวนวันทำงาน</th>
-                                        <th colspan="3" style="text-align:center">พักร้อน</th>
+                                        <th rowspan="2" style="text-align:center">วันเริ่มงาน (ว/ด/ป)</th>
+                                        <th rowspan="2" style="text-align:center">อายุงาน</th>
+                                        <th colspan="5" style="text-align:center">พักร้อน ( วัน )</th>
 
                                         <th rowspan="2">เมนู</th>
 
 
                                     </tr>
                                     <tr>
-                                        <th>สิทธิ์</th>
-
+                                        <th>สะสม</th>
+                                        <th>สิทธิ์ปีนี้</th>
+                                        <th>รวมสิทธิ์</th>
                                         <th>ใช้</th>
                                         <th>เหลือ</th>
 
@@ -132,114 +133,16 @@
                                             }
 
                                         // นับวันที่พักร้อนปีที่แล้ว* ////////////////////////////////////////
+                                        $amp ='SELECT va_num FROM vacation_last_year WHERE user_id="'.$row['user_id'].'"';
+                                        $tar =mysqli_query($conn,$amp);
+                                        $amptar =mysqli_fetch_array($tar);
+                                        $amptar =$amptar['va_num'];
 
-                                        $last_y =  (date("Y")-2).'-12-26';
-                                        $last_year_of_check_vacation =(date("Y")-1).'-12-25';
-                                        $last_y_of_check_vacation =date_create($row['start']);
-                                        $current_date_of_check_vacation = date_create($last_year_of_check_vacation);
-                                        $diff = date_diff($last_y_of_check_vacation,$current_date_of_check_vacation);
-                                        $love_you = $diff->format("%a");
-
-
-                                          if ($love_you >=365 AND $love_you < 730) {
-
-
-                                             $last_y22  =  date('Y', strtotime($row['start'])).'-12-25';
-                                             $start_work = strtotime($row['start']);
-                                             $end_of_year_work = strtotime($last_y22);
-                                             $datediff = $end_of_year_work - $start_work;
-                                             $do_work_last_year = floor($datediff / (60 * 60 * 24));// วันเริ่มทำงาน - วันสิ้นสุดปี
-
-                                             if ($do_work_last_year <30 AND $do_work_last_year >=16) { //ถ้าวันน้อยกว่า 30 และมากกว่า 16
-                                                  $i =1;
-
-                                                   }else if ($do_work_last_year >=30) {
-
-                                                        for   ($i=0; 30 <=$do_work_last_year; $i++) {
-                                                               $day =  $do_work_last_year -= 30;
-                                                        }
-
-                                                         if ($day >=16) { /*หลังจากลบ 30 เดือนแล้วเหลือเศษ*/
-                                                           $i++;
-                                                               }
-                                                    }else{
-
-                                                  $i =0; /*I จำนวนเดือน*/
-                                              }
-
-                                              //คำนวณเดือน ถ้าจำนวนวันมากกว่า 16 ปรับเป็น 1 เดือน
-                                                if ($i ==1) {
-                                                   $sit_vacation =0.5;
-                                                }else if ($i ==2) {
-                                                   $sit_vacation =1;
-                                                }else if ($i ==3) {
-                                                   $sit_vacation =2;
-                                                }else if ($i ==4) {
-                                                   $sit_vacation = 2.5;                                                # code...
-                                                }else if ($i ==5){
-                                                   $sit_vacation = 3;
-                                                }else if ($i ==6){
-                                                   $sit_vacation = 4;
-                                                }else if ($i ==7){
-                                                   $sit_vacation = 4.5;
-                                                }else if ($i ==8){
-                                                   $sit_vacation = 5;
-                                                }else if ($i ==9){
-                                                   $sit_vacation = 6;
-                                                }else if ($i ==10){
-                                                   $sit_vacation = 6.5;
-                                                }else if ($i ==11){
-                                                   $sit_vacation = 7;
-                                                }else if ($i ==12){
-                                                  $sit_vacation = 8;
-                                                }else if($i ==0){
-
-                                                       $sit_vacation = 0;
-                                                    }
-
-
-
-
-
-
-
-
-                                          }else if ($love_you >=730) {
-                                            $sit_vacation=8;
-
-
-                                          }else{
-                                            $sit_vacation =0;
-                                          }
-
-
-                                          $last_y_tar = (date("Y")-2).'-12-26';
-                                          $last_y2_tar =(date("Y")-1).'-12-25';
-
-
-                                          $sq ="SELECT Sum(sum.day_n),sum.ty_id,sum.date,`status`.user_id
-                                                      FROM `status`
-                                                      INNER JOIN sum ON `status`.sum_id = sum.sum_id
-                                                      WHERE date >= '".$last_y_tar."' AND  date <= '".$last_y2_tar."'
-                                                      AND ty_id ='5' AND user_id ='".$row['user_id']."'";
-                                               $result =mysqli_query($conn,$sq);
-                                               $ro =mysqli_fetch_array($result);
-
-
-
-
-
-
-
-                                          $johnatar = $sit_vacation-$ro['0'];
-                                          if ($johnatar >= 4 ) {
-                                            $johnatar = 4;
-                                          }else {
-                                            $johnatar = $sit_vacation-$ro['0'];
-                                          }
-
-
-                                        ///////////////////////////////////////////////////
+                                        if (!empty($amptar)) {
+                                          $vacation_last_year = $amptar;
+                                        }else{
+                                          $vacation_last_year =0;
+                                        }
 
 
 
@@ -287,6 +190,7 @@
                                            $datediff = $end_of_year_work - $start_work;
                                            $do_work_last_year = floor($datediff / (60 * 60 * 24));// วันเริ่มทำงาน - วันสิ้นสุดปี
 
+
                                            if ($do_work_last_year <30 AND $do_work_last_year >=16) { //ถ้าวันน้อยกว่า 30 และมากกว่า 16
                                                 $i =1;
 
@@ -296,7 +200,7 @@
                                                              $day =  $do_work_last_year -= 30;
                                                       }
 
-                                                       if ($day >=16) { /*หลังจากลบ 30 เดือนแล้วเหลือเศษ*/
+                                                       if ($day >=15) { /*หลังจากลบ 30 เดือนแล้วเหลือเศษ*/
                                                          $i++;
                                                              }
                                                   }else{
@@ -354,26 +258,13 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                                             $start_work = strtotime($row['start']);// คิด 5 ปี
                                             $end_of_year_work = strtotime($last_y2);
 
 
                                             $datediff = $end_of_year_work - $start_work;
                                             $do_work_last_year = floor($datediff / (60 * 60 * 24));// วันเริ่มทำงาน - วันสิ้นสุดปี
+
 
                                             if ($do_work_last_year <30 AND $do_work_last_year >=16) { //ถ้าวันน้อยกว่า 30 และมากกว่า 16
                                                  $i =1;
@@ -391,6 +282,7 @@
 
                                                  $i =0; /*I จำนวนเดือน*/
                                              }
+
 
                                              //คำนวณเดือน ถ้าจำนวนวันมากกว่า 16 ปรับเป็น 1 เดือน
                                                if ($i ==1) {
@@ -430,6 +322,7 @@
                                                  $have_vacation =0;
                                                }
 
+
                                                $month = (10/12)*(date("m",strtotime($row['start'])) -1);
 
                                                $x= $have_vacation+$month;
@@ -454,22 +347,26 @@
 
 
                                   ?>
-                                    <tr <?php echo $data; ?> >
+
+                                    <tr  <?php echo $data; ?> >
                                         <td><?php echo $k; ?> </td>
                                         <td><?php echo $row['name']; ?> </td>
                                         <td><?php echo $row['dep_name']; ?></td>
-                                        <td><?php echo date('d/m/Y',strtotime($row['start'])); ?> </td> <!-- วันเริ่มงาน -->
+                                        <td align="center"><?php echo date('d/m/Y',strtotime($row['start'])); ?> </td> <!-- วันเริ่มงาน -->
                                         <td><?php echo time_elapsed_string($row['start'], true); ?></td> <!-- จำนวนวันทำงาน -->
-                                        <td><?php echo $have_vacation + $johnatar  ; ?></td>
+                                        <td><?php echo $vacation_last_year; ?>  : <a id="sent_id_to_add_vacation_last_year"  data-toggle="modal" data-target="#vacation_last_year" onclick="return show_name_on_add_vacation_last_years(<?php echo $row['user_id']; ?>)"   ><i class="fa fa-pencil-square-o  " aria-hidden="true"></i></td>
 
+
+                                        <td><?php echo $have_vacation; ?></td>
+                                        <td><?php echo $have_vacation+$vacation_last_year; ?></td>
                                         <td><?php echo $vacation_cout_this_year; ?></td>
-                                        <td><?php echo ($have_vacation + $johnatar)-$vacation_cout_this_year; ?></td>
+                                        <td><?php echo ($have_vacation+$vacation_last_year)-$vacation_cout_this_year; ?></td>
 
 
 
                                         <td>
                                             <?php
-                                                   if ($row['resign']==2 OR ($have_vacation + $johnatar)-$vacation_cout_this_year == 0) {
+                                                   if ($row['resign']==2 OR $have_vacation==0) {
 
                                                     }else{
                                                         echo '<button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#edit_user" onclick="return add_vacation( '.$row['user_id'].');"><i class="fa fa-plus" aria-hidden="true"></i></button>';
@@ -634,6 +531,49 @@
             </div>
           </div>
         </div>
+
+
+
+
+<!-- /////////////เพิ่มวันร้อนปีที่แล้ว -->
+<div class="modal fade" id="vacation_last_year" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">พักร้อนสะสมจากปีที่แล้ว</h4>
+      </div>
+      <div class="modal-body">
+         <form class="form-horizontal" id="vacation_last_year_form" onsubmit="return save_vacation_last_year_form();" >
+           <input type="hidden" id="user_id"  name="user_id_add_vacation_last_year">
+
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="fn">จำนวนวัน</label>
+            <div class="col-md-4">
+        <input name="number_of_day" type="text" placeholder="จำนวนวัน" class="form-control input-md" required="">
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="submit"></label>
+            <div class="col-md-4">
+        <button type="submit" name="submit" class="btn btn-primary" >Save</button>
+            </div>
+        </div>
+
+      </form>
+
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 
 
 </body>
