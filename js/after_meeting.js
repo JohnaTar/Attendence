@@ -49,7 +49,6 @@ function save_vacation_last_year_form(){
  });
 
 
-
  $(function() {
     $("#day").change(function(){
         var johnamaty = $("#day").val();
@@ -61,3 +60,26 @@ function save_vacation_last_year_form(){
        }
     });
  });
+
+// เลือก ประเภทมาโชว์ โมเดล
+$(function(){
+    $("#attendent_from").change(function(){
+      var type_of_detail =$("#type_of_detail").val();
+      var user_id_type_of_detail =$("#user_id_type_of_detail").val();
+      var month_type_of_detail =$("#month_type_of_detail").val();
+      info = [];
+      info[0] = type_of_detail;
+      info[1] = user_id_type_of_detail;
+      info[2] = month_type_of_detail;
+          $.ajax({
+            type:'POST',
+            url :'after_meeting.php',
+            data:{johnatar_maty:info},
+          success:function(data){
+            $("#attendent_from2").html(data);
+          }
+          });
+
+
+    });
+});

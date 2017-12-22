@@ -416,54 +416,43 @@ if (isset($_POST['attendent'])) {
 
 	if ($data ==1) {
 
-			$rang = (date('Y')-1).'-12-26';
-			$rang2 = date('Y').'-01-25';
+
 			$month ='มกราคม';
 
 			}else if ($data ==2) {
-				$rang = date('Y').'-01-26';
-			    $rang2 = date('Y').'-02-25';
+
 			    $month ='กุมภาพันธ์';
 
 			 }else if ($data ==3) {
-			 	$rang = date('Y').'-02-26';
-			    $rang2 = date('Y').'-03-25';
+
 				$month ='มีนาคม';
 			  }else if ($data ==4) {
-			 	$rang = date('Y').'-03-26';
-			    $rang2 = date('Y').'-04-25';
+
 			   	$month ='เมษายน';
 			   }else if ($data ==5) {
-					$rang = date('Y').'-04-26';
-			    	$rang2 = date('Y').'-05-25';
+
 			    	$month ='พฤษภาคม';
 			    }else if ($data ==6) {
-			    	$rang = date('Y').'-05-26';
-			    	$rang2 = date('Y').'-06-25';
+
 			    	$month ='มิถุนายน';
 			      }else if ($data==7) {
-			    		$rang = date('Y').'-06-26';
-			    		$rang2 = date('Y').'-07-25';
+
 			    		$month ='กรกฎาคม';
 			    	}else if ($data==8) {
-			    		$rang = date('Y').'-07-26';
-			   			$rang2 = date('Y').'-08-25';
+
+
 			   			$month ='สิงหาคม';
 			    		}else if ($data==9) {
-			    			$rang = date('Y').'-08-26';
-			   				$rang2 = date('Y').'-09-25';
+
 			   				$month ='กันยายน';
 			    		}else if ($data==10) {
-			    			$rang = date('Y').'-09-26';
-			   				$rang2 = date('Y').'-10-25';
+
 			   				$month ='ตุลาคม';
 			    		}else if ($data==11) {
-			    			$rang = date('Y').'-10-26';
-			   				$rang2 = date('Y').'-11-25';
+
 			   				$month ='พฤศจิกายน';
 			    		}else{
-			    			$rang = date('Y').'-11-26';
-			   				$rang2 = date('Y').'-12-25';
+
 			   				$month ='ธันวาคม';
 			    		}
 
@@ -475,237 +464,42 @@ if (isset($_POST['attendent'])) {
 						$result =mysqli_query($conn,$sql);
 						$row =mysqli_fetch_array($result,MYSQLI_ASSOC);
 
-					echo "
-						<div class='row'>
-	                       <div class='col-lg-12'>
 
-	                            <div class='table-responsive'>
-	                                <table class='table table-striped'>
-	                                    <thead>
-	                                        <tr>
-	                                            <th colspan='2'>ชื่อ นามสกุล : ".$row['name']."
-	                                            <th> เดือน : ".$month."</th>
-	                                            <th>Comment</th>
+echo '<form class="form-horizontal">
 
-	                                        </tr>
-	                                    </thead>
-	                                    <tbody>";
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="selectbasic">ประเภท</label>
+									<div class="col-md-6">
+							<select  name="type" id="type_of_detail" class="form-control input-md" required="">
+									<option value="">  </option>
+									 <option value="1"> สาย </option>
+									 <option value="2"> ลืมสแกน </option>
+									 <option value="3"> ออกก่อน </option>
+									 <option value="4"> ขาดงาน </option>
+									 <option value="5"> ลาป่วย (ไม่มีใบรับรองแพทย์) </option>
+									 <option value="6"> ลาป่วย (มีใบรับรองแพทย์) </option>
+									 <option value="7"> ลาป่วย (จากการทำงาน) </option>
+									 <option value="8"> ลากิจ (ได้ค่าจ้าง) </option>
+									 <option value="9"> ลากิจ (ไม่ได้ค่าจ้าง) </option>
+									 <option value="10"> ลากิจพิเศษ (ได้ค่าจ้าง) </option>
+									 <option value="11"> ลาอื่น </option>
 
-	                    $sqli ="SELECT `status`.user_id,sum.day_n,sum.ty_id,sum.date,sum.`comment`
-								FROM  sum
-								INNER JOIN `status` ON `status`.sum_id = sum.sum_id
-								WHERE `status`.user_id='".$row['user_id']."'
-								AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='1' ";
-						$res = mysqli_query($conn,$sqli);
-						$time =0;
+							</select>
 
-						while ($low=mysqli_fetch_array($res,MYSQLI_ASSOC)) {
+									</div>
+							</div>
+</form>
 
-    						$total = $low['day_n'];
-    						$time +=  $total;
-
-
+<input type="hidden" value ="'.$row['user_id'].'" id="user_id_type_of_detail" >
+<input type="hidden" value ="'.$data.'" id="month_type_of_detail" >
 
 
-							echo '<tr class="success">
-	                                            <td> สาย</td>
-	                                            <td> '.date('d/m/Y',strtotime($low['date'])).'</td>
-	                                            <td> '.$low['day_n'].' นาที </td>
-	                                            <td> '.$low['comment'].'</td>
-	                              </tr> ';
+'
 
-		                            }
+;
 
-
-								if (!empty($time)) {
-
-									echo '	<tr   class="success">
-										<td></td>
-										<td>รวม</td>
-										<td style="color:red;">'.sprintf("%02dh %02dm", floor($time/60), $time%60).' </td>
-										<td></td>
-
-										</tr >
-
-
-
-							';
-
-								}else{
-
-								}
-
-
-
-
-	                    $sqla ="SELECT `status`.user_id,sum.day_n,sum.ty_id,sum.date,sum.`comment`
-								FROM  sum
-								INNER JOIN `status` ON `status`.sum_id = sum.sum_id
-								WHERE `status`.user_id='".$row['user_id']."'
-								AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='1'
-								ORDER BY date ASC ";
-						$ress = mysqli_query($conn,$sqla);
-						$total2 = 0;
-						while ($tar=mysqli_fetch_array($ress,MYSQLI_ASSOC)) {
-								$total2 += $tar['day_n'];
-							echo '<tr class="warning" >
-												<td> ขาด</td>
-	                                            <td> </td>
-	                                            <td> '.date('d/m/Y',strtotime($tar['date'])).'</td>
-
-	                                            <td> '.$tar['comment'].'</td>
-	                              </tr>';
-						}
-						    echo '
-
-		                          			<tr class="warning" >
-		    									<td></td>
-		    									<td>รวม</td>
-		    									<td style="color:red;">'.$total2.' วัน </td>
-		    									<td></td>
-
-		    							    </tr >
-
-		    						';
-
-		    			  $sq ="SELECT `status`.user_id,sum.day_n,sum.ty_id,sum.date,sum.`comment`
-								FROM  sum
-								INNER JOIN `status` ON `status`.sum_id = sum.sum_id
-								WHERE `status`.user_id='".$row['user_id']."'
-								AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='2'
-								ORDER BY date ASC ";
-						$re = mysqli_query($conn,$sq);
-						$total3 = 0;
-						while ($tars=mysqli_fetch_array($re,MYSQLI_ASSOC)) {
-								$total3 += $tars['day_n'];
-							echo '<tr class="danger" >
-
-	                                            <td> ลาป่วย</td>
-	                                            <td> '.date('d/m/Y',strtotime($tars['date'])).'</td>
-	                                            <td> '.$tars['day_n'].'</td>
-	                                            <td> '.$tars['comment'].'</td>
-	                              </tr>';
-						}
-						    echo '
-
-		                          			<tr class="danger" >
-		    									<td></td>
-		    									<td>รวม</td>
-		    									<td style="color:red;">'.$total3.' วัน </td>
-		    									<td></td>
-
-		    							    </tr >
-
-		    						';
-
-
-		    			  $q ="SELECT `status`.user_id,sum.day_n,sum.ty_id,sum.date,sum.`comment`
-								FROM  sum
-								INNER JOIN `status` ON `status`.sum_id = sum.sum_id
-								WHERE `status`.user_id='".$row['user_id']."'
-								AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='3'
-								ORDER BY date ASC";
-						$r = mysqli_query($conn,$q);
-						$total4 = 0;
-						while ($tarss=mysqli_fetch_array($r,MYSQLI_ASSOC)) {
-								$total4 += $tarss['day_n'];
-							echo '<tr class="info" >
-
-	                                            <td> ลากิจ</td>
-	                                            <td> '.date('d/m/Y',strtotime($tarss['date'])).'</td>
-	                                            <td> '.$tarss['day_n'].'</td>
-	                                            <td> '.$tarss['comment'].'</td>
-	                              </tr>';
-						}
-						    echo '
-
-		                          			<tr class="info" >
-		    									<td></td>
-		    									<td>รวม</td>
-		    									<td style="color:red;">'.$total4.' วัน </td>
-		    									<td></td>
-
-		    							    </tr >
-
-		    						';
-		    			$qq ="SELECT `status`.user_id,sum.day_n,sum.ty_id,sum.date,sum.`comment`
-								FROM  sum
-								INNER JOIN `status` ON `status`.sum_id = sum.sum_id
-								WHERE `status`.user_id='".$row['user_id']."'
-								AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='6'
-								ORDER BY date ASC";
-						$rr = mysqli_query($conn,$qq);
-						$total5 = 0;
-						while ($ts=mysqli_fetch_array($rr,MYSQLI_ASSOC)) {
-								$total5 += $ts['day_n'];
-							echo '<tr  >
-
-	                                            <td> ลากิจพิเศษ</td>
-	                                            <td> '.date('d/m/Y',strtotime($ts['date'])).'</td>
-	                                            <td> '.$ts['day_n'].'</td>
-	                                            <td> '.$ts['comment'].'</td>
-	                              </tr>';
-						}
-						    echo '
-
-		                          			<tr  >
-		    									<td></td>
-		    									<td>รวม</td>
-		    									<td style="color:red;">'.$total5.' วัน </td>
-		    									<td></td>
-
-		    							    </tr >
-
-		    						';
-		    				$qqq="SELECT `status`.user_id,sum.day_n,sum.ty_id,sum.date,sum.`comment`
-								FROM  sum
-								INNER JOIN `status` ON `status`.sum_id = sum.sum_id
-								WHERE `status`.user_id='".$row['user_id']."'
-								AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='4'
-								ORDER BY date ASC ";
-						$rrr = mysqli_query($conn,$qqq);
-						$total6 = 0;
-						while ($tsss=mysqli_fetch_array($rrr,MYSQLI_ASSOC)) {
-								$total6 += $tsss['day_n'];
-							echo '<tr class="success">
-
-	                                            <td> ลาอื่น</td>
-	                                            <td> '.date('d/m/Y',strtotime($tsss['date'])).'</td>
-	                                            <td> '.$tsss['day_n'].'</td>
-	                                            <td> '.$tsss['comment'].'</td>
-	                              </tr>';
-						}
-						    echo '
-
-		                          			<tr class="success"  >
-		    									<td></td>
-		    									<td>รวม</td>
-		    									<td style="color:red;">'.$total6.' วัน </td>
-		    									<td></td>
-
-		    							    </tr >
-
-
-
-
-                                   </tbody>
-	                                </table>
-	                            </div>
-	                            <!-- /.table-responsive -->
-	                        </div>
-	                        <!-- /.panel-body -->
-
-
-	             </div>
-
-	             ';
-
-
-
-
-
-
-
+					echo " <p>ชื่อ นามสกุล : ".$row['name']." </p>
+								 <p>  เดือน : ".$month." </p>";
 
 
 

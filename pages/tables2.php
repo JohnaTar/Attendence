@@ -215,7 +215,7 @@
 <div id="2" class="colors" style="display:none">
   <form class="form-horizontal" id="data_save2" onsubmit="return save_data2();">
      <div id="data_form2"></div>
-    <input type="text" name="absence" id="likeamp" >
+    <input type="hidden" name="absence" id="likeamp" >
     <div class="form-group">
           <label class="col-md-4 control-label" for="fn">วันที่</label>
           <div class="col-md-6">
@@ -349,7 +349,6 @@
 
 
 
-
               </div>
 
               <div class="modal-footer">
@@ -386,7 +385,7 @@
               <div class="modal-body">
 
                 <div id="attendent_from"></div>
-
+                <div id="attendent_from2"></div>
 
 
 

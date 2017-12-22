@@ -236,7 +236,7 @@ function save_data4(){
         data:$("#data_save4").serialize(),
         success:function(data){
 
-          alert(data);
+        
 
            $(".close").trigger("click");
 
