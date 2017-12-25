@@ -89,6 +89,7 @@ WHERE
 	AND sum.ty_id  = '".$_POST['johnatar_maty'][0]."'
   AND sum.date >= '".$rang."'
 	AND sum.date <= '".$rang2."'
+ORDER BY sum.date ASC;
 ";
   echo '<div class="table-responsive">
                              <table class="table table-striped">
@@ -96,7 +97,7 @@ WHERE
                                      <tr>
                                          <th>ลำดับ</th>
                                          <th>วันที่ </th>
-                                         <th>จำนวน</th>
+                                         <th>จำนวน (นาที)</th>
                                          <th>หมายเหตุ</th>
                                      </tr>
                                  </thead>
@@ -110,19 +111,64 @@ while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
 
                                         <tr>
                                             <td>'.$i.'</td>
-                                            <td>'.date('d/m/Y',strtotime($row['date'])).'</td>
-                                            <td>'.$row['day_n'].'</td>
-                                            <td>'.$row['COMMENT'].'</td>
-                                        </tr>
-          ';
+                                            <td>'.date('d/m/Y',strtotime($row['date'])).'</td>';
+
+
+                                            if ($_POST['johnatar_maty'][0]==2) {
+                                              if (!empty($row['day_n'])) {
+                                                   if ($row['day_n']==1) {
+                                                     echo '<td>เข้า</td>';
+                                                   }else{
+                                                     echo '<td>ออก</td>';
+                                                   }
+                                              }
+
+                                            }else{
+                                              echo '<td>'.$row['day_n'].'</td>';
+
+                                            }
+      echo                                  '<td>'.$row['COMMENT'].'</td>
+                                    </tr>';
+
 
 
 $i++;}
 
+
+if ($_POST['johnatar_maty'][0] == 2) {
+  $show_sum = 1;
+}else{
+  $show_sum = 2;
+}
+
+$minutes = $total;
+
+$day = floor ($minutes / 480);
+$hour = floor (($minutes - $day * 480) / 60);
+$min = $minutes - ($day * 480) - ($hour * 60);
+
+// output text as...
+if ($show_sum==1) {
+  $sum =$i-1;
+  echo '  <tr>
+              <td></td>
+              <td>รวม</td>
+              <td>'.$sum.' : ครั้ง</td>
+              <td></td>
+          </tr>
+
+
+
+  </tbody>
+            </table>
+                  </div>';
+
+
+}else{
 echo '  <tr>
             <td></td>
             <td>รวม</td>
-            <td>'.$total.'</td>
+            <td>'."{$day} : days {$hour} : hours {$min} : minutes.".'</td>
             <td></td>
         </tr>
 
@@ -131,7 +177,7 @@ echo '  <tr>
 </tbody>
           </table>
                 </div>';
-
+              }
 
 }
 ?>

@@ -307,10 +307,12 @@ if (isset($_POST['late'])) {
 
 if (isset($_POST['absence'])) {
 	if (empty($_POST['number'])) {
-		$number = 1;
-	}else if($_POST['number'] == 1 OR $_POST['number'] == 0.5){
-		$number = $_POST['number'];
-	}else {
+		$number = 480;
+	}else if($_POST['number'] == 1 ){
+		$number = 480;
+	}else if($_POST['number'] == 0.5){
+	  $number = 240;
+  }else {
 		$number =$_POST['minute'];
 	}
 
