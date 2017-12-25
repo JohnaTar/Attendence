@@ -34,28 +34,48 @@ header("Pragma:no-cache");
                             <table >
                                 <thead>
                                     <tr>
-                                        <th rowspan="2" style="text-align:center">ลำดับ</th>
-                                        <th rowspan="2" style="text-align:center">ชื่อ - นามสกุล</th>
-                                        <th rowspan="2" style="text-align:center">แผนก</th>
-                                        <th rowspan="2" style="text-align:center">วันเริ่มงาน</th>
-                                        <th rowspan="2" style="text-align:center">จำนวนวันทำงาน</th>
-                                        <th colspan="3" style="text-align:center">พักร้อน</th>
-                                        <th colspan="6" style="text-align:center">วันที่ : <?php echo date('d/m/Y',strtotime($_POST['rank_of_date'])).'-'.date('d/m/Y',strtotime($_POST['rank_of_date2'])); ?></th>
+                                        <th rowspan="3" style="text-align:center">ลำดับ</th>
+                                        <th rowspan="3" style="text-align:center">ชื่อ - นามสกุล</th>
+                                        <th rowspan="3" style="text-align:center">แผนก</th>
+                                        <th rowspan="3" style="text-align:center">วันเริ่มงาน</th>
+                                        <th rowspan="3" style="text-align:center">จำนวนวันทำงาน</th>
+                                        <th colspan="5"  rowspan="2" style="text-align:center">พักร้อน (วัน)</th>
+                                        <th colspan="13" style="text-align:center">วันที่ : <?php echo date('d/m/Y',strtotime($_POST['rank_of_date'])).'-'.date('d/m/Y',strtotime($_POST['rank_of_date2'])); ?></th>
 
 
 
 
                                     </tr>
                                     <tr>
-                                        <th>สิทธิ์</th>
+                                        <th colspan="3">ลืมสแกน</th>
+                                        <th colspan="2">สาย/กลับก่อน</th>
+                                        <th colspan="8">การลา</th>
+
+                                    </tr>
+                                    <tr>
+                                        <th>สะสมจากปีที่แล้ว</th>
+                                        <th>สิทธิ์ปีนี้</th>
+                                        <th>รวมสิทธิ์พักร้อน</th>
                                         <th>ใช้</th>
                                         <th>เหลือ</th>
+                                        <th >เข้า</th>
+                                        <th>ออก</th>
+                                        <th>รวม</th>
                                         <th>สาย</th>
-                                        <th>ขาด</th>
-                                        <th>ลาป่วย</th>
-                                        <th>ลากิจ</th>
-                                        <th>ลากิจพิเศษ</th>
-                                        <th>ลาอื่น</th>
+                                        <th>กลับก่อน</th>
+                                        <th>ขาดงาน</th>
+                                        <th>ลาป่วย<br><sub>ไม่มีใบรับรองแพทย์</sub></th>
+                                        <th>ลาป่วย<br><sub>มีใบรับรองแพทย์</sub></th>
+                                        <th>ลาป่วย<br><sub>จากการทำงาน</sub></th>
+                                        <th>ลากิจ<br><sub>ไม่ได้ค่าจ้าง</sub></th>
+                                        <th>ลากิจ<br><sub>ได้ค่าจ้าง</sub></th>
+                                        <th>ลากิจพิเศษ<br><sub>ได้ค่าจ้าง</sub></th>
+                                        <th>ลาอื่นๆ</th>
+
+
+
+
+
 
 
 
@@ -117,7 +137,7 @@ header("Pragma:no-cache");
                                             $sqli="SELECT Sum(sum.day_n),sum.ty_id,sum.date,`status`.user_id
                                                    FROM sum
                                                    INNER JOIN `status` ON sum.sum_id = `status`.sum_id
-                                                   WHERE user_id ='".$row['user_id']."' AND ty_id ='5'
+                                                   WHERE user_id ='".$row['user_id']."' AND ty_id ='12'
                                                    AND date >= '".$current_y."' AND  date <= '".$current_y2."'";
 
 
@@ -131,112 +151,16 @@ header("Pragma:no-cache");
 
                                         // นับวันที่พักร้อนปีที่แล้ว* ////////////////////////////////////////
 
-                                        $last_y =  (date("Y")-2).'-12-26';
-                                        $last_year_of_check_vacation =(date("Y")-1).'-12-25';
-                                        $last_y_of_check_vacation =date_create($row['start']);
-                                        $current_date_of_check_vacation = date_create($last_year_of_check_vacation);
-                                        $diff = date_diff($last_y_of_check_vacation,$current_date_of_check_vacation);
-                                        $love_you = $diff->format("%a");
+                                        $amp ='SELECT va_num FROM vacation_last_year WHERE user_id="'.$row['user_id'].'"';
+                                        $tar =mysqli_query($conn,$amp);
+                                        $amptar =mysqli_fetch_array($tar);
+                                        $amptar =$amptar['va_num'];
 
-                                          if ($love_you >=365 AND $love_you < 730) {
-
-
-                                             $last_y22  =  date('Y', strtotime($row['start'])).'-12-25';
-                                             $start_work = strtotime($row['start']);
-                                             $end_of_year_work = strtotime($last_y22);
-                                             $datediff = $end_of_year_work - $start_work;
-                                             $do_work_last_year = floor($datediff / (60 * 60 * 24));// วันเริ่มทำงาน - วันสิ้นสุดปี
-
-                                             if ($do_work_last_year <30 AND $do_work_last_year >=16) { //ถ้าวันน้อยกว่า 30 และมากกว่า 16
-                                                  $i =1;
-
-                                                   }else if ($do_work_last_year >=30) {
-
-                                                        for   ($i=0; 30 <=$do_work_last_year; $i++) {
-                                                               $day =  $do_work_last_year -= 30;
-                                                        }
-
-                                                         if ($day >=16) { /*หลังจากลบ 30 เดือนแล้วเหลือเศษ*/
-                                                           $i++;
-                                                               }
-                                                    }else{
-
-                                                  $i =0; /*I จำนวนเดือน*/
-                                              }
-
-                                              //คำนวณเดือน ถ้าจำนวนวันมากกว่า 16 ปรับเป็น 1 เดือน
-                                                if ($i ==1) {
-                                                   $sit_vacation =0.5;
-                                                }else if ($i ==2) {
-                                                   $sit_vacation =1;
-                                                }else if ($i ==3) {
-                                                   $sit_vacation =2;
-                                                }else if ($i ==4) {
-                                                   $sit_vacation = 2.5;                                                # code...
-                                                }else if ($i ==5){
-                                                   $sit_vacation = 3;
-                                                }else if ($i ==6){
-                                                   $sit_vacation = 4;
-                                                }else if ($i ==7){
-                                                   $sit_vacation = 4.5;
-                                                }else if ($i ==8){
-                                                   $sit_vacation = 5;
-                                                }else if ($i ==9){
-                                                   $sit_vacation = 6;
-                                                }else if ($i ==10){
-                                                   $sit_vacation = 6.5;
-                                                }else if ($i ==11){
-                                                   $sit_vacation = 7;
-                                                }else if ($i ==12){
-                                                  $sit_vacation = 8;
-                                                }else if($i ==0){
-
-                                                       $sit_vacation = 0;
-                                                    }
-
-
-
-
-
-
-
-
-                                          }else if ($love_you >=730) {
-                                            $sit_vacation=8;
-
-
-                                          }else{
-                                            $sit_vacation =0;
-                                          }
-
-
-                                          $last_y_tar = (date("Y")-2).'-12-26';
-                                          $last_y2_tar =(date("Y")-1).'-12-25';
-
-
-                                          $sq ="SELECT Sum(sum.day_n),sum.ty_id,sum.date,`status`.user_id
-                                                      FROM `status`
-                                                      INNER JOIN sum ON `status`.sum_id = sum.sum_id
-                                                      WHERE date >= '".$last_y_tar."' AND  date <= '".$last_y2_tar."'
-                                                      AND ty_id ='5' AND user_id ='".$row['user_id']."'";
-                                               $result =mysqli_query($conn,$sq);
-                                               $ro =mysqli_fetch_array($result);
-
-
-
-
-
-
-
-                                          $johnatar = $sit_vacation-$ro['0'];
-                                          if ($johnatar >= 4 ) {
-                                            $johnatar = 4;
-                                          }else {
-                                            $johnatar = $sit_vacation-$ro['0'];
-                                          }
-
-                                        ///////////////////////////////////////////////////
-
+                                        if (!empty($amptar)) {
+                                          $vacation_last_year = $amptar;
+                                        }else{
+                                          $vacation_last_year =0;
+                                        }
 
 
 
@@ -253,20 +177,21 @@ header("Pragma:no-cache");
                                            $do_work = $diff->format("%a");
                                            $last_y = (date("Y", strtotime($row['start']))-1).'-12-26';
                                            $last_y2  =  date('Y', strtotime($row['start'])).'-12-25'; //วันที่สุดท้ายของปีที่ทำงาน
-
-
-
                                            if ($do_work >= 365 AND $do_work< 730) { //ถ้าครบปี
+                                             $date = $row['start'];
+                                            $date = strtotime($date);
+                                            $date = strtotime("+365 day", $date);
+                                             $mama =date('Y', $date).'-12-26';
+                                            if (date("Y-m-d") >=$mama) {
+                                            $have_vacation =8;
+                                          }else{
 
-
-
-                                           // สิ้นปี +1
+                                      // สิ้นปี +1
                                            $start_work = strtotime($row['start']);
                                            $end_of_year_work = strtotime($last_y2);
-
-
                                            $datediff = $end_of_year_work - $start_work;
                                            $do_work_last_year = floor($datediff / (60 * 60 * 24));// วันเริ่มทำงาน - วันสิ้นสุดปี
+
 
                                            if ($do_work_last_year <30 AND $do_work_last_year >=16) { //ถ้าวันน้อยกว่า 30 และมากกว่า 16
                                                 $i =1;
@@ -277,7 +202,7 @@ header("Pragma:no-cache");
                                                              $day =  $do_work_last_year -= 30;
                                                       }
 
-                                                       if ($day >=16) { /*หลังจากลบ 30 เดือนแล้วเหลือเศษ*/
+                                                       if ($day >=15) { /*หลังจากลบ 30 เดือนแล้วเหลือเศษ*/
                                                          $i++;
                                                              }
                                                   }else{
@@ -323,6 +248,8 @@ header("Pragma:no-cache");
                                                 $have_vacation =0;
                                               }
 
+                                            }
+
                                           }  else if ($do_work >=1825) { /*ถ้ามากกว่าหรือเท่ากับ 5 ปี*/
 
 
@@ -333,26 +260,13 @@ header("Pragma:no-cache");
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                            $start_work = strtotime($row['start']);
+                                            $start_work = strtotime($row['start']);// คิด 5 ปี
                                             $end_of_year_work = strtotime($last_y2);
 
 
                                             $datediff = $end_of_year_work - $start_work;
                                             $do_work_last_year = floor($datediff / (60 * 60 * 24));// วันเริ่มทำงาน - วันสิ้นสุดปี
+
 
                                             if ($do_work_last_year <30 AND $do_work_last_year >=16) { //ถ้าวันน้อยกว่า 30 และมากกว่า 16
                                                  $i =1;
@@ -370,6 +284,7 @@ header("Pragma:no-cache");
 
                                                  $i =0; /*I จำนวนเดือน*/
                                              }
+
 
                                              //คำนวณเดือน ถ้าจำนวนวันมากกว่า 16 ปรับเป็น 1 เดือน
                                                if ($i ==1) {
@@ -409,6 +324,7 @@ header("Pragma:no-cache");
                                                  $have_vacation =0;
                                                }
 
+
                                                $month = (10/12)*(date("m",strtotime($row['start'])) -1);
 
                                                $x= $have_vacation+$month;
@@ -430,58 +346,152 @@ header("Pragma:no-cache");
 
 
 
+                                            // นับลืมแสกนเข้า
                                             $sqli ="SELECT COUNT(sum.day_n),`status`.user_id,sum.ty_id,sum.date
                                                   FROM   `status`
                                                 INNER JOIN sum ON `status`.sum_id = sum.sum_id
-                                                WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='7'";
+                                                WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='2' AND day_n ='1'";
                                             $result =mysqli_query($conn,$sqli);
                                             $low=mysqli_fetch_array($result,MYSQLI_ASSOC);
                                                   if ($low['COUNT(sum.day_n)'] ==0) {
-                                                    $late ='';
+                                                    $in ='';
                                                   }else{
-                                                    $late = $low['COUNT(sum.day_n)'];
+                                                    $in = $low['COUNT(sum.day_n)'];
                                                   }
-                                           /*##############################	ขาด ########################## */
-                                            $sqlii ="SELECT Sum(sum.day_n),`status`.user_id,sum.ty_id,sum.date
-                                                  FROM   `status`
-                                                INNER JOIN sum ON `status`.sum_id = sum.sum_id
-                                                WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='1'";
-                                            $resultt =mysqli_query($conn,$sqlii);
-                                            $loww=mysqli_fetch_array($resultt,MYSQLI_ASSOC);
-                                          /*##############################	ลาป่วย ########################## */
-                                            $sq ="SELECT Sum(sum.day_n),`status`.user_id,sum.ty_id,sum.date
-                                                  FROM   `status`
-                                                INNER JOIN sum ON `status`.sum_id = sum.sum_id
-                                                WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='2'";
-                                            $re =mysqli_query($conn,$sq);
-                                            $lo=mysqli_fetch_array($re,MYSQLI_ASSOC);
-                                          /*##############################	ลากิจ ########################## */
-                                          $s ="SELECT Sum(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                                              // นับลืมแสกนออก
+                                              $sqlik ="SELECT COUNT(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                                                    FROM   `status`
+                                                  INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                                                  WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='2' AND day_n ='2'";
+                                              $resultk =mysqli_query($conn,$sqlik);
+                                              $lowk=mysqli_fetch_array($resultk,MYSQLI_ASSOC);
+                                                    if ($lowk['COUNT(sum.day_n)'] ==0) {
+                                                      $out ='';
+                                                    }else{
+                                                      $out = $lowk['COUNT(sum.day_n)'];
+                                                    }
+                                          // สาย
+
+                                          $sqliy ="SELECT COUNT(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                                              FROM   `status`
+                                            INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                                            WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='1'";
+                                        $resulty =mysqli_query($conn,$sqliy);
+                                        $lowy=mysqli_fetch_array($resulty,MYSQLI_ASSOC);
+                                              if ($lowy['COUNT(sum.day_n)'] ==0) {
+                                                $late ='';
+                                              }else{
+                                                $late = $lowy['COUNT(sum.day_n)'];
+                                              }
+                                            //กลับก่อน
+                                            $sq ="SELECT COUNT(sum.day_n),`status`.user_id,sum.ty_id,sum.date
                                                   FROM   `status`
                                                 INNER JOIN sum ON `status`.sum_id = sum.sum_id
                                                 WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='3'";
-                                            $ree =mysqli_query($conn,$s);
-                                            $loo=mysqli_fetch_array($ree,MYSQLI_ASSOC);
+                                            $re =mysqli_query($conn,$sq);
+                                            $lo=mysqli_fetch_array($re,MYSQLI_ASSOC);
+                                            if ($lo['COUNT(sum.day_n)'] ==0 )  {
+                                               $exit ='';
+                                            }else{
+                                               $exit = $lo['COUNT(sum.day_n)'];
+                                            }
+                                            $s ="SELECT COUNT(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                              									    FROM   `status`
+                              										INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                              										WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='4'";
+                              								$ree =mysqli_query($conn,$s);
+                              								$loo=mysqli_fetch_array($ree,MYSQLI_ASSOC);
+                              								if ($loo['COUNT(sum.day_n)'] ==0 )  {
+                              									 $kad ='';
+                              								}else{
+                              									 $kad = $loo['COUNT(sum.day_n)'];
+                              								}
 
-                                          /*##############################	ลากิจ พิเศษ ########################## */
+                              							/*##############################ลาป่วย ไม่มี ########################## */
 
-                                            $ss ="SELECT Sum(sum.day_n),`status`.user_id,sum.ty_id,sum.date
-                                                  FROM   `status`
-                                                INNER JOIN sum ON `status`.sum_id = sum.sum_id
-                                                WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='6'";
-                                            $rees =mysqli_query($conn,$ss);
-                                            $loos=mysqli_fetch_array($rees,MYSQLI_ASSOC);
-
-                                            $sss ="SELECT Sum(sum.day_n),`status`.user_id,sum.ty_id,sum.date
-                                                  FROM   `status`
-                                                INNER JOIN sum ON `status`.sum_id = sum.sum_id
-                                                WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='4'";
-                                            $reess =mysqli_query($conn,$sss);
-                                            $looss=mysqli_fetch_array($reess,MYSQLI_ASSOC);
-
-
-
-
+                              								$ss ="SELECT COUNT(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                              									    FROM   `status`
+                              										INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                              										WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='5'";
+                              								$rees =mysqli_query($conn,$ss);
+                              								$loos=mysqli_fetch_array($rees,MYSQLI_ASSOC);
+                              								if ($loos['COUNT(sum.day_n)'] ==0 )  {
+                              									 $sick_not ='';
+                              								}else{
+                              									 $sick_not = $loos['COUNT(sum.day_n)'];
+                              								}
+                              								/*##############################ลาป่วย ่มี ########################## */
+                              								$sss ="SELECT COUNT(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                              									    FROM   `status`
+                              										INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                              										WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='6'";
+                              								$reesss =mysqli_query($conn,$sss);
+                              								$looss=mysqli_fetch_array($reesss,MYSQLI_ASSOC);
+                              								if ($looss['COUNT(sum.day_n)'] ==0 )  {
+                              									 $sick ='';
+                              								}else{
+                              									 $sick = $looss['COUNT(sum.day_n)'];
+                              								}
+                              								/*##############################ลาป่วย ่จากการทำงาน ########################## */
+                              								$ssss ="SELECT COUNT(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                              									    FROM   `status`
+                              										INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                              										WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='7'";
+                              								$reessss =mysqli_query($conn,$ssss);
+                              								$loosss=mysqli_fetch_array($reessss,MYSQLI_ASSOC);
+                              								if ($loosss['COUNT(sum.day_n)'] ==0 )  {
+                              									 $sick_form_work ='';
+                              								}else{
+                              									 $sick_form_work = $loosss['COUNT(sum.day_n)'];
+                              								}
+                              								/*##############################ลากิจ ได้ค่าจ้าง######################## */
+                              								$ssssss ="SELECT COUNT(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                              									    FROM   `status`
+                              										INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                              										WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='8'";
+                              								$reesssss =mysqli_query($conn,$ssssss);
+                              								$loossss=mysqli_fetch_array($reesssss,MYSQLI_ASSOC);
+                              								if ($loossss['COUNT(sum.day_n)'] ==0 )  {
+                              									 $kit ='';
+                              								}else{
+                              									 $kit = $loossss['COUNT(sum.day_n)'];
+                              								}
+                              								/*##############################ลากิจ ไม่ได้ค่าจ้าง######################## */
+                              								$sssssss ="SELECT COUNT(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                              									    FROM   `status`
+                              										INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                              										WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='9'";
+                              								$reessssss =mysqli_query($conn,$sssssss);
+                              								$loosssss=mysqli_fetch_array($reessssss,MYSQLI_ASSOC);
+                              								if ($loosssss['COUNT(sum.day_n)'] ==0 )  {
+                              									 $kit_not ='';
+                              								}else{
+                              									 $kit_not = $loosssss['COUNT(sum.day_n)'];
+                              								}
+                              								/*############################## ลากิจพิเศษ######################## */
+                              								$ssssssss ="SELECT COUNT(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                              											FROM   `status`
+                              										INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                              										WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='10'";
+                              								$reesssssss =mysqli_query($conn,$ssssssss);
+                              								$loossssss=mysqli_fetch_array($reesssssss,MYSQLI_ASSOC);
+                              								if ($loossssss['COUNT(sum.day_n)'] ==0 )  {
+                              									 $kit_ex ='';
+                              								}else{
+                              									 $kit_ex = $loossssss['COUNT(sum.day_n)'];
+                              								}
+                              									/*############################## อื่นๆ ######################## */
+                              								$sssssssss ="SELECT COUNT(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                              											FROM   `status`
+                              										INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                              										WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='11'";
+                              								$reessssssss =mysqli_query($conn,$sssssssss);
+                              								$loosssssss=mysqli_fetch_array($reessssssss,MYSQLI_ASSOC);
+                              								if ($loosssssss['COUNT(sum.day_n)'] ==0 )  {
+                              									 $ext ='';
+                              								}else{
+                              									 $ext = $loosssssss['COUNT(sum.day_n)'];
+                              								}
 
 
                                   ?>
@@ -491,16 +501,24 @@ header("Pragma:no-cache");
                                         <td><?php echo $row['dep_name']; ?></td>
                                         <td><?php echo date('d/m/Y',strtotime($row['start'])); ?> </td> <!-- วันเริ่มงาน -->
                                         <td><?php echo time_elapsed_string($row['start'], true); ?></td> <!-- จำนวนวันทำงาน -->
-                                        <td><?php echo $have_vacation + $johnatar  ; ?></td>
-
-                                        <td><?php echo $vacation_cout_this_year; ?></td>
-                                        <td><?php echo ($have_vacation + $johnatar)-$vacation_cout_this_year; ?></td>
-                                        <td><?php echo $late; ?></td>
-                                        <td><?php echo $loww['Sum(sum.day_n)']; ?></td>
-                                        <td><?php echo $lo['Sum(sum.day_n)']; ?></td>
-                                        <td><?php echo $loo['Sum(sum.day_n)']; ?></td>
-                                        <td><?php echo $loos['Sum(sum.day_n)']; ?></td>
-                                        <td><?php echo $looss['Sum(sum.day_n)']; ?></td>
+                                        <td style="text-align:center;"><?php echo $vacation_last_year;?></td>
+                                        <td style="text-align:center;"><?php echo $have_vacation; ?></td>
+                                        <td style="text-align:center;"><?php echo $have_vacation+$vacation_last_year; ?></td>
+                                        <td style="text-align:center;"><?php echo $vacation_cout_this_year; ?></td>
+                                        <td style="text-align:center;"><?php echo ($have_vacation+$vacation_last_year)-$vacation_cout_this_year; ?></td>
+                                        <td style="text-align:center;"><?php echo $in; ?></td>
+                                        <td style="text-align:center;"><?php echo $out; ?></td>
+                                        <td style="text-align:center;"><?php echo $out+$in; ?></td>
+                                        <td style="text-align:center;"><?php echo $late; ?></td>
+                                        <td style="text-align:center;"><?php echo $exit; ?></td>
+                                        <td align="center"><?php echo $kad; ?></td>
+                                  			<td align="center"><?php echo $sick_not; ?></td>
+                                  			<td align="center"><?php echo $sick; ?></td>
+      																	<td align="center"><?php echo $sick_form_work; ?></td>
+      																	<td align="center"><?php echo $kit; ?></td>
+      																	<td align="center"><?php echo $kit_not; ?></td>
+      																	<td align="center"><?php echo $kit_ex; ?></td>
+      																	<td align="center"><?php echo $ext; ?></td>
 
 
 

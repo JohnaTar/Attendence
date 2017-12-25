@@ -120,7 +120,7 @@
                                             $sqli="SELECT Sum(sum.day_n),sum.ty_id,sum.date,`status`.user_id
                                                    FROM sum
                                                    INNER JOIN `status` ON sum.sum_id = `status`.sum_id
-                                                   WHERE user_id ='".$row['user_id']."' AND ty_id ='5'
+                                                   WHERE user_id ='".$row['user_id']."' AND ty_id ='12'
                                                    AND date >= '".$current_y."' AND  date <= '".$current_y2."'";
 
 
@@ -132,7 +132,7 @@
                                                 $vacation_cout_this_year= 0;
                                             }
 
-                                        // นับวันที่พักร้อนปีที่แล้ว* ////////////////////////////////////////
+                                        // แสดงสิทธิพักร้อนปีที่แล้ว* ////////////////////////////////////////
                                         $amp ='SELECT va_num FROM vacation_last_year WHERE user_id="'.$row['user_id'].'"';
                                         $tar =mysqli_query($conn,$amp);
                                         $amptar =mysqli_fetch_array($tar);
@@ -160,31 +160,16 @@
                                            $do_work = $diff->format("%a");
                                            $last_y = (date("Y", strtotime($row['start']))-1).'-12-26';
                                            $last_y2  =  date('Y', strtotime($row['start'])).'-12-25'; //วันที่สุดท้ายของปีที่ทำงาน
-
                                            if ($do_work >= 365 AND $do_work< 730) { //ถ้าครบปี
-
-
-
-
-
-                                            $date = $row['start'];
+                                             $date = $row['start'];
                                             $date = strtotime($date);
                                             $date = strtotime("+365 day", $date);
                                              $mama =date('Y', $date).'-12-26';
-
-
                                             if (date("Y-m-d") >=$mama) {
                                             $have_vacation =8;
                                           }else{
 
-
-
-
-
-
-
-
-                                           // สิ้นปี +1
+                                 // สิ้นปี +1
                                            $start_work = strtotime($row['start']);
                                            $end_of_year_work = strtotime($last_y2);
                                            $datediff = $end_of_year_work - $start_work;
@@ -355,7 +340,6 @@
                                         <td align="center"><?php echo date('d/m/Y',strtotime($row['start'])); ?> </td> <!-- วันเริ่มงาน -->
                                         <td><?php echo time_elapsed_string($row['start'], true); ?></td> <!-- จำนวนวันทำงาน -->
                                         <td><?php echo $vacation_last_year; ?>  : <a id="sent_id_to_add_vacation_last_year"  data-toggle="modal" data-target="#vacation_last_year" onclick="return show_name_on_add_vacation_last_years(<?php echo $row['user_id']; ?>)"   ><i class="fa fa-pencil-square-o  " aria-hidden="true"></i></td>
-
 
                                         <td><?php echo $have_vacation; ?></td>
                                         <td><?php echo $have_vacation+$vacation_last_year; ?></td>
