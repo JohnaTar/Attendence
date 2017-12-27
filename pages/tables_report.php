@@ -40,7 +40,7 @@ header("Pragma:no-cache");
                                         <th rowspan="3" style="text-align:center">วันเริ่มงาน</th>
                                         <th rowspan="3" style="text-align:center">จำนวนวันทำงาน</th>
                                         <th colspan="5"  rowspan="2" style="text-align:center">พักร้อน (วัน)</th>
-                                        <th colspan="13" style="text-align:center">วันที่ : <?php echo date('d/m/Y',strtotime($_POST['rank_of_date'])).'-'.date('d/m/Y',strtotime($_POST['rank_of_date2'])); ?></th>
+                                        <th colspan="23" style="text-align:center">วันที่ : <?php echo date('d/m/Y',strtotime($_POST['rank_of_date'])).'-'.date('d/m/Y',strtotime($_POST['rank_of_date2'])); ?></th>
 
 
 
@@ -50,6 +50,8 @@ header("Pragma:no-cache");
                                         <th colspan="3">ลืมสแกน</th>
                                         <th colspan="2">สาย/กลับก่อน</th>
                                         <th colspan="8">การลา</th>
+                                        <th  bgcolor="#5bc0de" colspan="10">การลา (รวม)</th>
+
 
                                     </tr>
                                     <tr>
@@ -67,21 +69,23 @@ header("Pragma:no-cache");
                                         <th>ลาป่วย<br><sub>ไม่มีใบรับรองแพทย์</sub></th>
                                         <th>ลาป่วย<br><sub>มีใบรับรองแพทย์</sub></th>
                                         <th>ลาป่วย<br><sub>จากการทำงาน</sub></th>
-                                        <th>ลากิจ<br><sub>ไม่ได้ค่าจ้าง</sub></th>
                                         <th>ลากิจ<br><sub>ได้ค่าจ้าง</sub></th>
+                                        <th>ลากิจ<br><sub>ไม่ได้ค่าจ้าง</sub></th>
                                         <th>ลากิจพิเศษ<br><sub>ได้ค่าจ้าง</sub></th>
                                         <th>ลาอื่นๆ</th>
 
-
-
-
-
-
-
-
-
-
+                                        <th bgcolor="#5bc0de">สาย</th>
+                                        <th bgcolor="#5bc0de">กลับก่อน</th>
+                                        <th bgcolor="#5bc0de">ขาดงาน</th>
+                                        <th bgcolor="#5bc0de"> ลาป่วย<br><sub>ไม่มีใบรับรองแพทย์</sub></th>
+                                        <th bgcolor="#5bc0de">ลาป่วย<br><sub>มีใบรับรองแพทย์</sub></th>
+                                        <th bgcolor="#5bc0de">ลาป่วย<br><sub>จากการทำงาน</sub></th>
+                                        <th bgcolor="#5bc0de">ลากิจ<br><sub>ได้ค่าจ้าง</sub></th>
+                                        <th bgcolor="#5bc0de">ลากิจ<br><sub>ไม่ได้ค่าจ้าง</sub></th>
+                                        <th bgcolor="#5bc0de">ลากิจพิเศษ<br><sub>ได้ค่าจ้าง</sub></th>
+                                        <th bgcolor="#5bc0de">ลาอื่นๆ</th>
                                     </tr>
+
                                 </thead>
                                 <tbody>
 
@@ -492,8 +496,126 @@ header("Pragma:no-cache");
                               								}else{
                               									 $ext = $loosssssss['COUNT(sum.day_n)'];
                               								}
+                          // ##################### รวมเวลา     ################################################
+                          $sum_late ="SELECT SUM(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                              FROM   `status`
+                            INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                            WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='1'";
+                        $result_sum_late =mysqli_query($conn,$sum_late);
+                        $row_sum_late=mysqli_fetch_array($result_sum_late,MYSQLI_ASSOC);
+                              if ($row_sum_late['SUM(sum.day_n)'] ==0) {
+                                $sum_late ='';
+                              }else{
+                                $sum_late = $row_sum_late['SUM(sum.day_n)'];
+                              }
+                            #####################################################
 
+                              $sum_exit ="SELECT SUM(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                                    FROM   `status`
+                                  INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                                  WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='3'";
+                              $result_sum_exit =mysqli_query($conn,$sum_exit);
+                              $row_sum_exit=mysqli_fetch_array($result_sum_exit,MYSQLI_ASSOC);
+                              if ($row_sum_exit['SUM(sum.day_n)'] ==0 )  {
+                                 $sum_exit ='';
+                              }else{
+                                 $sum_exit = $row_sum_exit['SUM(sum.day_n)'];
 
+                              }
+                              ###################################################
+                              $sum_kad ="SELECT SUM(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                                      FROM   `status`
+                                    INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                                    WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='4'";
+                                $result_sum_kad =mysqli_query($conn,$sum_kad);
+                                $row_sum_kad=mysqli_fetch_array($result_sum_kad,MYSQLI_ASSOC);
+                                if ($row_sum_kad['SUM(sum.day_n)'] ==0 )  {
+                                   $sum_kad ='';
+                                }else{
+                                   $sum_kad = $row_sum_kad['SUM(sum.day_n)'];
+                                }
+                              ####################################################
+                                $sum_sick_no ="SELECT SUM(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                                      FROM   `status`
+                                    INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                                    WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='5'";
+                                $result_sum_sick_no =mysqli_query($conn,$sum_sick_no);
+                                $row_sum_sick_no=mysqli_fetch_array($result_sum_sick_no,MYSQLI_ASSOC);
+                                if ($row_sum_sick_no['SUM(sum.day_n)'] ==0 )  {
+                                   $sum_sick_no ='';
+                                }else{
+                                   $sum_sick_no = $row_sum_sick_no['SUM(sum.day_n)'];
+                                }
+                             ####################################################
+                                $sum_sick ="SELECT SUM(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                                      FROM   `status`
+                                    INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                                    WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='6'";
+                                $result_sum_sick =mysqli_query($conn,$sum_sick);
+                                $row_sum_sick=mysqli_fetch_array($result_sum_sick,MYSQLI_ASSOC);
+                                if ($row_sum_sick['SUM(sum.day_n)'] ==0 )  {
+                                   $sum_sick ='';
+                                }else{
+                                   $sum_sick = $row_sum_sick['SUM(sum.day_n)'];
+                                }
+                              ###################################################
+                                $sum_sick_work ="SELECT SUM(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                                      FROM   `status`
+                                    INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                                    WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='7'";
+                                $result_sum_sick_work =mysqli_query($conn,$sum_sick_work);
+                                $row_sum_sick_work=mysqli_fetch_array($result_sum_sick_work,MYSQLI_ASSOC);
+                                if ($row_sum_sick_work['SUM(sum.day_n)'] ==0 )  {
+                                   $sum_sick_form_work ='';
+                                }else{
+                                   $sum_sick_form_work = $row_sum_sick_work['SUM(sum.day_n)'];
+                                }
+                              ###################################################
+                                $sum_kit ="SELECT SUM(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                                      FROM   `status`
+                                    INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                                    WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='8'";
+                                $result_sum_kit =mysqli_query($conn,$sum_kit);
+                                $row_sum_kit=mysqli_fetch_array($result_sum_kit,MYSQLI_ASSOC);
+                                if ($row_sum_kit['SUM(sum.day_n)'] ==0 )  {
+                                   $sum_kit ='';
+                                }else{
+                                   $sum_kit = $row_sum_kit['SUM(sum.day_n)'];
+                                }
+                              ####################################################
+                              $sum_kit_no ="SELECT SUM(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                                    FROM   `status`
+                                  INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                                  WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='9'";
+                              $result_sum_kit_no =mysqli_query($conn,$sum_kit_no);
+                              $row_sum_kit_no=mysqli_fetch_array($result_sum_kit_no,MYSQLI_ASSOC);
+                              if ($row_sum_kit_no['SUM(sum.day_n)'] ==0 )  {
+                                 $sum_kit_not ='';
+                              }else{
+                                 $sum_kit_not = $row_sum_kit_no['SUM(sum.day_n)'];
+                              }
+                              $sum_kit_ex ="SELECT SUM(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                                    FROM   `status`
+                                  INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                                  WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='10'";
+                              $result_sum_kit_ex =mysqli_query($conn,$sum_kit_ex);
+                              $row_sum_kit_ex=mysqli_fetch_array($result_sum_kit_ex,MYSQLI_ASSOC);
+                              if ($row_sum_kit_ex['SUM(sum.day_n)'] ==0 )  {
+                                 $sum_kit_ex ='';
+                              }else{
+                                 $sum_kit_ex = $row_sum_kit_ex['SUM(sum.day_n)'];
+                              }
+                              $sum_etc ="SELECT SUM(sum.day_n),`status`.user_id,sum.ty_id,sum.date
+                                    FROM   `status`
+                                  INNER JOIN sum ON `status`.sum_id = sum.sum_id
+                                  WHERE user_id='".$row['user_id']."' AND date >= '".$rang."' AND  date <= '".$rang2."' AND ty_id ='11'";
+                              $result_sum_etc=mysqli_query($conn,$sum_etc);
+                              $row_sum_etc=mysqli_fetch_array($result_sum_etc,MYSQLI_ASSOC);
+                              if ($row_sum_etc['SUM(sum.day_n)'] ==0 )  {
+                                 $sum_ext ='';
+                              }else{
+                                 $sum_ext = $row_sum_etc['SUM(sum.day_n)'];
+                              }
                                   ?>
                                     <tr <?php echo $data; ?> >
                                         <td><?php echo $k; ?> </td>
@@ -519,14 +641,155 @@ header("Pragma:no-cache");
       																	<td align="center"><?php echo $kit_not; ?></td>
       																	<td align="center"><?php echo $kit_ex; ?></td>
       																	<td align="center"><?php echo $ext; ?></td>
+                                        <?php
+                                        if (!empty($late)) {
+                                          $minutes = $sum_late;
+                                          $day = floor ($minutes / 480);
+                                          $hour = floor (($minutes - $day * 480) / 60);
+                                          $min = $minutes - ($day * 480) - ($hour * 60);
+                                          echo '<td align="center">  '.$day.': วัน/'.$hour.': ชั่วโมง/'.$min.': นาที </td>';
+                                        } else{
+                                          echo '<td></td>';
+                                        }
+
+                                        ?>
+
+                                        <!-- ออก -->
+                                        <?php
+                                        if (!empty($exit)) {
+                                          $minutes = $sum_exit;
+                                          $day = floor ($minutes / 480);
+                                          $hour = floor (($minutes - $day * 480) / 60);
+                                          $min = $minutes - ($day * 480) - ($hour * 60);
+                                          echo '<td align="center">  '.$day.': วัน/'.$hour.': ชั่วโมง/'.$min.': นาที </td>';
+                                        }else{
+
+                                          echo '<td></td>';
+                                        }
+
+                                        ?>
 
 
+                                        <!-- ขาด -->
+                                        <?php
+                                        if (!empty($kad)) {
+                                          $minutes = $sum_kad;
+                                          $day = floor ($minutes / 480);
+                                          $hour = floor (($minutes - $day * 480) / 60);
+                                          $min = $minutes - ($day * 480) - ($hour * 60);
+                                          echo '<td align="center">  '.$day.': วัน/'.$hour.': ชั่วโมง/'.$min.': นาที </td>';
+                                        }else{
+
+                                          echo '<td></td>';
+                                        }
+                                        ?>
 
 
+                                        <!-- ป่วยไม่ไมี -->
+                                        <?php
+                                        if (!empty($sick_not)) {
+                                          $minutes = $sum_sick_no;
+                                          $day = floor ($minutes / 480);
+                                          $hour = floor (($minutes - $day * 480) / 60);
+                                          $min = $minutes - ($day * 480) - ($hour * 60);
+                                          echo '<td align="center">  '.$day.': วัน/'.$hour.': ชั่วโมง/'.$min.': นาที </td>';
+                                        }else{
+
+                                          echo '<td></td>';
+                                        }
+                                        ?>
 
 
+                                        <!-- ป่วยมี -->
+                                        <?php
+                                        if (!empty($sick)) {
+                                          $minutes = $sum_sick;
+                                          $day = floor ($minutes / 480);
+                                          $hour = floor (($minutes - $day * 480) / 60);
+                                          $min = $minutes - ($day * 480) - ($hour * 60);
+                                          echo '<td align="center">  '.$day.': วัน/'.$hour.': ชั่วโมง/'.$min.': นาที </td>';
+                                        }else{
+
+                                          echo '<td></td>';
+                                        }
+                                        ?>
 
 
+                                        <!-- ป่วยจากงาน -->
+                                        <?php
+
+                                        if (!empty($sick_form_work)) {
+                                          $minutes = $sum_sick_form_work;
+                                          $day = floor ($minutes / 480);
+                                          $hour = floor (($minutes - $day * 480) / 60);
+                                          $min = $minutes - ($day * 480) - ($hour * 60);
+                                          echo '<td align="center">  '.$day.': วัน/'.$hour.': ชั่วโมง/'.$min.': นาที </td>';
+                                        }else{
+
+                                          echo '<td></td>';
+                                        }
+                                        ?>
+
+
+                                        <!-- กิจ -->
+                                        <?php
+
+                                        if (!empty($kit)) {
+                                          $minutes = $sum_kit;
+                                          $day = floor ($minutes / 480);
+                                          $hour = floor (($minutes - $day * 480) / 60);
+                                          $min = $minutes - ($day * 480) - ($hour * 60);
+                                          echo '<td align="center">  '.$day.': วัน/'.$hour.': ชั่วโมง/'.$min.': นาที </td>';
+                                        }else{
+
+                                          echo '<td></td>';
+                                        }
+                                        ?>
+                                        <!-- กิจ no -->
+
+                                        <?php
+
+                                        if (!empty($kit_not)) {
+                                          $minutes = $sum_kit_not;
+                                          $day = floor ($minutes / 480);
+                                          $hour = floor (($minutes - $day * 480) / 60);
+                                          $min = $minutes - ($day * 480) - ($hour * 60);
+                                          echo '<td align="center">  '.$day.': วัน/'.$hour.': ชั่วโมง/'.$min.': นาที </td>';
+                                        }else{
+
+                                          echo '<td></td>';
+                                        }
+                                        ?>
+
+
+                                        <?php
+
+                                        if (!empty($kit_ex)) {
+                                          $minutes = $sum_kit_ex;
+                                          $day = floor ($minutes / 480);
+                                          $hour = floor (($minutes - $day * 480) / 60);
+                                          $min = $minutes - ($day * 480) - ($hour * 60);
+                                          echo '<td align="center">  '.$day.': วัน/'.$hour.': ชั่วโมง/'.$min.': นาที </td>';
+                                        }else{
+
+                                          echo '<td></td>';
+                                        }
+                                        ?>
+
+
+                                        <?php
+
+                                        if (!empty($ext)) {
+                                          $minutes = $sum_ext;
+                                          $day = floor ($minutes / 480);
+                                          $hour = floor (($minutes - $day * 480) / 60);
+                                          $min = $minutes - ($day * 480) - ($hour * 60);
+                                          echo '<td align="center">  '.$day.': วัน/'.$hour.': ชั่วโมง/'.$min.': นาที </td>';
+                                        }else{
+
+                                          echo '<td></td>';
+                                        }
+                                        ?>
 
 
 
