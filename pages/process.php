@@ -126,7 +126,7 @@
 				   FROM sum
 	               INNER JOIN `status`
 	               ON `status`.sum_id = sum.sum_id
-	               WHERE ty_id =5  AND date >= '".$current_y."' AND  date <= '".$current_y2."' AND user_id='".$row['user_id']."'
+	               WHERE ty_id =12  AND date >= '".$current_y."' AND  date <= '".$current_y2."' AND user_id='".$row['user_id']."'
 	               ORDER BY date ASC ";
 	        $result =mysqli_query($conn,$sqli);
 	        $total = 0;

@@ -45,8 +45,8 @@ class Outsource {
        $get_user = $db->query("SELECT outsrouce.oc_id,outsrouce.oc_name,
                                       outsrouce.`start`,outsrouce.resign,
                                       outsrouce.tel,outsrouce.dep_co_id,
-                                      department.dep_co_name,outsrouce.co_id,
-                                      companny.first_y,companny.last_y
+                                      department.dep_co_name,outsrouce.co_id
+
                                FROM outsrouce
                                INNER JOIN department ON outsrouce.dep_co_id = department.dep_co_id
                                INNER JOIN companny ON outsrouce.co_id = companny.co_id
@@ -105,35 +105,73 @@ class Outsource {
 
        $db = $this->connect();
        $get_user = $db->prepare("SELECT (
-      SELECT Sum(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
-      WHERE status_oc.oc_id=? AND ty_id ='2' AND date >=? AND date <=?) AS total_sick,
+      SELECT COUNT(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
+      WHERE status_oc.oc_id=? AND ty_id ='1' AND date >=? AND date <=?) AS total_late,
       (
-      SELECT Sum(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
-      WHERE status_oc.oc_id=? AND ty_id ='3' AND date >=? AND date <=?
+      SELECT COUNT(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
+      WHERE status_oc.oc_id=? AND ty_id ='2' AND date >=? AND date <=?
+    ) AS total_forget,
+      (
+        SELECT COUNT(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
+        WHERE status_oc.oc_id=? AND ty_id ='3' AND date >=? AND date <=?
+      ) AS total_exit,
+      (
+        SELECT COUNT(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
+        WHERE status_oc.oc_id=? AND ty_id ='4' AND date >=? AND date <=?
+      ) AS total_kad,
+      (
+        SELECT COUNT(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
+        WHERE status_oc.oc_id=? AND ty_id ='5' AND date >=? AND date <=?
+      ) AS total_sickno,
+      (
+        SELECT COUNT(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
+        WHERE status_oc.oc_id=? AND ty_id ='6' AND date >=? AND date <=?
+      ) AS total_sickhave,
+      (
+        SELECT COUNT(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
+        WHERE status_oc.oc_id=? AND ty_id ='7' AND date >=? AND date <=?
+      ) AS total_sickwork,
+      (
+        SELECT COUNT(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
+        WHERE status_oc.oc_id=? AND ty_id ='8' AND date >=? AND date <=?
       ) AS total_kit,
       (
-        SELECT Sum(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
-        WHERE status_oc.oc_id=? AND ty_id ='8' AND date >=? AND date <=?
-      ) AS total_wrong,
+        SELECT COUNT(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
+        WHERE status_oc.oc_id=? AND ty_id ='9' AND date >=? AND date <=?
+      ) AS total_kitno,
       (
-        SELECT Sum(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
-        WHERE status_oc.oc_id=? AND ty_id ='7' AND date >=? AND date <=?
-      ) AS total_late,
+        SELECT COUNT(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
+        WHERE status_oc.oc_id=? AND ty_id ='10' AND date >=? AND date <=?
+      ) AS total_kitex,
       (
-        SELECT Sum(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
-        WHERE status_oc.oc_id=? AND ty_id ='1' AND date >=? AND date <=?
-      ) AS total_absence");
-       $get_user->bind_param("issississississ",$user_id,$first_day_of_month,$last_day_of_month,$user_id,$first_day_of_month,$last_day_of_month,
-       $user_id,$first_day_of_month,$last_day_of_month,$user_id,$first_day_of_month,$last_day_of_month,$user_id,$first_day_of_month,$last_day_of_month);
+        SELECT COUNT(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
+        WHERE status_oc.oc_id=? AND ty_id ='11' AND date >=? AND date <=?
+      ) AS total_etc
+
+
+
+
+      ");
+       $get_user->bind_param("issississississississississississ",$user_id,$first_day_of_month,$last_day_of_month,$user_id,$first_day_of_month,$last_day_of_month,
+     $user_id,$first_day_of_month,$last_day_of_month,$user_id,$first_day_of_month,$last_day_of_month,$user_id,$first_day_of_month,$last_day_of_month,
+   $user_id,$first_day_of_month,$last_day_of_month,$user_id,$first_day_of_month,$last_day_of_month,$user_id,$first_day_of_month,$last_day_of_month,
+ $user_id,$first_day_of_month,$last_day_of_month,$user_id,$first_day_of_month,$last_day_of_month,$user_id,$first_day_of_month,$last_day_of_month);
        $get_user->execute();
-       $get_user->bind_result($sick,$kit,$wrong,$late,$absence);
+       $get_user->bind_result($late,$forget,$exit,$kad,$sickno,$sickhave,$sickwork,$kit,$kitno,$kitex,$etc);
        $get_user->fetch();
        $result = array(
-            'count_sick'=>$sick,
-            'count_kit'=>$kit,
-            'count_wrong'=>$wrong,
             'count_late'=>$late,
-            'coutn_absence'=>$absence,
+            'count_forget'=>$forget,
+            'count_exit'=>$exit,
+            'count_kad'=>$kad,
+            'coutn_sickno'=>$sickno,
+            'count_sickhave' =>$sickhave,
+            'count_sickwork' =>$sickwork,
+            'count_kit' =>$kit,
+            'count_kitno' =>$kitno,
+            'count_kitex' =>$kitex,
+            'count_etc' =>$etc,
+
 
         );
          return $result;

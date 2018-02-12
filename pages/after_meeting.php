@@ -70,8 +70,11 @@ if (isset($_POST['johnatar_maty'])) {
                 }else if ($data==11) {
                   $rang = date('Y').'-10-26';
                   $rang2 = date('Y').'-11-25';
-                }else{
+                }else if($data==12){
                   $rang = date('Y').'-11-26';
+                  $rang2 = date('Y').'-12-25';
+                }else{
+                  $rang = (date('Y')-1).'-12-26';
                   $rang2 = date('Y').'-12-25';
                 }
 

@@ -30,10 +30,9 @@
                     <div class="col-md-2">
                         <button class="btn btn-info" data-toggle="modal" data-target="#add_user"><i class="fa fa-user-plus " aria-hidden="true"></i></button>
 
-
                     </div>
                     <div class="col-md-10">
-<form class="form-horizontal">
+                        <form class="form-horizontal" onsubmit="return show_user_in_companny();" id="data_show_user_in_companny">
                          <div class="form-group">
                         <label class="col-md-1 control-label" for="selectbasic">บริษัท</label>
                         <div class="col-md-4">
@@ -45,7 +44,7 @@
 
                    ?>
 
-                    <select  id="co_id" class="form-control input-md" required="">
+                    <select name="co_id" class="form-control input-md" required="">
                     <?php
                         if (!empty($get_companny)) {
                             foreach($get_companny as $companny){
@@ -58,6 +57,23 @@
 
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-md-1 control-label" for="fn">เดือน</label>
+                        <div class="col-md-4">
+                           <input name="date" id="mdp-demos"  type="text"   class="form-control input-md" required="">
+
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-1 control-label" for="submit"></label>
+                        <div class="col-md-4">
+                    <button  type="submit" class="btn btn-success" >  <i class="fas fa-spinner fa-spin"></i></button>
+                        </div>
+                    </div>
+
+
+
 </form>
                   </div>
 
@@ -92,315 +108,6 @@
     <!-- /#wrapper -->
 
     <!-- jQuery -->
-
-
-    <div class="modal fade" id="add_vacation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">เพิ่มข้อมูล</h4>
-                  </div>
-                  <div class="modal-body">
-                        <form class="form-horizontal">
-
-                          <div class="form-group">
-                            <label class="col-md-4 control-label" for="selectbasic">ประเภท</label>
-                            <div class="col-md-4">
-                        <select  name="type" id="type" class="form-control input-md" required="">
-                            <option value="">  </option>
-                             <option value="1"> สาย </option>
-                             <option value="2"> ขาด </option>
-                             <option value="3"> ลาป่วย </option>
-                             <option value="4"> ลากิจ </option>
-                             <option value="5"> ลาผิดระเบียบ </option>
-                             <option value="6"> พักร้อน </option>
-
-
-
-
-
-                        </select>
-
-                            </div>
-                        </div>
-                    </form>
-                    <!-- ########################### สาย #######################################-->
-                    <div id="1" class="colors" style="display:none">
-                        <form class="form-horizontal" id="data_save_oc_late" onsubmit="return save_data_oc_late();">
-                        <input type="hidden" name="late" value="7">
-                        <input type="hidden" name="date_of_late2" id="rank2">
-                        <div id="oc_name_late"></div>
-                        <div class="form-group">
-                              <label class="col-md-4 control-label" for="fn">วันที่</label>
-                              <div class="col-md-4">
-                                        <input name="date_of_late" id="date_absence1"  type="date"  class="form-control input-md" required="">
-
-                               </div>
-
-                              <div class="col-md-4">
-
-                                        <input id="date_absence2"  type="date"  class="form-control input-md" >
-                                        <span id="alert"></span>
-                               </div>
-
-                        </div>
-
-                        <div class="form-group">
-                              <label class="col-md-4 control-label" for="fn">หมายเหตุ</label>
-                              <div class="col-md-6">
-                                       <textarea class="form-control  input-md" rows="3" name="comment_late" ></textarea>
-
-                               </div>
-                        </div>
-
-                         <div class="form-group">
-                                    <label class="col-md-4 control-label" for="submit"></label>
-                                    <div class="col-md-4">
-                                <button type="submit" name="submit" class="btn btn-primary" >Save</button>
-                                    </div>
-                                </div>
-                      </form>
-                    </div>
-                    <!-- ########################### ขาด #######################################-->
-                    <div id="2" class="colors" style="display:none">
-                      <form class="form-horizontal" id="data_save_oc_absence" onsubmit="return save_data_oc_absence();">
-                         <div id="oc_name_absence"></div>
-                        <input type="hidden" name="absence" value="1">
-
-
-
-                        <div class="form-group">
-                              <label class="col-md-4 control-label" for="fn">วันที่</label>
-                              <div class="col-md-4">
-                                        <input name="date_of_absence"  type="date"  class="form-control input-md" required="">
-
-
-                               </div>
-
-
-                        </div>
-
-                          <div class="form-group">
-                                          <label class="col-md-4 control-label" for="fn">จำนวน</label>
-                                          <div class="col-md-4">
-                                      <input type="text" required name="number_of_absence" class="form-control input-md"  >
-
-                                </div>
-                          </div>
-
-                        <div class="form-group">
-                              <label class="col-md-4 control-label" for="fn">หมายเหตุ</label>
-                              <div class="col-md-6">
-                                       <textarea class="form-control  input-md" rows="3" name="comment_absence"></textarea>
-
-                               </div>
-                        </div>
-
-                         <div class="form-group">
-                                    <label class="col-md-4 control-label" for="submit"></label>
-                                    <div class="col-md-4">
-                                <button type="submit" name="submit" class="btn btn-primary" >Save</button>
-                                    </div>
-                                </div>
-                      </form>
-                    </div>
-                    <!-- ########################### ลาป่วย #######################################-->
-                    <div id="3" class="colors" style="display:none">
-                       <form class="form-horizontal" id="data_save_oc_sick" onsubmit="return save_data_oc_sick();">
-                          <div id="oc_name_sick"></div>
-                          <input type="hidden" name="sick" value="2">
-                        <div class="form-group">
-                              <label class="col-md-4 control-label" for="fn">วันที่</label>
-                              <div class="col-md-4">
-                                        <input name="date_of_sick" id="date_sick1"  type="date"  class="form-control input-md" required="">
-
-
-                               </div>
-                                   <div class="col-md-4">
-
-                                        <input id="date_sick2"  type="date"  class="form-control input-md" >
-                                          <span id="alert2"></span>
-                               </div>
-
-                        </div>
-                           <input type="hidden" name="date_of_sick2" id="rank3">
-                          <div class="form-group">
-                                          <label class="col-md-4 control-label" for="fn">จำนวน</label>
-                                          <div class="col-md-4">
-                                      <input type="text" required name="number_of_sick" class="form-control input-md"  >
-
-                                </div>
-                          </div>
-
-                        <div class="form-group">
-                              <label class="col-md-4 control-label" for="fn">หมายเหตุ</label>
-                              <div class="col-md-6">
-                                       <textarea class="form-control  input-md" rows="3" name="comment_sick"></textarea>
-
-                               </div>
-                        </div>
-
-                         <div class="form-group">
-                                    <label class="col-md-4 control-label" for="submit"></label>
-                                    <div class="col-md-4">
-                                <button type="submit" name="submit" class="btn btn-primary" >Save</button>
-                                    </div>
-                                </div>
-                      </form>
-
-                    </div>
-                    <!-- ########################### ลากิจ #######################################-->
-                    <div id="4" class="colors" style="display:none">
-                      <form class="form-horizontal" id="data_save_oc_errand" onsubmit="return save_data_oc_errand();">
-                          <div id="oc_name_lakit"></div>
-                        <input type="hidden" name="errand" value="3">
-                        <div class="form-group">
-                              <label class="col-md-4 control-label" for="fn">วันที่</label>
-                              <div class="col-md-4">
-                                        <input name="date_of_errand" id="date_errand1"  type="date"  class="form-control input-md" required="">
-
-                               </div>
-                              <div class="col-md-4">
-
-                                        <input id="date_errand2"  type="date"  class="form-control input-md" >
-                                          <span id="alert3"></span>
-                               </div>
-                        </div>
-
-                         <input type="hidden" name="date_of_errand2" id="rank4">
-                         <div class="form-group">
-                                         <label class="col-md-4 control-label" for="fn">จำนวน</label>
-                                         <div class="col-md-4">
-                                     <input type="text" required name="number_of_errand" class="form-control input-md"  >
-
-                               </div>
-                         </div>
-
-                        <div class="form-group">
-                              <label class="col-md-4 control-label" for="fn">หมายเหตุ</label>
-                              <div class="col-md-6">
-                                       <textarea class="form-control  input-md" rows="3" name="comment_errend"></textarea>
-
-                               </div>
-
-                        </div>
-
-                         <div class="form-group">
-                                    <label class="col-md-4 control-label" for="submit"></label>
-                                    <div class="col-md-4">
-                                <button type="submit" name="submit" class="btn btn-primary" >Save</button>
-                                    </div>
-                                </div>
-                      </form>
-                    </div>
-                    <!-- ########################### ลาผิดระเบียบ #######################################-->
-                    <div id="5" class="colors" style="display:none">
-                          <form class="form-horizontal" id="data_save_oc_wrong" onsubmit="return save_data_oc_wrong();">
-                              <div id="oc_name_wrong"></div>
-                            <input type="hidden" name="wrong" value="8">
-                        <div class="form-group">
-                              <label class="col-md-4 control-label" for="fn">วันที่</label>
-                              <div class="col-md-4">
-                                        <input name="date_of_wrong" id="date_Exerrand1"  type="date"  class="form-control input-md" required="">
-
-                               </div>
-                                <div class="col-md-4">
-                                 <input id="date_Exerrand2"  type="date"  class="form-control input-md" >
-                                          <span id="alert4"></span>
-                               </div>
-                        </div>
-                        <input type="hidden" name="date_of_wrong2" id="rank5">
-                        <div class="form-group">
-                                        <label class="col-md-4 control-label" for="fn">จำนวน</label>
-                                        <div class="col-md-4">
-                                    <input type="text" required name="number_of_wrong" class="form-control input-md"  >
-
-                              </div>
-                        </div>
-
-                        <div class="form-group">
-                              <label class="col-md-4 control-label" for="fn">หมายเหตุ</label>
-                              <div class="col-md-6">
-                                       <textarea class="form-control  input-md" rows="3" name="comment_wrong"></textarea>
-
-                               </div>
-                        </div>
-
-                         <div class="form-group">
-                                    <label class="col-md-4 control-label" for="submit"></label>
-                                    <div class="col-md-4">
-                                <button type="submit" name="submit" class="btn btn-primary" >Save</button>
-                                    </div>
-                                </div>
-                      </form>
-                    </div>
-
-                    <div id="6" class="colors" style="display:none">
-                          <form class="form-horizontal" id="data_save_oc_vacation" onsubmit="return save_data_oc_vacation();">
-                              <div id="oc_name_vacation"></div>
-                            <input type="hidden" name="vacation" value="5">
-                        <div class="form-group">
-                              <label class="col-md-4 control-label" for="fn">วันที่</label>
-                              <div class="col-md-4">
-                                        <input name="date_of_vacation" id="date_ext1"  type="date"  class="form-control input-md" required="">
-
-                               </div>
-                                <div class="col-md-4">
-                                 <input id="date_ext2"  type="date"  class="form-control input-md" >
-                                          <span id="alert5"></span>
-                               </div>
-                        </div>
-                        <input type="hidden" name="date_of_vacation2" id="rank6">
-                        <div class="form-group">
-                                        <label class="col-md-4 control-label" for="fn">จำนวน</label>
-                                        <div class="col-md-4">
-                                    <input type="text" required name="number_of_vacation" class="form-control input-md"  >
-
-                              </div>
-                        </div>
-
-                        <div class="form-group">
-                              <label class="col-md-4 control-label" for="fn">หมายเหตุ</label>
-                              <div class="col-md-6">
-                                       <textarea class="form-control  input-md" rows="3" name="comment_vacation"></textarea>
-
-                               </div>
-                        </div>
-
-                         <div class="form-group">
-                                    <label class="col-md-4 control-label" for="submit"></label>
-                                    <div class="col-md-4">
-                                <button type="submit" name="submit" class="btn btn-primary" >Save</button>
-                                    </div>
-                                </div>
-                      </form>
-                    </div>
-
-
-
-
-
-
-
-
-
-
-
-                  </div>
-
-                  <div class="modal-footer">
-
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-
-
-
 
 
 
@@ -536,8 +243,273 @@
          </div>
 
 
+<script>
+$("#mdp-demos").multiDatesPicker({
+                      dateFormat: "d-m-yy",
+                       showButtonPanel: true,
+                       changeMonth: true,
+                       changeYear: true,
+                       maxPicks: 2,
+                        onSelect: function(dateText, inst)
+                   { inst.settings.defaultDate = dateText; },
+                   onSelect: function(dateText, inst) {
 
 
-</body>
+                          }
+                         });
+</script>
+<div class="modal fade" id="edit_user" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">เพิ่มข้อมูล</h4>
+      </div>
+      <div class="modal-body">
+            <form class="form-horizontal">
 
-</html>
+              <div class="form-group">
+                <label class="col-md-4 control-label" for="selectbasic">ประเภท</label>
+                <div class="col-md-6">
+            <select  name="type" id="type" class="form-control input-md" required="">
+                <option value="">  </option>
+                 <option value="1"> สาย </option>
+                 <option value="2"> ลืมสแกน </option>
+                 <option value="3"> ออกก่อน </option>
+                 <option value="4"> ขาดงาน </option>
+                 <option value="5"> ลาป่วย (ไม่มีใบรับรองแพทย์) </option>
+                 <option value="6"> ลาป่วย (มีใบรับรองแพทย์) </option>
+                 <option value="7"> ลาป่วย (จากการทำงาน) </option>
+                 <option value="8"> ลากิจ (ได้ค่าจ้าง) </option>
+                 <option value="9"> ลากิจ (ไม่ได้ค่าจ้าง) </option>
+                 <option value="10"> ลากิจพิเศษ (ได้ค่าจ้าง) </option>
+                 <option value="11"> ลาอื่น </option>
+
+
+
+
+
+
+
+            </select>
+
+                </div>
+            </div>
+</form>
+
+
+
+<!-- ########################### สาย #######################################-->
+<div id="1" class="colors" style="display:none">
+<form class="form-horizontal" id="data_save_oc_late" onsubmit="return save_data_oc_late();">
+<input type="hidden" name="late" value="1" >
+<div id="oc_name_late"></div>
+<div class="form-group">
+  <label class="col-md-4 control-label" for="fn">วันที่</label>
+  <div class="col-md-4">
+            <input name="date"  id="datepicker"  class="form-control input-md" required="">
+
+   </div>
+</div>
+<div class="form-group">
+  <label class="col-md-4 control-label" for="fn">เวลา</label>
+  <div class="col-md-4">
+            <input name="time" type="text" placeholder="นาที" class="form-control input-md" required="">
+
+   </div>
+</div>
+<div class="form-group">
+  <label class="col-md-4 control-label" for="fn">หมายเหตุ</label>
+  <div class="col-md-6">
+           <textarea class="form-control  input-md" rows="3" name="comment" ></textarea>
+
+   </div>
+</div>
+
+<div class="form-group">
+        <label class="col-md-4 control-label" for="submit"></label>
+        <div class="col-md-4">
+    <button type="submit" name="submit" class="btn btn-primary" >Save</button>
+        </div>
+    </div>
+</form>
+</div>
+
+
+
+<!-- ########################### ขาด #######################################-->
+<div id="2" class="colors" style="display:none">
+<form class="form-horizontal" id="data_save2" onsubmit="return save_data2();">
+<div id="data_form2"></div>
+<input type="hidden" name="absence" id="likeamp" >
+<div class="form-group">
+  <label class="col-md-4 control-label" for="fn">วันที่</label>
+  <div class="col-md-6">
+            <input name="date" id="mdp-demo"  type="text"   class="form-control input-md" required="">
+   </div>
+</div>
+<div id="number_of_date">
+<div class="form-group">
+<label class="col-md-4 control-label" for="selectbasic">จำนวน</label>
+<div class="col-md-4">
+<select  name="number" id="day"  class="form-control input-md" >
+
+<option value="1"> เต็มวัน </option>
+<option value="0.5"> ครึ่งวัน </option>
+<option value="3"> นาที </option>
+
+</select>
+
+</div>
+</div>
+</div>
+<div id="field_minute" style="display:none">
+<div class="form-group">
+<label class="col-md-4 control-label" for="fn">นาที</label>
+<div class="col-md-6">
+        <input name="minute" id="minute" type="text"   class="form-control input-md" >
+</div>
+</div>
+</div>
+
+<div class="form-group">
+  <label class="col-md-4 control-label" for="fn">หมายเหตุ</label>
+  <div class="col-md-6">
+           <textarea class="form-control  input-md" rows="3" name="comment"></textarea>
+
+   </div>
+</div>
+
+<div class="form-group">
+        <label class="col-md-4 control-label" for="submit"></label>
+        <div class="col-md-4">
+    <button type="submit" name="submit" class="btn btn-primary" >Save</button>
+        </div>
+    </div>
+</form>
+</div>
+<!-- ลืมสแกน -->
+<div id="3" class="colors" style="display:none">
+<form class="form-horizontal" id="data_save_oc_forget" onsubmit="return save_data_oc_forget();">
+<input type="hidden" name="forget" value="2" id="">
+<div id="oc_name_forget"></div>
+<div class="form-group">
+  <label class="col-md-4 control-label" for="fn">วันที่</label>
+  <div class="col-md-4">
+            <input name="date"  id="datepicker2"  class="form-control input-md" required="">
+
+   </div>
+</div>
+<div class="form-group">
+  <label class="col-md-4 control-label" for="fn">เวลา</label>
+  <div class="col-md-4">
+    <select  name="number"  class="form-control input-md" >
+
+         <option value="1"> เข้า </option>
+         <option value="2"> ออก </option>
+
+
+    </select>
+
+   </div>
+</div>
+<div class="form-group">
+  <label class="col-md-4 control-label" for="fn">หมายเหตุ</label>
+  <div class="col-md-6">
+           <textarea class="form-control  input-md" rows="3" name="comment" ></textarea>
+
+   </div>
+</div>
+
+<div class="form-group">
+        <label class="col-md-4 control-label" for="submit"></label>
+        <div class="col-md-4">
+    <button type="submit" name="submit" class="btn btn-primary" >Save</button>
+        </div>
+    </div>
+</form>
+</div>
+
+
+
+<!-- ออกก่อน -->
+
+<div id="4" class="colors" style="display:none">
+<form class="form-horizontal" id="data_save_oc_exit" onsubmit="return save_data_oc_exit();">
+<input type="hidden" name="exit" value="3" >
+<div id="oc_name_exit"></div>
+<div class="form-group">
+  <label class="col-md-4 control-label" for="fn">วันที่</label>
+  <div class="col-md-4">
+            <input name="date"  id="datepicker3"  class="form-control input-md" required="">
+
+   </div>
+</div>
+<div class="form-group">
+  <label class="col-md-4 control-label" for="fn">เวลา</label>
+  <div class="col-md-4">
+            <input name="time" type="text" placeholder="นาที" class="form-control input-md" required="">
+
+   </div>
+</div>
+<div class="form-group">
+  <label class="col-md-4 control-label" for="fn">หมายเหตุ</label>
+  <div class="col-md-6">
+           <textarea class="form-control  input-md" rows="3" name="comment" ></textarea>
+
+   </div>
+</div>
+
+<div class="form-group">
+        <label class="col-md-4 control-label" for="submit"></label>
+        <div class="col-md-4">
+    <button type="submit" name="submit" class="btn btn-primary" >Save</button>
+        </div>
+    </div>
+</form>
+</div>
+
+
+
+
+
+
+
+      </div>
+
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ลืมสแกน -->
+<script>
+  $('#mdp-demo').multiDatesPicker({
+	     dateFormat: "d-m-yy",
+       showButtonPanel: true,
+       changeMonth: true,
+       changeYear: true,
+       onSelect: function(dateText, inst)
+   { inst.settings.defaultDate = dateText; },
+
+   onSelect: function(dateText, inst) {
+            var tar = $('#mdp-demo').multiDatesPicker('getDates').length;
+
+            if (tar <= 1) {
+                 $("#number_of_date").show();
+
+            }else{
+               $("#number_of_date").hide();
+               $("#day").val('');
+               $("#field_minute").hide();
+               $("#minute").val('');
+
+            }
+        }},
+);
+
+
+
+</script>

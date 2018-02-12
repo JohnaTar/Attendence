@@ -46,11 +46,14 @@
 			    			$rang = date('Y').'-10-26';
 			   				$rang2 = date('Y').'-11-25';
 
-			    		}else{
+			    		}else if($_POST['month']==12){
 			    			$rang = date('Y').'-11-26';
 			   				$rang2 = date('Y').'-12-25';
 
-			    		}
+			    		}else{
+								$rang = (date('Y')-1).'-12-26';
+			   				$rang2 = date('Y').'-12-25';
+							}
 
 
 
@@ -231,7 +234,8 @@
 
 
                             	if ($row['resign'] ==1) {
-                            		echo '	<td><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#edit_user" onclick="return add_data( '.$row['user_id'].');"><i class="fa fa-plus" aria-hidden="true"></i></button> : <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#show_attendent" onclick="return get_show_attendent( '.$row['user_id'].');"><i class="fa fa-area-chart" aria-hidden="true"></i></button>
+                            		echo '	<td><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#edit_user" onclick="return add_data( '.$row['user_id'].');"><i class="fa fa-plus" aria-hidden="true"></i></button>
+																: <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#show_attendent" onclick="return get_show_attendent( '.$row['user_id'].');"><i class="fa fa-area-chart" aria-hidden="true"></i></button>
 
 
                             			</td>
@@ -453,10 +457,12 @@ if (isset($_POST['attendent'])) {
 			    		}else if ($data==11) {
 
 			   				$month ='พฤศจิกายน';
-			    		}else{
+			    		}else if($data==12){
 
 			   				$month ='ธันวาคม';
-			    		}
+			    		}else{
+								$month='สะสมทั้งปี';
+							}
 
 
 

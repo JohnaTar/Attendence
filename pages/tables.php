@@ -170,6 +170,8 @@
                                           }else{
 
                                  // สิ้นปี +1
+
+
                                            $start_work = strtotime($row['start']);
                                            $end_of_year_work = strtotime($last_y2);
                                            $datediff = $end_of_year_work - $start_work;
@@ -192,6 +194,8 @@
 
                                                 $i =0; /*I จำนวนเดือน*/
                                             }
+
+
 
                                             //คำนวณเดือน ถ้าจำนวนวันมากกว่า 16 ปรับเป็น 1 เดือน
                                               if ($i ==1) {
@@ -339,7 +343,7 @@
                                         <td><?php echo $row['dep_name']; ?></td>
                                         <td align="center"><?php echo date('d/m/Y',strtotime($row['start'])); ?> </td> <!-- วันเริ่มงาน -->
                                         <td><?php echo time_elapsed_string($row['start'], true); ?></td> <!-- จำนวนวันทำงาน -->
-                                        <td><?php echo $vacation_last_year; ?>  : <a id="sent_id_to_add_vacation_last_year"  data-toggle="modal" data-target="#vacation_last_year" onclick="return show_name_on_add_vacation_last_years(<?php echo $row['user_id']; ?>)"   ><i class="fa fa-pencil-square-o  " aria-hidden="true"></i></td>
+                                        <td><?php echo $vacation_last_year; ?>  : <a id="sent_id_to_add_vacation_last_year"  data-toggle="modal" data-target="#vacation_last_year" onclick="return show_name_on_add_vacation_last_years(<?php echo $row['user_id']; ?>)"   ><i class="far fa-edit"></i></td>
 
                                         <td><?php echo $have_vacation; ?></td>
                                         <td><?php echo $have_vacation+$vacation_last_year; ?></td>
@@ -357,7 +361,7 @@
                                                     }
                                       ?>
 
-                                           <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#show_data" onclick="return get_show_vacation(<?php echo $row['user_id']; ?>);"><i class="fa fa-area-chart" aria-hidden="true"></i></button>
+                                           <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#show_data" onclick="return get_show_vacation(<?php echo $row['user_id']; ?>);"><i class="fas fa-chart-pie"></i></button>
                                         </td>
 
 

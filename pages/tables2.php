@@ -46,18 +46,19 @@
                           <label class="col-md-4 control-label" for="fn">เดือน</label>
                           <div class="col-md-6">
                                <select class="form-control" id="month">
-                                                <option value="1">มกราคม</option>
-                                                <option value="2">กุมภาพันธ์</option>
-                                                <option value="3">มีนาคม</option>
-                                                <option value="4">เมษายน</option>
-                                                <option value="5">พฤษภาคม</option>
-                                                <option value="6">มิถุนายน</option>
-                                                <option value="7">กรกฎาคม</option>
-                                                <option value="8">สิงหาคม </option>
-                                                <option value="9">กันยายน</option>
-                                                <option value="10">ตุลาคม</option>
-                                                <option value="11">พฤศจิกายน</option>
-                                                <option value="12">ธันวาคม</option>
+                                                <option value="1">มกราคม <?php echo'(26 ธ.ค. '.(date('Y')+542).' - 25 ม.ค. '.(date('Y')+543).')'; ?> </option>
+                                                <option value="2">กุมภาพันธ์ <?php echo'(26 ม.ค. '.(date('Y')+543).' - 25 ก.พ. '.(date('Y')+543).')'; ?></option>
+                                                <option value="3">มีนาคม <?php echo'(26 ก.พ.'.(date('Y')+543).' - 25 มี.ค. '.(date('Y')+543).')'; ?></option>
+                                                <option value="4">เมษายน <?php echo'(26 มี.ค.'.(date('Y')+543).' - 25 เม.ย. '.(date('Y')+543).')'; ?></option>
+                                                <option value="5">พฤษภาคม <?php echo'(26 เม.ย.'.(date('Y')+543).' - 25 พ.ค. '.(date('Y')+543).')'; ?></option>
+                                                <option value="6">มิถุนายน <?php echo'(26 พ.ค.'.(date('Y')+543).' - 25 มิ.ย. '.(date('Y')+543).')'; ?></option>
+                                                <option value="7">กรกฎาคม <?php echo'(26 มิ.ย.'.(date('Y')+543).' - 25 ก.ค. '.(date('Y')+543).')'; ?></option>
+                                                <option value="8">สิงหาคม <?php echo'(26 ก.ค.'.(date('Y')+543).' - 25 ส.ค. '.(date('Y')+543).')'; ?></option>
+                                                <option value="9">กันยายน <?php echo'(26 ส.ค'.(date('Y')+543).' - 25 ก.ย. '.(date('Y')+543).')'; ?></option>
+                                                <option value="10">ตุลาคม <?php echo'(26 ก.ย.'.(date('Y')+543).' - 25 ค.ค. '.(date('Y')+543).')'; ?></option>
+                                                <option value="11">พฤศจิกายน <?php echo'(26 ต.ค.'.(date('Y')+543).' - 25 พ.ย. '.(date('Y')+543).')'; ?></option>
+                                                <option value="12">ธันวาคม <?php echo'(26 พ.ย.'.(date('Y')+543).' - 25 ธ.ค. '.(date('Y')+543).')'; ?></option>
+                                                <option value="13">สะสมทั้งปี <?php echo'(26 ธ.ค.'.(date('Y')+542).' - 25 ธ.ค. '.(date('Y')+543).')'; ?></option>
                               </select>
 
                           </div>

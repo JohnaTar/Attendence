@@ -8,7 +8,7 @@ $(document).ready(function() {
         e.preventDefault();
         if(x < max_fields){ //max input box allowed
             x++; //text box increment
-            $(wrapper).append('<label class="col-md-4 control-label" for="fn"></label><div class="form-group"> <div class="col-md-6"><input  class="form-control input-md" type="text" name="mytext[]"/><a href="#" class="remove_field">Remove</a></div></div>'); //add input box
+            $(wrapper).append('<label class="col-md-4 control-label" for="fn"></label><div class="form-group"> <div class="col-md-6"><input  class="form-control input-md" type="text" name="dep[]"/><a href="#" class="remove_field">Remove</a></div></div>'); //add input box
         }
     });
 
@@ -17,75 +17,45 @@ $(document).ready(function() {
     })
 });
 
+function show_user_in_companny(){
+    $.ajax({
+        type:"POST",
+        url:"attendent_out.php",
+        data:$("#data_show_user_in_companny").serialize(),
+        xhr: function () {  // Custom XMLHttpRequest
+                               var myXhr = $.ajaxSettings.xhr();
+                               if (myXhr.upload) { // Check if upload property exists
+                                   myXhr.upload.addEventListener('progress', function (e) { progressHandlingFunction(e) }, false);
+                                   myXhr.upload.addEventListener('load', loadedHandlingFunction, false);
+                               }
+                               return myXhr;
+                           },
 
+        success:function(data){
+            $("#companny").html(data);
+            $('#dataTables-example').DataTable({
+                              responsive: true,
+                              "bSort": false,
+                              "pageLength": 100,
+                              "bLengthChange": false,
+                          });
 
+            $('#loading').modal('toggle');
 
-$(function(){
-   $('#co_id, #companny').change(function(){
-    var co_id =$('#co_id').val();
-    var show_data_on_month =$('#month_on_outsrouce').val();
+        }
+    });
+    var progressHandlingFunction = function (e) {
+                    // What happens when it loading the ajax request.
+                    // Here put a sweet-alert with 'loading' icon (gif or any kind) using this parameter: 'imageUrl' that will replace the icon..
+                    $('#loading').modal('show');
+                };
 
-    info = [];
-    info[0] = co_id;
-    info[1] = show_data_on_month;
-
-
-          $.ajax({
-                url: "attendent_out.php",
-                data: {co_id:info},
-                type: "POST",
-            xhr: function () {  // Custom XMLHttpRequest
-               var myXhr = $.ajaxSettings.xhr();
-               if (myXhr.upload) { // Check if upload property exists
-                   myXhr.upload.addEventListener('progress', function (e) { progressHandlingFunction(e) }, false);
-                   myXhr.upload.addEventListener('load', loadedHandlingFunction, false);
-               }
-               return myXhr;
-           },
-           success: function (data) {
-               // your code will be inserted here on success.
-               $("#companny").html(data);
-               $('#dataTables-example').DataTable({
-                   responsive: true,
-                    "bSort": false,
-                    "pageLength": 100,
-                     "bLengthChange": false,
-               });
-               $('#month_on_outsrouce').val(show_data_on_month);
-                $('#loading').modal('toggle');
-           }
-       });
-
-  var progressHandlingFunction = function (e) {
-       // What happens when it loading the ajax request.
-       // Here put a sweet-alert with 'loading' icon (gif or any kind) using this parameter: 'imageUrl' that will replace the icon..
-       $('#loading').modal('show');
-   };
-
-   var loadedHandlingFunction = function () {
-       // What happens when it finished loading the request...
-       // Here put a sweet-alert with 'success' with any message you like on completion.
-   }
-
-            // success: function(data)  {
-            //
-            //   $("#companny").html(data);
-            //
-            // $('#dataTables-example').DataTable({
-            //     responsive: true,
-            //      "bSort": false,
-            //      "pageLength": 100,
-            //       "bLengthChange": false,
-            // });
-            //  $('#month_on_outsrouce').val(show_data_on_month);
-            //
-            //             }
-
-
-
-
-   });
-});
+                var loadedHandlingFunction = function () {
+                    // What happens when it finished loading the request...
+                    // Here put a sweet-alert with 'success' with any message you like on completion.
+                }
+    return false;
+}
 
 
 
@@ -197,6 +167,8 @@ function show_from_add_vacation_oc($oc_id){
           $("#oc_name_lakit").html(data);
           $("#oc_name_wrong").html(data);
           $("#oc_name_vacation").html(data);
+          $("#oc_name_forget").html(data);
+          $("#oc_name_exit").html(data);
           }
 
 
@@ -211,9 +183,7 @@ function show_from_add_vacation_oc($oc_id){
 // เพิ่มสาย
 
 function save_data_oc_late(){
-
   $.ajax({
-
         type:'POST',
         url :'attendent_out.php',
         data:$("#data_save_oc_late").serialize(),
@@ -226,34 +196,42 @@ function save_data_oc_late(){
                      text: "บันทึกข้อมูลเรียบร้อย",
                      type: "success"});
 
-                     var co_id =$('#co_id').val();
-                     var show_data_on_month =$('#month_on_outsrouce').val();
+                     $.ajax({
+                         type:"POST",
+                         url:"attendent_out.php",
+                         data:$("#data_show_user_in_companny").serialize(),
+                         xhr: function () {  // Custom XMLHttpRequest
+                                                var myXhr = $.ajaxSettings.xhr();
+                                                if (myXhr.upload) { // Check if upload property exists
+                                                    myXhr.upload.addEventListener('progress', function (e) { progressHandlingFunction(e) }, false);
+                                                    myXhr.upload.addEventListener('load', loadedHandlingFunction, false);
+                                                }
+                                                return myXhr;
+                                            },
 
-                     info = [];
-                     info[0] = co_id;
-                     info[1] = show_data_on_month;
-
-
-                                 $.ajax({
-                                 url: "attendent_out.php",
-                                 data: {co_id:info},
-                                 type: "POST",
-
-                                      success: function(data)  {
-
-                               $("#companny").html(data);
-
+                         success:function(data){
+                             $("#companny").html(data);
                              $('#dataTables-example').DataTable({
-                                 responsive: true,
-                                  "bSort": false,
-                                  "pageLength": 100,
-                                   "bLengthChange": false,
-                             });
-                              $('#month_on_outsrouce').val(show_data_on_month);
+                                               responsive: true,
+                                               "bSort": false,
+                                               "pageLength": 100,
+                                               "bLengthChange": false,
+                                           });
 
-                                         }
-                               });
+                             $('#loading').modal('toggle');
 
+                         }
+                     });
+                     var progressHandlingFunction = function (e) {
+                                     // What happens when it loading the ajax request.
+                                     // Here put a sweet-alert with 'loading' icon (gif or any kind) using this parameter: 'imageUrl' that will replace the icon..
+                                     $('#loading').modal('show');
+                                 };
+
+                                 var loadedHandlingFunction = function () {
+                                     // What happens when it finished loading the request...
+                                     // Here put a sweet-alert with 'success' with any message you like on completion.
+                                 }
 
             }else{
 
@@ -262,27 +240,22 @@ function save_data_oc_late(){
                      icon: "warning",
                      text: "ไม่สามารถบันทึกข้อมูลเรียบร้อย",
                      type: "warning"});
-         }
+                  }
     }
 
+});
 
-
-        });
-
-  return false;
+return false;
 
 }
 
+//ลืมสแกน
 
-
-// เพิ่มขาด
-function save_data_oc_absence(){
-
+function save_data_oc_forget(){
   $.ajax({
-
         type:'POST',
         url :'attendent_out.php',
-        data:$("#data_save_oc_absence").serialize(),
+        data:$("#data_save_oc_forget").serialize(),
           success:function(data){
             $(".close").trigger("click");
             if (data ==1) {
@@ -292,34 +265,42 @@ function save_data_oc_absence(){
                      text: "บันทึกข้อมูลเรียบร้อย",
                      type: "success"});
 
-                     var co_id =$('#co_id').val();
-                     var show_data_on_month =$('#month_on_outsrouce').val();
+                     $.ajax({
+                         type:"POST",
+                         url:"attendent_out.php",
+                         data:$("#data_show_user_in_companny").serialize(),
+                         xhr: function () {  // Custom XMLHttpRequest
+                                                var myXhr = $.ajaxSettings.xhr();
+                                                if (myXhr.upload) { // Check if upload property exists
+                                                    myXhr.upload.addEventListener('progress', function (e) { progressHandlingFunction(e) }, false);
+                                                    myXhr.upload.addEventListener('load', loadedHandlingFunction, false);
+                                                }
+                                                return myXhr;
+                                            },
 
-                     info = [];
-                     info[0] = co_id;
-                     info[1] = show_data_on_month;
-
-
-                                 $.ajax({
-                                 url: "attendent_out.php",
-                                 data: {co_id:info},
-                                 type: "POST",
-
-                                      success: function(data)  {
-
-                               $("#companny").html(data);
-
+                         success:function(data){
+                             $("#companny").html(data);
                              $('#dataTables-example').DataTable({
-                                 responsive: true,
-                                  "bSort": false,
-                                  "pageLength": 100,
-                                   "bLengthChange": false,
-                             });
-                              $('#month_on_outsrouce').val(show_data_on_month);
+                                               responsive: true,
+                                               "bSort": false,
+                                               "pageLength": 100,
+                                               "bLengthChange": false,
+                                           });
 
-                                         }
-                               });
+                             $('#loading').modal('toggle');
 
+                         }
+                     });
+                     var progressHandlingFunction = function (e) {
+                                     // What happens when it loading the ajax request.
+                                     // Here put a sweet-alert with 'loading' icon (gif or any kind) using this parameter: 'imageUrl' that will replace the icon..
+                                     $('#loading').modal('show');
+                                 };
+
+                                 var loadedHandlingFunction = function () {
+                                     // What happens when it finished loading the request...
+                                     // Here put a sweet-alert with 'success' with any message you like on completion.
+                                 }
 
             }else{
 
@@ -328,26 +309,22 @@ function save_data_oc_absence(){
                      icon: "warning",
                      text: "ไม่สามารถบันทึกข้อมูลเรียบร้อย",
                      type: "warning"});
-         }
+                  }
     }
 
+});
 
-
-        });
-
-  return false;
+return false;
 
 }
 
+//ออกก่อน
 
- // เพิ่มป่วย
-function save_data_oc_sick(){
-
+function save_data_oc_exit(){
   $.ajax({
-
         type:'POST',
         url :'attendent_out.php',
-        data:$("#data_save_oc_sick").serialize(),
+        data:$("#data_save_oc_exit").serialize(),
           success:function(data){
             $(".close").trigger("click");
             if (data ==1) {
@@ -357,34 +334,42 @@ function save_data_oc_sick(){
                      text: "บันทึกข้อมูลเรียบร้อย",
                      type: "success"});
 
-                     var co_id =$('#co_id').val();
-                     var show_data_on_month =$('#month_on_outsrouce').val();
+                     $.ajax({
+                         type:"POST",
+                         url:"attendent_out.php",
+                         data:$("#data_show_user_in_companny").serialize(),
+                         xhr: function () {  // Custom XMLHttpRequest
+                                                var myXhr = $.ajaxSettings.xhr();
+                                                if (myXhr.upload) { // Check if upload property exists
+                                                    myXhr.upload.addEventListener('progress', function (e) { progressHandlingFunction(e) }, false);
+                                                    myXhr.upload.addEventListener('load', loadedHandlingFunction, false);
+                                                }
+                                                return myXhr;
+                                            },
 
-                     info = [];
-                     info[0] = co_id;
-                     info[1] = show_data_on_month;
-
-
-                                 $.ajax({
-                                 url: "attendent_out.php",
-                                 data: {co_id:info},
-                                 type: "POST",
-
-                                      success: function(data)  {
-
-                               $("#companny").html(data);
-
+                         success:function(data){
+                             $("#companny").html(data);
                              $('#dataTables-example').DataTable({
-                                 responsive: true,
-                                  "bSort": false,
-                                  "pageLength": 100,
-                                   "bLengthChange": false,
-                             });
-                              $('#month_on_outsrouce').val(show_data_on_month);
+                                               responsive: true,
+                                               "bSort": false,
+                                               "pageLength": 100,
+                                               "bLengthChange": false,
+                                           });
 
-                                         }
-                               });
+                             $('#loading').modal('toggle');
 
+                         }
+                     });
+                     var progressHandlingFunction = function (e) {
+                                     // What happens when it loading the ajax request.
+                                     // Here put a sweet-alert with 'loading' icon (gif or any kind) using this parameter: 'imageUrl' that will replace the icon..
+                                     $('#loading').modal('show');
+                                 };
+
+                                 var loadedHandlingFunction = function () {
+                                     // What happens when it finished loading the request...
+                                     // Here put a sweet-alert with 'success' with any message you like on completion.
+                                 }
 
             }else{
 
@@ -393,204 +378,11 @@ function save_data_oc_sick(){
                      icon: "warning",
                      text: "ไม่สามารถบันทึกข้อมูลเรียบร้อย",
                      type: "warning"});
-         }
+                  }
     }
 
+});
 
-
-        });
-
-  return false;
-
-}
-
-// เพิ่้มกิจ
-function save_data_oc_errand(){
-
- $.ajax({
-
-       type:'POST',
-       url :'attendent_out.php',
-       data:$("#data_save_oc_errand").serialize(),
-         success:function(data){
-           $(".close").trigger("click");
-           if (data ==1) {
-             swal({
-                    title: "Success",
-                    icon: "success",
-                    text: "บันทึกข้อมูลเรียบร้อย",
-                    type: "success"});
-
-                    var co_id =$('#co_id').val();
-                    var show_data_on_month =$('#month_on_outsrouce').val();
-
-                    info = [];
-                    info[0] = co_id;
-                    info[1] = show_data_on_month;
-
-
-                                $.ajax({
-                                url: "attendent_out.php",
-                                data: {co_id:info},
-                                type: "POST",
-
-                                     success: function(data)  {
-
-                              $("#companny").html(data);
-
-                            $('#dataTables-example').DataTable({
-                                responsive: true,
-                                 "bSort": false,
-                                 "pageLength": 100,
-                                  "bLengthChange": false,
-                            });
-                             $('#month_on_outsrouce').val(show_data_on_month);
-
-                                        }
-                              });
-
-
-           }else{
-
-             swal({
-                    title: "Warning",
-                    icon: "warning",
-                    text: "ไม่สามารถบันทึกข้อมูลเรียบร้อย",
-                    type: "warning"});
-        }
-   }
-
-
-
-       });
-
- return false;
-
-
-}
-// ลาผิด
-function save_data_oc_wrong(){
-
- $.ajax({
-
-       type:'POST',
-       url :'attendent_out.php',
-       data:$("#data_save_oc_wrong").serialize(),
-         success:function(data){
-           $(".close").trigger("click");
-           if (data ==1) {
-             swal({
-                    title: "Success",
-                    icon: "success",
-                    text: "บันทึกข้อมูลเรียบร้อย",
-                    type: "success"});
-
-                    var co_id =$('#co_id').val();
-                    var show_data_on_month =$('#month_on_outsrouce').val();
-
-                    info = [];
-                    info[0] = co_id;
-                    info[1] = show_data_on_month;
-
-
-                                $.ajax({
-                                url: "attendent_out.php",
-                                data: {co_id:info},
-                                type: "POST",
-
-                                     success: function(data)  {
-
-                              $("#companny").html(data);
-
-                            $('#dataTables-example').DataTable({
-                                responsive: true,
-                                 "bSort": false,
-                                 "pageLength": 100,
-                                  "bLengthChange": false,
-                            });
-                             $('#month_on_outsrouce').val(show_data_on_month);
-
-                                        }
-                              });
-
-
-           }else{
-
-             swal({
-                    title: "Warning",
-                    icon: "warning",
-                    text: "ไม่สามารถบันทึกข้อมู",
-                    type: "warning"});
-        }
-   }
-
-
-
-       });
-
- return false;
-
-}
-
-function save_data_oc_vacation(){
-
- $.ajax({
-
-       type:'POST',
-       url :'attendent_out.php',
-       data:$("#data_save_oc_vacation").serialize(),
-         success:function(data){
-           $(".close").trigger("click");
-           if (data ==1) {
-             swal({
-                    title: "Success",
-                    icon: "success",
-                    text: "บันทึกข้อมูลเรียบร้อย",
-                    type: "success"});
-
-                    var co_id =$('#co_id').val();
-                    var show_data_on_month =$('#month_on_outsrouce').val();
-
-                    info = [];
-                    info[0] = co_id;
-                    info[1] = show_data_on_month;
-
-
-                                $.ajax({
-                                url: "attendent_out.php",
-                                data: {co_id:info},
-                                type: "POST",
-
-                                     success: function(data)  {
-
-                              $("#companny").html(data);
-
-                            $('#dataTables-example').DataTable({
-                                responsive: true,
-                                 "bSort": false,
-                                 "pageLength": 100,
-                                  "bLengthChange": false,
-                            });
-                             $('#month_on_outsrouce').val(show_data_on_month);
-
-                                        }
-                              });
-
-
-           }else{
-
-             swal({
-                    title: "Warning",
-                    icon: "warning",
-                    text: "ไม่สามารถบันทึกข้อมูล",
-                    type: "warning"});
-        }
-   }
-
-
-
-       });
-
- return false;
+return false;
 
 }

@@ -45,7 +45,8 @@
                                     <th>ลำดับ</th>
                                     <th>ชื่อบริษัท</th>
 
-                                    <th>ตัดรอบปี</th>
+
+
                                     <th>เมนู</th>
 
 
@@ -63,7 +64,7 @@
                                           <td>'.$i.'</td>
                                           <td>'.$companny['co_name'].'</td>
 
-                                          <td class="center">'.$companny['first_y'].' : '.$companny['last_y'].'</td>
+
                                           <td>'.$companny['co_id'].'</td>
 
                                       </tr>';
@@ -93,115 +94,6 @@
         <!-- /#page-wrapper -->
 
     </div>
-    <!-- /#wrapper -->
-
-    <!-- jQuery -->
-
-
-    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
-     <!-- Modal Add User -->
-
-
-        <!-- Modal Edit User -->
-        <div class="modal fade" id="edit_user" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">เพิ่มวันพักร้อน</h4>
-              </div>
-              <div class="modal-body">
-                         <div id="add_form"></div>
-              </div>
-              <div class="modal-footer">
-
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-           <!-- Modal Add User -->
-        <div class="modal fade" id="add_user" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog " role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">เพิ่มข้อมูล</h4>
-              </div>
-              <div class="modal-body">
-                   <form class="form-horizontal" id="add_outsrouce_form" onsubmit="return add_outsrouce_form();">
-                    <div class="form-group">
-                        <label class="col-md-4 control-label" for="fn">ชื่อ นามสกุล</label>
-                        <div class="col-md-6">
-                    <input type="text" required="" class="form-control input-md"  value="" name="add_outsrouce">
-
-
-
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-md-4 control-label" for="fn">เบอร์โทร</label>
-                        <div class="col-md-6">
-                    <input type="text" required="" class="form-control input-md"  value="" name="telephone">
-
-
-
-                        </div>
-                    </div>
-
-                         <div class="form-group">
-                        <label class="col-md-4 control-label" for="selectbasic">บริษัท</label>
-                        <div class="col-md-6">
-                    <select  id="show_dep" name="companny" class="form-control input-md" required="">
-                      <?php
-                          if (!empty($get_companny)) {
-                              foreach($get_companny as $companny){
-                              echo '  <option value='.$companny['co_id'].'> '.$companny['co_name'].' </option>';
-                              }
-                          }
-                      ?>>
-
-                    </select>
-
-                        </div>
-                    </div>
-                    <div id="show_dep_in_com"></div>
-
-                    <div class="form-group">
-                        <label class="col-md-4 control-label" for="fn">วันเริ่มงาน</label>
-                        <div class="col-md-4">
-                    <input name="start" type="date" placeholder="Firstname" class="form-control input-md" required="">
-
-                        </div>
-                    </div>
-
-
-
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="submit"></label>
-                <div class="col-md-4">
-            <button type="submit" name="submit" class="btn btn-primary" >Save</button>
-                </div>
-            </div>
-
-
-
-
-
-</form>
-
-
-              </div>
-              <div class="modal-footer">
-
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
 
             <!-- เพิ่มบริษัท -->
 
@@ -213,11 +105,11 @@
                     <h4 class="modal-title" id="myModalLabel">เพิ่มข้อมูลบริษัท</h4>
                   </div>
                   <div class="modal-body">
-                       <form class="form-horizontal" action="tar.php" method="POST">
+                       <form class="form-horizontal" id="add_data_companny" onsubmit="return save_add_data_companny();">
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="fn">ชื่อบริษัท</label>
                             <div class="col-md-6">
-                        <input type="text" required="" class="form-control input-md"  value="" name="add_companny">
+                        <input type="text" required="" class="form-control input-md"   name="add_companny">
 
 
 
@@ -227,7 +119,7 @@
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="fn">แผนก</label>
                             <div class="col-md-6">
-                        <input type="text" required="" class="form-control input-md"  value="" name="mytext[]"> <button class="add_field_button">Add More Fields</button>
+                        <input type="text" required="" class="form-control input-md"  value="" name="dep[]"> <button class="add_field_button">Add More Fields</button>
                             </div>
 
 
@@ -237,43 +129,7 @@
 
 
 
-                             <div class="form-group">
-                            <label class="col-md-4 control-label" for="selectbasic">ตัดรอบเดือน</label>
-                            <div class="col-md-6">
-                        <select  name="dep" class="form-control input-md" required="">
-                            <option value="">  </option>
-                             <option value="1"> </option>
-                             <option value="2"> ฝ่ายสารสนเทศ </option>
-                             <option value="3"> PA & Marketing </option>
-                             <option value="4"> ฝ่ายบัญชีและการเงิน </option>
-                             <option value="5"> ฝ่ายบุคคลและธุรการ </option>
-                             <option value="6"> Staff & Labor Outsourcing BKK </option>
-                             <option value="7"> Staff & Labor Outsourcing CHON </option>
-                             <option value="8"> Staff & Labor Outsourcing PTY </option>
 
-                        </select>
-
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                       <label class="col-md-4 control-label" for="selectbasic">ตัดรอบปี</label>
-                       <div class="col-md-6">
-                   <select  name="dep" class="form-control input-md" required="">
-                       <option value="">  </option>
-                        <option value="1"> ฝ่ายบริหาร </option>
-                        <option value="2"> ฝ่ายสารสนเทศ </option>
-                        <option value="3"> PA & Marketing </option>
-                        <option value="4"> ฝ่ายบัญชีและการเงิน </option>
-                        <option value="5"> ฝ่ายบุคคลและธุรการ </option>
-                        <option value="6"> Staff & Labor Outsourcing BKK </option>
-                        <option value="7"> Staff & Labor Outsourcing CHON </option>
-                        <option value="8"> Staff & Labor Outsourcing PTY </option>
-
-                   </select>
-
-                       </div>
-                   </div>
 
 
 
@@ -303,7 +159,78 @@
             </div>
 
 
+<script>
+              $('#mdp-demo').multiDatesPicker({
+            	     dateFormat: "d-mm",
+                   showButtonPanel: true,
+                   changeMonth: true,
+                   changeYear: true,
+                   maxPicks: 2,
+                   onSelect: function(dateText, inst)
+               { inst.settings.defaultDate = dateText;
 
+
+                    }},
+            );
+
+            $('#mdp-demo2').multiDatesPicker({
+                 dateFormat: "d-m-yy",
+                 showButtonPanel: true,
+                 changeMonth: true,
+                 changeYear: true,
+                 maxPicks: 2,
+                 onSelect: function(dateText, inst)
+             { inst.settings.defaultDate = dateText;
+
+
+                  }},
+          );
+
+
+
+</script>
+<script>
+function save_add_data_companny(){
+    $.ajax({
+        type:"POST",
+        url:"tar.php",
+        data:$("#add_data_companny").serialize(),
+        success:function(data){
+
+            //close modal
+            $(".close").trigger("click");
+
+            //show result
+            if (data ==1) {
+                 swal({
+                        title: "Success",
+                        icon: "success",
+                        text: "บันทึกข้อมูลเรียบร้อย",
+                        type: "success"})
+                 .then(function() {
+                 location.reload();
+                });
+            }else{
+
+                 swal({
+                        title: "Warning",
+                        icon: "warning",
+                        text: "ไม่สามารถบันทึกข้อมูลเรียบร้อย",
+                        type: "warning"})
+                 .then(function() {
+                 location.reload();
+                });
+            }
+
+            //reload page
+
+        }
+    });
+    return false;
+}
+
+
+</script>
 
 
 </body>

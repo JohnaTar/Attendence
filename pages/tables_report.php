@@ -321,6 +321,7 @@ header("Pragma:no-cache");
                                                    }else{
                                                       $have_vacation = 0;
                                                    }
+                                                   //
 
 
 

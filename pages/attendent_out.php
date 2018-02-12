@@ -40,61 +40,58 @@ if (isset($_POST['add_outsrouce'])) {
 
 
   $get_user =  $process->get_user_in_companny($_POST['co_id'][0]);
-  if (!(empty($_POST['co_id'][1]))) {
-    $first_day_of_month =$_POST['co_id'][1];
-  }else{
-    $first_day_of_month ='0';
-  }
+
+
+
 
 
     echo '<table width="100%" class="table table-striped Striped Rows table-hover" id="dataTables-example" cellspacing="0" >
         <thead>
-            <tr>
+              <tr>
+                  <th rowspan="3">ชื่อ - นามสกุล</th>
+                  <th rowspan="3">แผนก</th>
+                  <th rowspan="3">เบอร์</th>
 
-                <th  rowspan="2">ชื่อ - นามสกุล</th>
-                <th  rowspan="2">แผนก</th>
-                <th  rowspan="2">เบอร์โทร</th>
-                <th  rowspan="2">วันที่เริ่มงาน</th>
-                <th  rowspan="2">จำนวนวันทำงาน</th>
-                <th colspan="3" style="text-align:center">พักร้อน</th>
-                <th colspan="4" style="text-align:center">    <div class="form-group">
-                          <label class="col-md-4 control-label" for="fn">เดือน</label>
-                          <div class="col-md-8">
-                               <select class="form-control" id="month_on_outsrouce">
-                                                <option value="2017-01-01">มกราคม</option>
-                                                <option value="2017-02-01">กุมภาพันธ์</option>
-                                                <option value="2017-03-01">มีนาคม</option>
-                                                <option value="2017-04-01">เมษายน</option>
-                                                <option value="2017-05-01">พฤษภาคม</option>
-                                                <option value="2017-06-01">มิถุนายน</option>
-                                                <option value="2017-07-01">กรกฎาคม</option>
-                                                <option value="2017-08-01">สิงหาคม </option>
-                                                <option value="2017-09-01">กันยายน</option>
-                                                <option value="2017-10-01">ตุลาคม</option>
-                                                <option value="2017-11-01">พฤศจิกายน</option>
-                                                <option value="2017-12-01">ธันวาคม</option>
-                              </select>
-
-                          </div>
-                      </div>
-              </th>
+                  <th colspan="11 " style="text-align:center">
 
 
-            </tr>
-            <tr>
-                <th>สิทธิ์</th>
-                <th>ใช้</th>
-                <th>เหลือ</th>
+                  </th>
 
-                <th>กิจ</th>
-                <th>ป่วย</th>
-                <th>ลาผิดระเบียบ</th>
+                  <th rowspan="3" width="80">เมนู</th>
+
+
+              </tr>
+              <tr style="text-align:center">
+                  <th colspan="4"></th>
+                  <th style="text-align:center">ลาป่วย</th>
+                  <th style="text-align:center">ลาป่วย</th>
+                  <th style="text-align:center">ลาป่วย</th>
+                  <th style="text-align:center">ลากิจ</th>
+                  <th style="text-align:center">ลากิจ</th>
+                  <th style="text-align:center">ลากิจพิเศษ</th>
+                  <th></th>
+
+              </tr>
+              <tr>
                 <th>สาย</th>
-                <th>ขาด</th>
-                <th> เมนู</th>
+                <th>ลืมสแกน</th>
+                <th>ออกก่อน</th>
+                <th>ขาดงาน</th>
+
+                  <th style="text-align:center"><sup>ไม่มีใบรับรองแพทย์</sup></th>
+                  <th style="text-align:center"><sup>มีใบรับรองแพทย</sup></th>
+                  <th style="text-align:center"><sup>จากการทำงาน</sup></th>
+                  <th style="text-align:center"><sup>ได้ค่าจ้าง</sup></th>
+                  <th style="text-align:center"><sup>ไม่ได้ค่าจ้าง</sup></th>
+                  <th style="text-align:center"><sup>ได้ค่าจ้าง</sup></th>
 
 
-            </tr>
+
+                  <th>ลาอื่น</th>
+
+
+
+              </tr>
 
 
 
@@ -102,33 +99,6 @@ if (isset($_POST['add_outsrouce'])) {
 
         </thead>
         <tbody>';
-    function time_elapsed_string($datetime, $full = false)
-{
-        $now = new DateTime;
-        $ago = new DateTime($datetime);
-        $diff = $now->diff($ago);
-        $diff->w = floor($diff->d / 7);
-        $diff->d -= $diff->w * 7;
-
-        $string = array(
-            'y' => 'Y',
-            'm' => 'M',
-
-
-        );
-
-        foreach ($string as $k => &$v) {
-        if ($diff->$k) {
-        $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? '' : '');
-        } else {
-            unset($string[$k]);
-            }
-        }
-
-        if (!$full) $string = array_slice($string, 0, 1);
-            return $string ? implode(':', $string) . ' ' : '';
-  }
-
 
 
 
@@ -136,107 +106,14 @@ if (isset($_POST['add_outsrouce'])) {
          $i = 1;
         if (!empty($get_user)) {
             foreach($get_user as $get_users){
-              if (!empty($get_users['first_y'])) {  //มีตัดรอบ
-                 $first_year=(date("Y")-1).'-'.$get_users['first_y'];
-                 $last_year2 =date("Y").'-'.$get_users['last_y'];
-
-                 $last_year =  date('Y', strtotime($get_users['start'])).'-'.$get_users['last_y'];
-                 $maty_nganga = '-'.$get_users['last_y'];
-              }else{ //ไม่มีตัดรอบ
-
-               $first_year =  date("Y").'-01-01';
-               $last_year  =  date('Y', strtotime($get_users['start'])).'-12-31';
-               $last_year2 =  date("Y").'-12-31';
-               $maty_nganga = '-12-31';
-              }
-
-
-
-
-              // คำนวณวันทำงาน
-              $start_date = date_create($get_users['start']);
-              $current_date = date_create();
-              $diff = date_diff($start_date,$current_date);
-              $do_work = $diff->format("%a");
-
-
-
-                  if ($do_work >=365 AND $do_work <730) { // ถ้ามากกว่า หรือ เท่ากับ 1 ปี
-
-                    $date = $get_users['start'];
-                    $date = strtotime($date);
-                    $date = strtotime("+365 day", $date);
-                    $mama =date('Y', $date).$maty_nganga;
-
-                    if (date("Y-m-d") >=$mama) {
-                            $vacation =6;
-                      }else{
-
-
-
-
-
-
-
-
-                        $the_last_of_the_year = strtotime($last_year);
-                        $start_work = strtotime($get_users['start']);
-
-
-                        $datediff = $the_last_of_the_year - $start_work;
-                        $do_work_last_year = floor($datediff / (60 * 60 * 24));
-
-                          echo 'จำนวนวันที่ทำงาน 15 มีนาคม 2016 ถึง 31 ธันวาคม 2016 ='.$do_work_last_year.'';
-                          for   ($i=0; 30 <=$do_work_last_year; $i++) {
-                                 $day =  $do_work_last_year -= 30;
-                          }
-                          echo '<br>ลบด้วย 291-30 จะได้ ' .$i. 'ครั้ง เหลือ ';
-                          echo $do_work_last_year. ' ปัดเป็น 1 ';
-                          echo 'ทำงานทั้งหมด 10 เดือน';
-                          echo '<br>(6/12)*10 = 5 ';
-
-
-                        // $x =($do_work_last_year/60);//ปัดเศษ
-                        //
-                        //
-                        //
-                        //
-                        //
-                        //
-                        //
-                        // $vacation = ($x * 2) / 2;
-                        $vacation =5;
-
-                      }
-
-                    }else if ($do_work>=730){
-                        $vacation =6;
-
-
-                    }else{
-                        $vacation =0;
-                    }
-
-
-                    // หาวันที่ พักร้อนไปแล้ว
-                   $oc_id     = $get_users['oc_id'];
-
-
-
-                $vacation_use =$process->coutn_vacation($oc_id,$first_year,$last_year2);
-
-
-              //สิทธิ์
-
-              $cooldown = $vacation-$vacation_use['coutn_vacation'];;
-
-
-
-
               $user_id =$get_users['oc_id'];
                //วันที่ 1
+              $myString = $_POST['date'];
+             	$myArray = explode(',', $myString);
+              $first_day_of_month =date("Y-m-d", strtotime($myArray[0]));
+              $last_day_of_month =date("Y-m-d", strtotime($myArray[1]));
 
-              $last_day_of_month = date('Y-m-t',strtotime($first_day_of_month)); //วันสุดท้าย
+
               $data = $process->coutn_sick($user_id,$first_day_of_month,$last_day_of_month); //นับป่วย
 
             //ลาออก
@@ -252,25 +129,25 @@ if (isset($_POST['add_outsrouce'])) {
                     <td><div style="width: 140px">'.$get_users['oc_name'].'</td>
                     <td>'.$get_users['dep_co_name'].'</td>
                     <td>'.$get_users['tel'].'</td>
-                    <td>'.date('d/m/Y',strtotime($get_users['start'])).'</td>
-                    <td>'.time_elapsed_string($get_users['start'], true).'</td>
-                    <td>'. $vacation.'</td>
-                    <td>'.$vacation_use['coutn_vacation'].'</td>
-                    <td>'.$cooldown.'</td>
-                    <input type="hidden" value="'.$first_year.'" id="first_year">
-                    <input type="hidden" value="'.$last_year2.'" id="last_year">
-
-</td>
-
-
-                    <td>'.$data['count_kit'].'</td>
-                    <td>'.$data['count_sick'].'</td>
-                    <td>'.$data['count_wrong'].'</td>
                     <td>'.$data['count_late'].'</td>
-                    <td>'.$data['coutn_absence'].'</td>
-                    <td><div style="width: 65px"><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#add_vacation" onclick="return show_from_add_vacation_oc('.$get_users['oc_id'].');"><i class="fa fa-plus" aria-hidden="true"></i></button> :
+                    <td>'.$data['count_forget'].'</td>
+                    <td>'.$data['count_exit'].'</td>
+                    <td>'.$data['count_kad'].'</td>
+                    <td>'.$data['coutn_sickno'].'</td>
+                    <td>'.$data['count_sickhave'].'</td>
+                    <td>'.$data['count_sickwork'].'</td>
+                    <td>'.$data['count_kit'].'</td>
+                    <td>'.$data['count_kitno'].'</td>
+                    <td>'.$data['count_kitex'].'</td>
+                    <td>'.$data['count_etc'].'</td>
+
+
+
+
+
+                    <td><div style="width: 65px"><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#edit_user" onclick="return show_from_add_vacation_oc('.$get_users['oc_id'].');"><i class="fa fa-plus" aria-hidden="true"></i></button> :
                     <button  class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal" onclick="return show_more_detail_outsrouce('.$get_users['oc_id'].')"><i class="fa fa-pencil-square" aria-hidden="true"></i></button>
-</td>
+
 
 
 
@@ -315,214 +192,96 @@ if (isset($_POST['oc_id'])) {
 
 // สาย
 if (isset($_POST['late'])) {
+  $date=$_POST['date'];
+  $newdate =date("Y-m-d",strtotime($date));
 
+    $sql ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`) VALUES ('".$_POST['time']."',
+    '".$_POST['late']."', '".$newdate."', '119', '".$_POST['comment']."')";
 
+    $row=mysqli_query($conn,$sql);
 
-        $sql ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`)
-               VALUES ('1','".$_POST['late']."', '".$_POST['date_of_late']."', '119', '".$_POST['comment_late']."')";
-        $row=mysqli_query($conn,$sql);
-        $insert_id = mysqli_insert_id($conn);
+    if ($row) {
+      $insert_id = mysqli_insert_id($conn);
         $sqli ="INSERT INTO `status_oc` (`oc_id`, `sum_id`) VALUES ('".$_POST['oc_id_late']."', '".$insert_id."')";
         $res  =mysqli_query($conn,$sqli);
-            if ($_POST['date_of_late2'] >= 1) {
-                	for ($i=1; $i <= $_POST['date_of_late2']; $i++) {
-                    $data =date("Y-m-d",strtotime("+".$i." days", strtotime($_POST['date_of_late'])));
-
-                    $tar ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`)
-                           VALUES ('1', '".$_POST['late']."', '".$data."', '119', '".$_POST['comment_late']."')";
-                    $maty=mysqli_query($conn,$tar);
-                    $insert_id = mysqli_insert_id($conn);
-                    $sqlil ="INSERT INTO `status_oc` (`oc_id`, `sum_id`) VALUES ('".$_POST['oc_id_late']."', '".$insert_id."')";
-                    $rows=mysqli_query($conn,$sqlil);
-
-
-                  }
-                  echo '1';
-                  exit();
-
-              }else if ($res) {
-                echo '1';
-                exit();
-              }else {
-                echo '2';
-                exit();
-              }
-
-
-}
-
-
-// ขาด
-if (isset($_POST['absence'])) {
-  $sql ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`)
-         VALUES ('".$_POST['number_of_absence']."','".$_POST['absence']."', '".$_POST['date_of_absence']."', '119', '".$_POST['comment_absence']."')";
-  $row=mysqli_query($conn,$sql);
-  $insert_id = mysqli_insert_id($conn);
-  $sqli ="INSERT INTO `status_oc` (`oc_id`, `sum_id`) VALUES ('".$_POST['oc_id_late']."', '".$insert_id."')";
-  $res  =mysqli_query($conn,$sqli);
-  if ($res) {
+        if ($res) {
           echo '1';
           exit();
-  }else{
+        }else{
           echo '2';
           exit();
-  }
+        }
+
+
+    }else{
+
+      echo '2';
+    }
 
 
 }
 
 
-// ป่วย
-if (isset($_POST['sick'])) {
 
 
 
-        $sql ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`)
-               VALUES ('".$_POST['number_of_sick']."','".$_POST['sick']."', '".$_POST['date_of_sick']."', '119', '".$_POST['comment_sick']."')";
-        $row=mysqli_query($conn,$sql);
-        $insert_id = mysqli_insert_id($conn);
-        $sqli ="INSERT INTO `status_oc` (`oc_id`, `sum_id`) VALUES ('".$_POST['oc_id_late']."', '".$insert_id."')";
-        $res  =mysqli_query($conn,$sqli);
-            if ($_POST['date_of_sick2'] >= 1) {
-                	for ($i=1; $i <= $_POST['date_of_sick2']; $i++) {
-                    $data =date("Y-m-d",strtotime("+".$i." days", strtotime($_POST['date_of_sick'])));
+if (isset($_POST['forget'])) {
+  $date=$_POST['date'];
+	$newdate =date("Y-m-d",strtotime($date));
+	$sql ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`) VALUES ('".$_POST['number']."',
+	'".$_POST['forget']."', '".$newdate."', '119', '".$_POST['comment']."')";
 
-                    $tar ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`)
-                           VALUES ('1', '".$_POST['sick']."', '".$data."', '119', '".$_POST['comment_sick']."')";
-                    $maty=mysqli_query($conn,$tar);
-                    $insert_id = mysqli_insert_id($conn);
-                    $sqlil ="INSERT INTO `status_oc` (`oc_id`, `sum_id`) VALUES ('".$_POST['oc_id_late']."', '".$insert_id."')";
-                    $rows=mysqli_query($conn,$sqlil);
+	$row=mysqli_query($conn,$sql);
+
+	if ($row) {
+		$insert_id = mysqli_insert_id($conn);
+			$sqli ="INSERT INTO `status_oc` (`oc_id`, `sum_id`) VALUES ('".$_POST['oc_id_late']."', '".$insert_id."')";
+			$res  =mysqli_query($conn,$sqli);
+			if ($res) {
+				echo '1';
+				exit();
+			}else{
+				echo '2';
+				exit();
+			}
 
 
-                  }
-                  echo '1';
-                  exit();
+	}else{
 
-              }else if ($res) {
-                echo '1';
-                exit();
-              }else {
-                echo '2';
-                exit();
-              }
+		echo '2';
+	}
 
 
 }
 
-// กิจ
+if (isset($_POST['exit'])) {
+
+	$date=$_POST['date'];
+	$newdate =date("Y-m-d",strtotime($date));
+
+		$sql ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`) VALUES ('".$_POST['time']."',
+		'".$_POST['exit']."', '".$newdate."', '119', '".$_POST['comment']."')";
+
+		$row=mysqli_query($conn,$sql);
+
+		if ($row) {
+			$insert_id = mysqli_insert_id($conn);
+				$sqli ="INSERT INTO `status_oc` (`oc_id`, `sum_id`) VALUES ('".$_POST['oc_id_late']."', '".$insert_id."')";
+				$res  =mysqli_query($conn,$sqli);
+				if ($res) {
+					echo '1';
+					exit();
+				}else{
+					echo '2';
+					exit();
+				}
 
 
-if (isset($_POST['errand'])) {
+		}else{
 
-
-
-        $sql ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`)
-               VALUES ('".$_POST['number_of_errand']."','".$_POST['errand']."', '".$_POST['date_of_errand']."', '119', '".$_POST['comment_errend']."')";
-        $row=mysqli_query($conn,$sql);
-        $insert_id = mysqli_insert_id($conn);
-        $sqli ="INSERT INTO `status_oc` (`oc_id`, `sum_id`) VALUES ('".$_POST['oc_id_late']."', '".$insert_id."')";
-        $res  =mysqli_query($conn,$sqli);
-            if ($_POST['date_of_errand2'] >= 1) {
-                	for ($i=1; $i <= $_POST['date_of_errand2']; $i++) {
-                    $data =date("Y-m-d",strtotime("+".$i." days", strtotime($_POST['date_of_errand'])));
-
-                    $tar ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`)
-                           VALUES ('1', '".$_POST['errand']."', '".$data."', '119', '".$_POST['comment_errend']."')";
-                    $maty=mysqli_query($conn,$tar);
-                    $insert_id = mysqli_insert_id($conn);
-                    $sqlil ="INSERT INTO `status_oc` (`oc_id`, `sum_id`) VALUES ('".$_POST['oc_id_late']."', '".$insert_id."')";
-                    $rows=mysqli_query($conn,$sqlil);
-
-
-                  }
-                  echo '1';
-                  exit();
-
-              }else if ($res) {
-                echo '1';
-                exit();
-              }else {
-                echo '2';
-                exit();
-              }
-
+			echo '2';
+		}
 
 }
-
-if (isset($_POST['wrong'])) {
-
-
-
-        $sql ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`)
-               VALUES ('".$_POST['number_of_wrong']."','".$_POST['wrong']."', '".$_POST['date_of_wrong']."', '119', '".$_POST['comment_wrong']."')";
-        $row=mysqli_query($conn,$sql);
-        $insert_id = mysqli_insert_id($conn);
-        $sqli ="INSERT INTO `status_oc` (`oc_id`, `sum_id`) VALUES ('".$_POST['oc_id_late']."', '".$insert_id."')";
-        $res  =mysqli_query($conn,$sqli);
-            if ($_POST['date_of_wrong2'] >= 1) {
-                	for ($i=1; $i <= $_POST['date_of_wrong2']; $i++) {
-                    $data =date("Y-m-d",strtotime("+".$i." days", strtotime($_POST['date_of_wrong'])));
-
-                    $tar ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`)
-                           VALUES ('1', '".$_POST['wrong']."', '".$data."', '119', '".$_POST['comment_wrong']."')";
-                    $maty=mysqli_query($conn,$tar);
-                    $insert_id = mysqli_insert_id($conn);
-                    $sqlil ="INSERT INTO `status_oc` (`oc_id`, `sum_id`) VALUES ('".$_POST['oc_id_late']."', '".$insert_id."')";
-                    $rows=mysqli_query($conn,$sqlil);
-
-
-                  }
-                  echo '1';
-                  exit();
-
-              }else if ($res) {
-                echo '1';
-                exit();
-              }else {
-                echo '2';
-                exit();
-              }
-
-
-}
-
-if (isset($_POST['vacation'])) {
-
-
-
-        $sql ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`)
-               VALUES ('".$_POST['number_of_vacation']."','".$_POST['vacation']."', '".$_POST['date_of_vacation']."', '119', '".$_POST['comment_vacation']."')";
-        $row=mysqli_query($conn,$sql);
-        $insert_id = mysqli_insert_id($conn);
-        $sqli ="INSERT INTO `status_oc` (`oc_id`, `sum_id`) VALUES ('".$_POST['oc_id_late']."', '".$insert_id."')";
-        $res  =mysqli_query($conn,$sqli);
-            if ($_POST['date_of_vacation2'] >= 1) {
-                	for ($i=1; $i <= $_POST['date_of_vacation2']; $i++) {
-                    $data =date("Y-m-d",strtotime("+".$i." days", strtotime($_POST['date_of_vacation'])));
-
-                    $tar ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`)
-                           VALUES ('1', '".$_POST['vacation']."', '".$data."', '119', '".$_POST['comment_vacation']."')";
-                    $maty=mysqli_query($conn,$tar);
-                    $insert_id = mysqli_insert_id($conn);
-                    $sqlil ="INSERT INTO `status_oc` (`oc_id`, `sum_id`) VALUES ('".$_POST['oc_id_late']."', '".$insert_id."')";
-                    $rows=mysqli_query($conn,$sqlil);
-
-
-                  }
-                  echo '1';
-                  exit();
-
-              }else if ($res) {
-                echo '1';
-                exit();
-              }else {
-                echo '2';
-                exit();
-              }
-
-
-}
-
 
  ?>
