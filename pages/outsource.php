@@ -339,8 +339,8 @@ $("#mdp-demos").multiDatesPicker({
 
 <!-- ########################### ขาด #######################################-->
 <div id="2" class="colors" style="display:none">
-<form class="form-horizontal" id="data_save2" onsubmit="return save_data2();">
-<div id="data_form2"></div>
+<form class="form-horizontal" id="data_save_oc_kad" onsubmit="return save_data_oc_kad();">
+<div id="oc_name_absence"></div>
 <input type="hidden" name="absence" id="likeamp" >
 <div class="form-group">
   <label class="col-md-4 control-label" for="fn">วันที่</label>

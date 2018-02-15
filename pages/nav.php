@@ -74,8 +74,11 @@
                                 <li>
                                     <a href="#">พนักงานเอาท์ซอร์ส <span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
+                                      <li>
+                                          <a href="outsource_vacation.php">ลาพักร้อน</a>
+                                      </li>
                                         <li>
-                                            <a href="outsource.php">พนักงานเอาท์ซอร์ส</a>
+                                            <a href="outsource.php">ขาด ลา มา สาย</a>
                                         </li>
                                         <li>
                                             <a href="companny.php">ข้อมูลบริษัท</a>

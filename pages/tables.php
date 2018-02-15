@@ -187,53 +187,21 @@
                                                              $day =  $do_work_last_year -= 30;
                                                       }
 
-                                                       if ($day >=15) { /*หลังจากลบ 30 เดือนแล้วเหลือเศษ*/
-                                                         $i++;
-                                                             }
+
                                                   }else{
 
                                                 $i =0; /*I จำนวนเดือน*/
                                             }
 
+                                            echo $i.$day;
+
+                                          $dodoo =(8/12)*$i;
+                                          $momoo =($day/30);
+                                          $have_vacation = ((8/12)*$momoo)+$dodoo;
+
+                                        
 
 
-                                            //คำนวณเดือน ถ้าจำนวนวันมากกว่า 16 ปรับเป็น 1 เดือน
-                                              if ($i ==1) {
-                                                $have_vacation =0.5;
-                                              }else if ($i ==2) {
-                                                $have_vacation =1;
-                                              }else if ($i ==3) {
-                                                $have_vacation =2;
-                                              }else if ($i ==4) {
-                                                $have_vacation = 2.5;                                                # code...
-                                              }else if ($i ==5){
-                                                $have_vacation = 3;
-                                              }else if ($i ==6){
-                                                $have_vacation = 4;
-                                              }else if ($i ==7){
-                                                $have_vacation = 4.5;
-                                              }else if ($i ==8){
-                                                $have_vacation = 5;
-                                              }else if ($i ==9){
-                                                $have_vacation = 6;
-                                              }else if ($i ==10){
-                                                $have_vacation = 6.5;
-                                              }else if ($i ==11){
-                                                $have_vacation = 7;
-                                              }else if ($i ==12){
-                                                $have_vacation = 8;
-                                              }else if($i ==0){
-                                                  if ($do_work >374) {
-                                                     $have_vacation = 8;
-                                                  }else{
-                                                     $have_vacation = 0;
-                                                  }
-
-
-
-                                              }else {
-                                                $have_vacation =0;
-                                              }
 
                                             }
 

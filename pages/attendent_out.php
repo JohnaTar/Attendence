@@ -39,13 +39,14 @@ if (isset($_POST['add_outsrouce'])) {
 
 
 
-  $get_user =  $process->get_user_in_companny($_POST['co_id'][0]);
+  $get_user =  $process->get_user_in_companny($_POST['co_id']);
 
 
 
 
 
-    echo '<table width="100%" class="table table-striped Striped Rows table-hover" id="dataTables-example" cellspacing="0" >
+    echo '
+    <table width="100%" class="table table-striped Striped Rows table-hover" id="dataTables-example" cellspacing="0" >
         <thead>
               <tr>
                   <th rowspan="3">ชื่อ - นามสกุล</th>
@@ -146,7 +147,7 @@ if (isset($_POST['add_outsrouce'])) {
 
 
                     <td><div style="width: 65px"><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#edit_user" onclick="return show_from_add_vacation_oc('.$get_users['oc_id'].');"><i class="fa fa-plus" aria-hidden="true"></i></button> :
-                    <button  class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal" onclick="return show_more_detail_outsrouce('.$get_users['oc_id'].')"><i class="fa fa-pencil-square" aria-hidden="true"></i></button>
+                    <button  class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal" onclick="return show_more_detail_outsrouce('.$get_users['oc_id'].')"><i class="fas fa-chart-pie"></i></button>
 
 
 
@@ -281,6 +282,49 @@ if (isset($_POST['exit'])) {
 
 			echo '2';
 		}
+
+}
+
+if (isset($_POST['absence'])) {
+	if (empty($_POST['number'])) {
+		$number = 480;
+	}else if($_POST['number'] == 1 ){
+		$number = 480;
+	}else if($_POST['number'] == 0.5){
+	  $number = 240;
+  }else {
+		$number =$_POST['minute'];
+	}
+
+
+	$type = $_POST['absence'];
+	$myString = $_POST['date'];
+	$myArray = explode(',', $myString);
+	$comment =$_POST['comment'];
+
+	$myArraylength = count($myArray);
+
+
+for($x = 0; $x < $myArraylength; $x++) {
+
+      $date = date('Y-m-d',strtotime($myArray[$x]));
+
+		$sql ="INSERT INTO `sum_oc` (`day_n`, `ty_id`, `date`, `add_id`, `comment`)
+					 VALUES ('".$number."','".$type."', '".$date."', '119', '".$comment."')";
+		$row=mysqli_query($conn,$sql);
+
+		if ($row) {
+			$insert_id = mysqli_insert_id($conn);
+			$sqlil ="INSERT INTO `status_oc` (`oc_id`, `sum_id`) VALUES ('".$_POST['oc_id_late']."', '".$insert_id."')";
+			$ress  =mysqli_query($conn,$sqlil);
+		}
+
+
+}
+echo '1';
+exit();
+
+
 
 }
 

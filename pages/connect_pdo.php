@@ -203,7 +203,7 @@ class Outsource {
 
                         $db = $this->connect();
                         $get_user = $db->prepare("SELECT Sum(sum_oc.day_n) FROM status_oc INNER JOIN sum_oc ON status_oc.sum_id = sum_oc.sum_id
-                                                  WHERE status_oc.oc_id=? AND ty_id ='5' AND date >=? AND date <=?");
+                                                  WHERE status_oc.oc_id=? AND ty_id ='12' AND date >=? AND date <=?");
                         $get_user->bind_param("iss",$user_id,$first_day_of_month,$last_day_of_month);
                         $get_user->execute();
                         $get_user->bind_result($id);
