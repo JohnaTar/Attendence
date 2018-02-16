@@ -57,209 +57,145 @@ header("Pragma:no-cache");
 </head>
 
 <body>
+  <?php
 
+    $get_user =  $process->get_user_in_companny($_POST['companny_id']);
 
 
-                            <?php
-                            echo '<table x:str border=1 cellpadding=0 cellspacing=1 width=100% style="border-collapse:collapse"  >
-                                <thead>
-                                  <tr>
-                                    <th colspan="13">'.$row['co_name'].' </th>
-                                  </tr>
-                                    <tr>
 
-                                        <th  rowspan="2">ชื่อ - นามสกุล</th>
-                                        <th  rowspan="2">แผนก</th>
-                                        <th  rowspan="2">เบอร์โทร</th>
-                                        <th  rowspan="2">วันที่เริ่มงาน</th>
-                                        <th  rowspan="2">จำนวนวันทำงาน</th>
-                                        <th colspan="3" style="text-align:center">พักร้อน</th>
-                                        <th colspan="5" style="text-align:center">การลา '.date('d/m/Y',strtotime($_POST['rank_of_date'])).'-'.date('d/m/Y',strtotime($_POST['rank_of_date2'])).'</th>
 
 
-                                    </tr>
-                                    <tr>
-                                        <th>สิทธิ์</th>
-                                        <th>ใช้</th>
-                                        <th>เหลือ</th>
+      echo '
+      <table >
+          <thead>
+                <tr>
+                    <th rowspan="3">ชื่อ - นามสกุล</th>
+                    <th rowspan="3">แผนก</th>
+                    <th rowspan="3">เบอร์</th>
 
-                                        <th>กิจ</th>
-                                        <th>ป่วย</th>
-                                        <th>ลาผิดระเบียบ</th>
-                                        <th>สาย</th>
-                                        <th>ขาด</th>
+                    <th colspan="11 " style="text-align:center">'.$row['co_name'].'
+                    '.date('d/m/Y',strtotime($_POST['rank_of_date'])).' - '.date('d/m/Y',strtotime($_POST['rank_of_date2'])).'
 
 
-                                    </tr>
+                    </th>
 
 
 
 
+                </tr>
+                <tr style="text-align:center">
+                    <th colspan="4"></th>
+                    <th style="text-align:center">ลาป่วย</th>
+                    <th style="text-align:center">ลาป่วย</th>
+                    <th style="text-align:center">ลาป่วย</th>
+                    <th style="text-align:center">ลากิจ</th>
+                    <th style="text-align:center">ลากิจ</th>
+                    <th style="text-align:center">ลากิจพิเศษ</th>
+                    <th></th>
 
-                                </thead>
-                                <tbody>';
+                </tr>
+                <tr>
+                  <th>สาย</th>
+                  <th>ลืมสแกน</th>
+                  <th>ออกก่อน</th>
+                  <th>ขาดงาน</th>
 
+                    <th style="text-align:center"><sup>ไม่มีใบรับรองแพทย์</sup></th>
+                    <th style="text-align:center"><sup>มีใบรับรองแพทย</sup></th>
+                    <th style="text-align:center"><sup>จากการทำงาน</sup></th>
+                    <th style="text-align:center"><sup>ได้ค่าจ้าง</sup></th>
+                    <th style="text-align:center"><sup>ไม่ได้ค่าจ้าง</sup></th>
+                    <th style="text-align:center"><sup>ได้ค่าจ้าง</sup></th>
 
-                            if (isset($_POST['companny_id'])) {
-                              # code...
 
-                              $get_user =  $process->get_user_in_companny($_POST['companny_id']);
 
-                              $first_day_of_month =$_POST['rank_of_date'];
-                              $last_day_of_month = $_POST['rank_of_date2'];
+                    <th>ลาอื่น</th>
 
-                            function time_elapsed_string($datetime, $full = false)
-                        {
-                                $now = new DateTime;
-                                $ago = new DateTime($datetime);
-                                $diff = $now->diff($ago);
-                                $diff->w = floor($diff->d / 7);
-                                $diff->d -= $diff->w * 7;
 
-                                $string = array(
-                                    'y' => 'Y',
-                                    'm' => 'M',
 
-                                );
+                </tr>
 
-                                foreach ($string as $k => &$v) {
-                                if ($diff->$k) {
-                                $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? '' : '');
-                                } else {
-                                    unset($string[$k]);
-                                    }
-                                }
 
-                                if (!$full) $string = array_slice($string, 0, 1);
-                                    return $string ? implode(':', $string) . ' ' : '';
-                          }
 
 
 
+          </thead>
+          <tbody>';
 
 
-                                 $i = 1;
-                                if (!empty($get_user)) {
-                                    foreach($get_user as $get_users){
-                                      if (!empty($get_users['first_y'])) {
-                                         $first_year=(date("Y")-1).'-'.$get_users['first_y'];
-                                         $last_year2 =date("Y").'-'.$get_users['last_y'];
 
-                                         $last_year =  date('Y', strtotime($get_users['start'])).'-'.$get_users['last_y'];
 
-                                      }else{
+           $i = 1;
+          if (!empty($get_user)) {
+              foreach($get_user as $get_users){
+                $user_id =$get_users['oc_id'];
+                 //วันที่ 1
 
-                                       $first_year =  date("Y").'-01-01';
-                                       $last_year  =  date('Y', strtotime($get_users['start'])).'-12-31';
-                                       $last_year2 =  date("Y").'-12-31';
-                                      }
+                $first_day_of_month =$_POST['rank_of_date'];
+                $last_day_of_month =$_POST['rank_of_date2'];
 
 
+                $data = $process->coutn_sick($user_id,$first_day_of_month,$last_day_of_month); //นับป่วย
 
+              //ลาออก
+              if ($get_users['resign'] ==2) {
+                $resign = 'style="text-decoration:line-through; color:red;"';
+              } else{
+                $resign ='';
+              }
 
-                                      // คำนวณวันทำงาน
-                                      $start_date = date_create($get_users['start']);
-                                      $current_date = date_create();
-                                      $diff = date_diff($start_date,$current_date);
-                                      $do_work = $diff->format("%a");
+              echo '
+                    <tr  '.$resign.' >
 
+                      <td><div style="width: 140px">'.$get_users['oc_name'].'</td>
+                      <td>'.$get_users['dep_co_name'].'</td>
+                      <td>'.$get_users['tel'].'</td>
+                      <td>'.$data['count_late'].'</td>
+                      <td>'.$data['count_forget'].'</td>
+                      <td>'.$data['count_exit'].'</td>
+                      <td>'.$data['count_kad'].'</td>
+                      <td>'.$data['coutn_sickno'].'</td>
+                      <td>'.$data['count_sickhave'].'</td>
+                      <td>'.$data['count_sickwork'].'</td>
+                      <td>'.$data['count_kit'].'</td>
+                      <td>'.$data['count_kitno'].'</td>
+                      <td>'.$data['count_kitex'].'</td>
+                      <td>'.$data['count_etc'].'</td>
 
 
-                                          if ($do_work >=365 AND $do_work <730) { // ถ้ามากกว่า หรือ เท่ากับ 1 ปี
 
 
 
-                                                $the_last_of_the_year = strtotime($last_year);
-                                                $start_work = strtotime($get_users['start']);
 
 
-                                                $datediff = $the_last_of_the_year - $start_work;
-                                                $do_work_last_year = floor($datediff / (60 * 60 * 24));
-                                                $x =($do_work_last_year/60);//ปัดเศษ
-                                                $vacation = floor($x * 2) / 2;
-                                            }else if ($do_work>=730){
-                                                $vacation =6;
 
 
-                                            }else{
-                                                $vacation =0;
-                                            }
 
 
-                                            // หาวันที่ พักร้อนไปแล้ว
-                                           $oc_id     = $get_users['oc_id'];
+                    </tr>
 
 
+              ';
+              $i++;
 
-                                        $vacation_use =$process->coutn_vacation($oc_id,$first_year,$last_year2);
 
 
-                                      //สิทธิ์
+              }
+          }
 
-                                      $cooldown = $vacation-$vacation_use['coutn_vacation'];;
 
+          echo '
 
 
+          </tbody>
+      </table>
+      <!-- /.table-responsive -->';
 
-                                      $user_id =$get_users['oc_id'];
-                                       //วันที่ 1
 
 
-                                      $data = $process->coutn_sick($user_id,$first_day_of_month,$last_day_of_month); //นับป่วย
 
-                                    //ลาออก
-                                    if ($get_users['resign'] ==2) {
-                                      $resign = 'style="text-decoration:line-through; color:red;"';
-                                    } else{
-                                      $resign ='';
-                                    }
+  ?>
 
-                                    echo '
-                                          <tr  '.$resign.' >
-
-                                            <td><div style="width: 140px">'.$get_users['oc_name'].'</td>
-                                            <td>'.$get_users['dep_co_name'].'</td>
-                                            <td>'.$get_users['tel'].'</td>
-                                            <td>'.date('d/m/Y',strtotime($get_users['start'])).'</td>
-                                            <td>'.time_elapsed_string($get_users['start'], true).'</td>
-                                            <td>'. $vacation.'</td>
-                                            <td>'.$vacation_use['coutn_vacation'].'</td>
-                                            <td>'.$cooldown.'</td>
-                                            <input type="hidden" value="'.$first_year.'" id="first_year">
-                                            <input type="hidden" value="'.$last_year2.'" id="last_year">
-
-                        </td>
-
-
-                                            <td>'.$data['count_kit'].'</td>
-                                            <td>'.$data['count_sick'].'</td>
-                                            <td>'.$data['count_wrong'].'</td>
-                                            <td>'.$data['count_late'].'</td>
-                                            <td>'.$data['coutn_absence'].'</td>
-
-
-                                          </tr>
-
-
-                                    ';
-                                    $i++;
-
-
-
-                                    }
-                                }
-
-
-                                echo '
-
-
-                                </tbody>
-                            </table>
-                            <!-- /.table-responsive -->';
-
-                          }
-
-                            ?>
 
 
 
