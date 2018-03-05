@@ -183,4 +183,124 @@ echo '  <tr>
               }
 
 }
+
+
+
+if (isset($_POST['johnatar_maty_oc'])) {
+  $data =$_POST['johnatar_maty_oc'][2];
+  $record = explode(",",$data);
+
+  $date1 = date("Y-m-d", strtotime($record[0]));
+  $date2 = date("Y-m-d", strtotime($record[1]));
+
+
+
+
+$sql="SELECT
+status_oc.oc_id,
+sum_oc.day_n,
+sum_oc.ty_id,
+sum_oc.date,
+sum_oc.comment
+FROM
+sum_oc
+INNER JOIN status_oc ON status_oc.sum_id = sum_oc.sum_id
+WHERE
+  status_oc.oc_id ='".$_POST['johnatar_maty_oc'][1]."'
+  AND sum_oc.ty_id ='".$_POST['johnatar_maty_oc'][0]."'
+  AND sum_oc.date >='".$date1."'
+  AND sum_oc.date <= '".$date2."'
+";
+
+
+  echo '<div class="table-responsive">
+                             <table class="table table-striped">
+                               <thead>
+                                     <tr>
+                                         <th>ลำดับ</th>
+                                         <th>วันที่ </th>
+                                         <th>จำนวน (นาที)</th>
+                                         <th>หมายเหตุ</th>
+                                     </tr>
+                                 </thead>
+                                 <tbody>';
+  $result = mysqli_query($conn,$sql);
+  $i =1;
+  $total =0;
+while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
+  $total += $row['day_n'];
+      echo '
+
+                                        <tr>
+                                            <td>'.$i.'</td>
+                                            <td>'.date('d/m/Y',strtotime($row['date'])).'</td>';
+
+
+                                            if ($_POST['johnatar_maty_oc'][0]==2) {
+                                              if (!empty($row['day_n'])) {
+                                                   if ($row['day_n']==1) {
+                                                     echo '<td>เข้า</td>';
+                                                   }else{
+                                                     echo '<td>ออก</td>';
+                                                   }
+                                              }
+
+                                            }else{
+                                              echo '<td>'.$row['day_n'].'</td>';
+
+                                            }
+      echo                                  '<td>'.$row['comment'].'</td>
+                                    </tr>';
+
+
+
+$i++;}
+
+
+if ($_POST['johnatar_maty_oc'][0] == 2) {
+  $show_sum = 1;
+}else{
+  $show_sum = 2;
+}
+
+$h = $_POST['johnatar_maty_oc'][3]*60;
+$minutes = $total;
+
+$day = floor ($minutes / $h);
+$hour = floor (($minutes - $day * $h) / 60);
+$min = $minutes - ($day * $h) - ($hour * 60);
+
+// output text as...
+if ($show_sum==1) {
+  $sum =$i-1;
+  echo '  <tr>
+              <td></td>
+              <td>รวม</td>
+              <td>'.$sum.' : ครั้ง</td>
+              <td></td>
+          </tr>
+
+
+
+  </tbody>
+            </table>
+                  </div>';
+
+
+}else{
+echo '  <tr>
+            <td></td>
+            <td>รวม</td>
+            <td>'."{$day} : days {$hour} : hours {$min} : minutes.".'</td>
+            <td></td>
+        </tr>
+
+
+
+</tbody>
+          </table>
+                </div>';
+              }
+
+}
 ?>

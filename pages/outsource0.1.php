@@ -68,7 +68,7 @@
                     <div class="form-group">
                         <label class="col-md-3 control-label" for="fn">ชั่วโมงในการทำงาน</label>
                         <div class="col-md-4">
-                           <input name="hour"   type="text"   class="form-control input-md" required="">
+                           <input name="hour"  id="hour" type="text"   class="form-control input-md" required="">
 
 
                         </div>
@@ -203,26 +203,30 @@
     </div>
 
 
-            <!-- เพิ่มบริษัท -->
+    <div class="modal fade" id="show_attendent_oc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+     <div class="modal-dialog " role="document">
+       <div class="modal-content">
+         <div class="modal-header">
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+           <h4 class="modal-title" id="myModalLabel">ข้อมูลการลางาน</h4>
+         </div>
+         <div class="modal-body">
 
-               <!-- Modal more detail -->
-            <div class="modal fade" id="myModal" role="dialog">
-                <div class="modal-dialog modal-lg">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      <h4 class="modal-title"></h4>
-                    </div>
-                    <div class="modal-body">
-                      <div id='detail_oc'></div>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+           <div id="attendent_from_oc"></div>
+           <div id="attendent_from_oc2"></div>
+
+
+
+
+         </div>
+         <div class="modal-footer">
+
+           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+       </div>
+     </div>
+   </div>
+
 
             <!-- Modal more detail -->
 
@@ -519,6 +523,60 @@ $("#mdp-demos").multiDatesPicker({
         }},
 );
 
+function get_show_attendent_oc(id){
 
+    var month =$("#mdp-demos").val();
+    var hour =$('#hour').val();
+info = [];
+info[0] = id;
+info[1] = month;
+info[2] =hour;
+    $.ajax({
+        type:"POST",
+        url:"attendent_out.php",
+        data:{attendent_oc:info},
+        success:function(data){
+
+
+             $("#attendent_from_oc").html(data);
+
+
+
+
+
+
+
+
+
+
+        }
+    });
+    return false;
+}
+
+
+$(function(){
+    $("#attendent_from_oc").change(function(){
+      var type_of_detail =$("#type_of_detail_oc").val();
+      var oc_id_type_of_detail =$("#oc_id_type_of_detail").val();
+      var month_type_of_detail =$("#oc_month_type_of_detail").val();
+      var hour_of_work =$("#hour_of_work").val();
+      info = [];
+      info[0] = type_of_detail;
+      info[1] = oc_id_type_of_detail;
+      info[2] = month_type_of_detail;
+      info[3] = hour_of_work;
+          $.ajax({
+            type:'POST',
+            url :'after_meeting.php',
+            data:{johnatar_maty_oc:info},
+          success:function(data){
+            $("#attendent_from_oc2").html(data);
+          }
+          });
+
+
+    });
+});
 
 </script>

@@ -147,7 +147,7 @@ if (isset($_POST['add_outsrouce'])) {
 
 
                     <td><div style="width: 65px"><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#edit_user" onclick="return show_from_add_vacation_oc('.$get_users['oc_id'].');"><i class="fa fa-plus" aria-hidden="true"></i></button> :
-                    <button  class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal" onclick="return show_more_detail_outsrouce('.$get_users['oc_id'].')"><i class="fas fa-chart-pie"></i></button>
+                    <button  class="btn btn-info btn-xs" data-toggle="modal" data-target="#show_attendent_oc" onclick="return get_show_attendent_oc('.$get_users['oc_id'].')"><i class="fas fa-chart-pie"></i></button>
 
 
 
@@ -328,4 +328,56 @@ exit();
 
 }
 
+if (isset($_POST['attendent_oc'])) {
+
+
+
+
+			    	$sql ="SELECT outsrouce.oc_id,outsrouce.oc_name
+                   FROM outsrouce
+                   WHERE outsrouce.oc_id ='".$_POST['attendent_oc'][0]."' ";
+
+						$result =mysqli_query($conn,$sql);
+						$row =mysqli_fetch_array($result,MYSQLI_ASSOC);
+
+
+echo '<form class="form-horizontal">
+
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="selectbasic">ประเภท</label>
+									<div class="col-md-6">
+							<select  name="type" id="type_of_detail_oc" class="form-control input-md" required="">
+									<option value="">  </option>
+									 <option value="1"> สาย </option>
+									 <option value="2"> ลืมสแกน </option>
+									 <option value="3"> ออกก่อน </option>
+									 <option value="4"> ขาดงาน </option>
+									 <option value="5"> ลาป่วย (ไม่มีใบรับรองแพทย์) </option>
+									 <option value="6"> ลาป่วย (มีใบรับรองแพทย์) </option>
+									 <option value="7"> ลาป่วย (จากการทำงาน) </option>
+									 <option value="8"> ลากิจ (ได้ค่าจ้าง) </option>
+									 <option value="9"> ลากิจ (ไม่ได้ค่าจ้าง) </option>
+									 <option value="10"> ลากิจพิเศษ (ได้ค่าจ้าง) </option>
+									 <option value="11"> ลาอื่น </option>
+
+							</select>
+
+									</div>
+							</div>
+</form>
+
+
+
+<input type="hidden" value ="'.$row['oc_id'].'" id="oc_id_type_of_detail" >
+<input type="hidden" value ="'.$_POST['attendent_oc'][1].'" id="oc_month_type_of_detail" >
+<input type="hidden" value ="'.$_POST['attendent_oc'][2].'" id="hour_of_work" >
+
+';
+
+					echo " <p>ชื่อ นามสกุล : ".$row['oc_name']." </p>
+								 <p>  รอบวันที่ : ".$_POST['attendent_oc'][1]." </p>";
+
+
+
+}
  ?>
